@@ -11,8 +11,9 @@ userRouter.get("/", async (req, res) => {
 })
 
 const transporter = nodemailer.createTransport({
+    service: "gmail",
     host: process.env.SMTP_HOST,
-    port: 587,
+    port: process.env.SMTP_PORT,
     secure: false,
     auth: {
         user: process.env.SMTP_USER,
@@ -21,33 +22,10 @@ const transporter = nodemailer.createTransport({
 });
 userRouter.get("/me", auth, async (req, res) => {
     try {
-        const name = "Andy ansong"
-        const subject = "Test message"
-        const email = 'andy.ansong@amalitechtraining.org'
-        const message = 'Please do not reply'
-
-        // Validate required fields.
-        if (!name || !subject || !email || !message) {
-            return res.status(400).json({ status: 'error', message: 'Missing required fields' });
-        }
-
-        // Prepare the email message options.
-        const mailOptions = {
-            from: process.env.SENDER_EMAIL, // Sender address from environment variables.
-            to: `${name} <${email}>`, // Recipient's name and email address.
-            replyTo: process.env.REPLY_TO, // Sets the email address for recipient responses.
-            subject: subject, // Subject line.
-            text: message // Plaintext body.
-        };
-
-        // Send email and log the response.
-        const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent:', info.response);
-        res.status(200).json({ status: 'success', message: 'Email sent successfully' });
+        const user = await Employee.findOne({name: "Andy Ansong"}).exec()
+        res.status(200).json({ user });
     } catch (err) {
-        // Handle errors and log them.
-        console.error('Error sending email:', err);
-        res.status(500).json({ status: 'error', message: 'Error sending email, please try again.' });
+        res.status(404).json({ error: "User not found" });
     }
 })
 
@@ -71,6 +49,17 @@ userRouter.post("/request-code", async (req, res) => {
         // }
         console.log(user)
         const otp = await user.generateOtp()
+
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: [user.email],
+            replyTo: process.env.REPLY_TO,
+            subject: "Passwordless Authentication",
+            text: `This is your one time code\n${otp}\nCode expires in 5 minutes`
+        };
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent:', info.response);
+
         res.status(200).send({
             status: "success",
             message: "A one-time code has been sent to your email address.",

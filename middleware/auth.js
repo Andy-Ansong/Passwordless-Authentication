@@ -14,7 +14,10 @@ const auth = (req, res, next) => {
     try{
         const user = Employee.find({_id: data._id})
         if(!user){
-            throw new Error()
+            res.status(401).send({
+                "status": "error",
+                "message": "Unauthorized. Please log in to continue."
+            })
         }
         req.user = user
         req.token = token
