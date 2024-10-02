@@ -21,7 +21,7 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    otp: [{
+    otp: {
         expires_at: {
             type: Date,
         },
@@ -32,15 +32,34 @@ const employeeSchema = new mongoose.Schema({
             type: Boolean,
             default: false
         }
-    }]
+    }
 })
 
 employeeSchema.methods.generateAuthToken = async function(){
     const user = this
-    const token = jwt.sign({_id: user._id}, process.env.JWT_KEY)
-    user.tokens = user.tokens.concat({token})
+    const options = {
+        expiresIn: '1h'
+    }
+    const token = jwt.sign({_id: user._id}, process.env.JWT_KEY, options)
+    user.otp.used = true;
     await user.save()
     return token
+}
+
+employeeSchema.methods.generateOtp = async function(){
+    try{
+        const user = this
+        const otpCode = Math.floor(100000 + Math.random() * 900000)
+        user.otp = {
+            code: otpCode,
+            expires_at: new Date(new Date().getTime() + ( 5 * 60 * 1000 )),
+            used: false
+        }
+        await user.save()
+        return otpCode
+    }catch(error){
+        return error
+    }
 }
 
 const employee = mongoose.model("Employee", employeeSchema)
