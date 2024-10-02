@@ -5,11 +5,7 @@ const userRouter = express.Router()
 const auth = require("../middleware/auth")
 const nodemailer = require("nodemailer")
 
-userRouter.get("/", async (req, res) => {
-    const users = await Employee.find({})
-    res.status(200).send({users})
-})
-
+// helper function to send emails
 const transporter = nodemailer.createTransport({
     service: "gmail",
     host: process.env.SMTP_HOST,
@@ -19,7 +15,15 @@ const transporter = nodemailer.createTransport({
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
     }
-});
+})
+
+// route to get all employees
+userRouter.get("/", async (req, res) => {
+    const users = await Employee.find({})
+    res.status(200).send({users})
+})
+
+// route to get currently logged in employee
 userRouter.get("/me", auth, async (req, res) => {
     try {
         const token = req.header("Authorization").replace("Bearer ", "")
@@ -31,6 +35,7 @@ userRouter.get("/me", auth, async (req, res) => {
     }
 })
 
+// route to sign up
 userRouter.post("/signup", async (req, res) => {
     try{
         const user = new Employee(req.body)
@@ -41,6 +46,7 @@ userRouter.post("/signup", async (req, res) => {
     }
 })
 
+// route to request one time code
 userRouter.post("/request-code", async (req, res) => {
     try{
         const email = req.body.email
@@ -49,7 +55,6 @@ userRouter.post("/request-code", async (req, res) => {
         //     const employee = new Employee(req.body)
         //     await employee.save()
         // }
-        console.log(user)
         const otp = await user.generateOtp()
 
         const mailOptions = {
@@ -74,6 +79,7 @@ userRouter.post("/request-code", async (req, res) => {
     }
 })
 
+// route to verify one time code
 userRouter.post("/verify-code", async (req, res) => {
     try{
         const email = req.body.email
