@@ -61,7 +61,6 @@ userRouter.post("/request-code", async (req, res) => {
             text: `This is your one time code\n${otp}\nCode expires in 5 minutes`
         };
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent:', info.response);
 
         res.status(200).send({
             status: "success",
@@ -78,8 +77,7 @@ userRouter.post("/request-code", async (req, res) => {
 // route to verify one time code to login user for an hour
 userRouter.post("/verify-code", async (req, res) => {
     try{
-        const email = req.body.email
-        const code = req.body.code
+        const { email, code } = req.body
         const user = await Employee.findOne({email}).exec()
         // const user = await Employee.findOne({'otp.code': code}).exec()
         if(!user){
@@ -107,7 +105,6 @@ userRouter.post("/verify-code", async (req, res) => {
             })
         }
         const token = await user.generateAuthToken()
-        console.log("token generated ", token)
         res.send({
             status: "success",
             message: "Authentication successful. You are now logged in.",
@@ -120,7 +117,7 @@ userRouter.post("/verify-code", async (req, res) => {
     }
 })
 
-// manual logout
+// Manual logout
 router.post('/logout', (req, res) => {
     res.json({
         status: 'success',
