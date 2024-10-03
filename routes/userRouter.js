@@ -51,10 +51,6 @@ userRouter.post("/request-code", async (req, res) => {
     try{
         const email = req.body.email
         const user = await Employee.findOne({email}).exec()
-        // if(!user){
-        //     const employee = new Employee(req.body)
-        //     await employee.save()
-        // }
         const otp = await user.generateOtp()
 
         const mailOptions = {
@@ -79,7 +75,7 @@ userRouter.post("/request-code", async (req, res) => {
     }
 })
 
-// route to verify one time code
+// route to verify one time code to login user for an hour
 userRouter.post("/verify-code", async (req, res) => {
     try{
         const email = req.body.email
@@ -123,5 +119,13 @@ userRouter.post("/verify-code", async (req, res) => {
         res.status(400).send(err)
     }
 })
+
+// manual logout
+router.post('/logout', (req, res) => {
+    res.json({
+        status: 'success',
+        message: 'You have been logged out successfully.',
+    });
+});
 
 module.exports = userRouter

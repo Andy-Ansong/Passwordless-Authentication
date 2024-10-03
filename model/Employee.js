@@ -13,7 +13,7 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         validate: value => {
             if(!validator.isEmail(value)){
-                return new Error({error: "Invalid email"})
+                return new Error("Invalid email")
             }
         }
     },
