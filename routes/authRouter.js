@@ -1,7 +1,7 @@
 require("dotenv").config()
 const express = require("express")
-const Employee = require("../model/Employee")
-const userRouter = express.Router()
+const User = require("../model/User")
+const authRouter = express.Router()
 const auth = require("../middleware/auth")
 const nodemailer = require("nodemailer")
 
@@ -17,14 +17,14 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-// route to get all employees
-userRouter.get("/", async (req, res) => {
-    const users = await Employee.find({})
+// route to get all users
+authRouter.get("/", async (req, res) => {
+    const users = await User.find({})
     res.status(200).send({users})
 })
 
-// route to get currently logged in employee
-userRouter.get("/me", auth, async (req, res) => {
+// route to get currently logged in users
+authRouter.get("/me", auth, async (req, res) => {
     try {
         const user = req.user
         res.status(200).json({ user });
@@ -34,9 +34,9 @@ userRouter.get("/me", auth, async (req, res) => {
 })
 
 // route to sign up
-userRouter.post("/signup", async (req, res) => {
+authRouter.post("/", async (req, res) => {
     try{
-        const user = new Employee(req.body)
+        const user = new User(req.body)
         await user.save()
         res.redirect(307, "/request-code")
     }catch(error){
@@ -45,10 +45,10 @@ userRouter.post("/signup", async (req, res) => {
 })
 
 // route to request one time code
-userRouter.post("/request-code", async (req, res) => {
+authRouter.post("/request-code", async (req, res) => {
     try{
         const email = req.body.email
-        const user = await Employee.findOne({email}).exec()
+        const user = await User.findOne({email}).exec()
         const otp = await user.generateOtp()
 
         const mailOptions = {
@@ -73,11 +73,11 @@ userRouter.post("/request-code", async (req, res) => {
 })
 
 // route to verify one time code to login user for an hour
-userRouter.post("/verify-code", async (req, res) => {
+authRouter.post("/verify-code", async (req, res) => {
     try{
         const { email, code } = req.body
-        const user = await Employee.findOne({email}).exec()
-        // const user = await Employee.findOne({'otp.code': code}).exec()
+        const user = await User.findOne({email}).exec()
+        // const user = await User.findOne({'otp.code': code}).exec()
         if(!user){
             res.status(404).send({
                 "status": "error",
@@ -116,11 +116,11 @@ userRouter.post("/verify-code", async (req, res) => {
 })
 
 // Manual logout
-userRouter.post('/logout', (req, res) => {
+authRouter.post('/logout', async (req, res) => {
     res.json({
         status: 'success',
         message: 'You have been logged out successfully.',
     });
 });
 
-module.exports = userRouter
+module.exports = authRouter

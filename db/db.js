@@ -1,9 +1,7 @@
 const mongoose = require("mongoose")
 
-mongoose.connect(process.env.MONGODB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
+mongoose.connect(process.env.MONGODB_URL, {})
+.then(() => {
     console.log("Connected to database")
 }).catch((err) => {
     console.error("Could not connect to database")

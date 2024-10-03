@@ -1,8 +1,8 @@
 require("dotenv").config();
 const express = require("express");
-const Employee = require("../model/Employee");
+const User = require("../model/User");
 const jwt = require("jsonwebtoken"); // Ensure you import jwt
-const userRouter = express.Router();
+const authRouter = express.Router();
 const auth = require("../middleware/auth");
 const nodemailer = require("nodemailer");
 
@@ -15,22 +15,22 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Route to get all employees
-userRouter.get("/", async (req, res) => {
+// Route to get all users
+authRouter.get("/", async (req, res) => {
     try {
-        const users = await Employee.find({});
+        const users = await User.find({});
         res.status(200).send({ users });
     } catch (error) {
         res.status(500).send({ error: "Failed to fetch users" });
     }
 });
 
-// Route to get currently logged in employee
-userRouter.get("/me", auth, async (req, res) => {
+// Route to get currently logged in users
+authRouter.get("/me", auth, async (req, res) => {
     try {
         const token = req.header("Authorization").replace("Bearer ", "");
         const data = jwt.verify(token, process.env.JWT_KEY);
-        const user = await Employee.findById(data._id); // Use findById and await it
+        const user = await User.findById(data._id); // Use findById and await it
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -41,9 +41,9 @@ userRouter.get("/me", auth, async (req, res) => {
 });
 
 // Route to sign up
-userRouter.post("/signup", async (req, res) => {
+authRouter.post("/signup", async (req, res) => {
     try {
-        const user = new Employee(req.body);
+        const user = new User(req.body);
         await user.save();
         res.redirect(307, "/request-code");
     } catch (error) {
@@ -52,10 +52,10 @@ userRouter.post("/signup", async (req, res) => {
 });
 
 // Route to request one-time code
-userRouter.post("/request-code", async (req, res) => {
+authRouter.post("/request-code", async (req, res) => {
     try {
         const email = req.body.email;
-        const user = await Employee.findOne({ email }).exec();
+        const user = await User.findOne({ email }).exec();
         if (!user) {
             return res.status(404).send({ status: "error", message: "User not found" });
         }
@@ -82,10 +82,10 @@ userRouter.post("/request-code", async (req, res) => {
 });
 
 // Route to verify one-time code to login user for an hour
-userRouter.post("/verify-code", async (req, res) => {
+authRouter.post("/verify-code", async (req, res) => {
     try {
         const { email, code } = req.body;
-        const user = await Employee.findOne({ email }).exec();
+        const user = await User.findOne({ email }).exec();
         if (!user) {
             return res.status(404).send({ status: "error", message: "User not found" });
         }
@@ -115,7 +115,7 @@ userRouter.post("/verify-code", async (req, res) => {
 });
 
 // Manual logout
-userRouter.post('/logout', (req, res) => {
+authRouter.post('/logout', (req, res) => {
     // Invalidate the token on the client-side, as mentioned earlier
     res.json({
         status: 'success',
@@ -123,4 +123,4 @@ userRouter.post('/logout', (req, res) => {
     });
 });
 
-module.exports = userRouter;
+module.exports = authRouter;

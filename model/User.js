@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 const validator = require("validator")
 const jwt = require("jsonwebtoken")
 
-const employeeSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -35,7 +35,7 @@ const employeeSchema = new mongoose.Schema({
     }
 })
 
-employeeSchema.methods.generateAuthToken = async function(){
+userSchema.methods.generateAuthToken = async function(){
     const user = this
     const options = {
         expiresIn: '1h'
@@ -46,7 +46,7 @@ employeeSchema.methods.generateAuthToken = async function(){
     return token
 }
 
-employeeSchema.methods.generateOtp = async function(){
+userSchema.methods.generateOtp = async function(){
     try{
         const user = this
         const otpCode = Math.floor(100000 + Math.random() * 900000)
@@ -62,5 +62,5 @@ employeeSchema.methods.generateOtp = async function(){
     }
 }
 
-const employee = mongoose.model("Employee", employeeSchema)
-module.exports = employee
+const User = mongoose.model("User", userSchema)
+module.exports = User
