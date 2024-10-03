@@ -26,9 +26,7 @@ userRouter.get("/", async (req, res) => {
 // route to get currently logged in employee
 userRouter.get("/me", auth, async (req, res) => {
     try {
-        const token = req.header("Authorization").replace("Bearer ", "")
-        const data = jwt.verify(token, process.env.JWT_KEY)
-        const user = Employee.find({_id: data._id})
+        const user = req.user
         res.status(200).json({ user });
     } catch (err) {
         res.status(404).json({ error: "User not found" });
