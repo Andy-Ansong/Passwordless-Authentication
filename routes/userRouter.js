@@ -118,7 +118,7 @@ userRouter.post("/verify-code", async (req, res) => {
 })
 
 // Manual logout
-router.post('/logout', (req, res) => {
+userRouter.post('/logout', (req, res) => {
     res.json({
         status: 'success',
         message: 'You have been logged out successfully.',
