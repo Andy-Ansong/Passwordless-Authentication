@@ -25,6 +25,7 @@ const transporter = nodemailer.createTransport({
 //  * /api/v1/auth/admin:
 //  *   post:
 //  *     summary: Create an admin
+//  *     tags: [Auth]
 //  *     responses:
 //  *       201:
 //  *         description: Admin created successfully
@@ -74,6 +75,7 @@ const transporter = nodemailer.createTransport({
  * /api/v1/auth/request-code:
  *   post:
  *     summary: Request a one-time code for login
+ *     tags: [Auth]
  *     responses:
  *       200:
  *         description: A successful response
@@ -128,6 +130,7 @@ authRouter.post("/request-code", async (req, res) => {
  * /api/v1/auth/verify-code:
  *   post:
  *     summary: Verify one-time code for login
+ *     tags: [Auth]
  *     responses:
  *       200:
  *         description: A successful response
@@ -193,6 +196,7 @@ authRouter.post("/verify-code", async (req, res) => {
  * /api/v1/auth:
  *   get:
  *     summary: Get all users
+ *     tags: [Auth]
  *     responses:
  *       200:
  *         description: A successful response
@@ -214,6 +218,7 @@ authRouter.get("/", async (req, res) => {
  * /api/v1/auth/me:
  *   get:
  *     summary: Get current user details
+ *     tags: [Auth]
  *     responses:
  *       200:
  *         description: A successful response
@@ -234,6 +239,7 @@ authRouter.get("/me", auth(false), async (req, res) => {
  * /api/v1/auth/logout:
  *   post:
  *     summary: Logout user
+ *     tags: [Auth]
  *     responses:
  *       200:
  *         description: Successfully logged out

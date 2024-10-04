@@ -13,7 +13,7 @@ app.use("/api/v1/auth", authRouter)
 const profileRouter = require("./routes/profileRouter")
 app.use("/api/v1/profile", profileRouter)
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {explorer: true}));
 
 app.get('/api', (req, res) => {
     res.send('Api is currently running!');
