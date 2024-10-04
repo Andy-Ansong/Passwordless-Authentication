@@ -2,7 +2,7 @@ const express = require("express")
 const jwt = require("jsonwebtoken")
 const User = require("../model/User")
 
-const auth = (recruiterOnly = false) => {
+const auth = (adminOnly = false) => {
     return async (req, res, next) => {
         try{
             const token = req.header("Authorization").replace("Bearer ", "")
@@ -15,7 +15,7 @@ const auth = (recruiterOnly = false) => {
                 })
             }
 
-            if(recruiterOnly && !user.isRecruiter){
+            if(adminOnly && !user.isAdmin){
                 return res.status(403).send({
                     status: "error",
                     message: "Forbidden. You do not have access to this resource."
@@ -26,7 +26,7 @@ const auth = (recruiterOnly = false) => {
             req.token = token
             next()
         }catch(error){
-            res.status(401).send({
+            return res.status(401).send({
                 "status": "error",
                 "message": "Unauthorized. Please log in to continue."
             })

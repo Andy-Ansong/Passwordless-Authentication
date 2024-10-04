@@ -6,9 +6,13 @@ const profileSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
     gender: {
         type: String,
-        enum: ['Male', 'Female', 'Other'],
+        enum: ['Male', 'Female'],
         required: true
     },
     bio: {
@@ -19,7 +23,7 @@ const profileSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    phoneNo: {
+    phoneNumber: {
         type: String,
         required: true
     },
@@ -31,17 +35,17 @@ const profileSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        degreeLevel: {
+        degree: {
             type: String
         },
         course: {
             type: String,
             required: true
         },
-        startDate: {
+        startYear: {
             type: Date
         },
-        endDate: {
+        endYear: {
             type: Date
         }
     }],

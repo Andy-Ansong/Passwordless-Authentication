@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    isRecruiter: {
+    isAdmin: {
         type: Boolean,
         default: false
     },
@@ -30,6 +30,9 @@ const userSchema = new mongoose.Schema({
         used: {
             type: Boolean,
             default: false
+        },
+        userId: {
+            type: String
         }
     }
 })
@@ -41,6 +44,7 @@ userSchema.methods.generateAuthToken = async function(){
     }
     const token = jwt.sign({_id: user._id}, process.env.JWT_KEY, options)
     user.otp.used = true;
+    user.otp.userId = user._id;
     await user.save()
     return token
 }
