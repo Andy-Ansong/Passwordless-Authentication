@@ -3,7 +3,17 @@ const Profile = require('../model/Profile')
 const profileRouter = express.Router()
 const auth = require('../middleware/auth')
 
-// Create a new profile
+/**
+ * @swagger
+ * /api/v1/profile:
+ *   post:
+ *     summary: Create a profile
+ *     responses:
+ *       201:
+ *         description: A successful response
+ *       400:
+ *          description: Failed to create due to invalid credentials
+ */
 profileRouter.post("/", auth, async (req, res) => {
     try{
         const profile = new Profile({
@@ -17,17 +27,45 @@ profileRouter.post("/", auth, async (req, res) => {
     }
 })
 
-// Get all profiles
+/**
+ * @swagger
+ * /api/v1/profile:
+ *   get:
+ *     summary: Get all profiles
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       401:
+ *         description: Unauthorized, user must log in first
+ *       403:
+ *         description: Forbidden, user is not a recruiter
+ *       500:
+ *          description: Failed to retrive profiles
+ */
 profileRouter.get("/", auth(true), async (req, res) => {
-    try {
+    try{
         const profiles = await Profile.find({})
         res.status(200).send({ profiles })
-    } catch (err) {
+    }catch(err){
         res.status(500).send({ error: "Failed to retrieve profiles." })
     }
 })
 
-// Get a single profile by id
+/**
+ * @swagger
+ * /api/v1/profile/:profile_id:
+ *   get:
+ *     summary: Get profile by id
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       401:
+ *         description: Unauthorized, user must log in first
+ *       403:
+ *         description: Forbidden, user is not a recruiter
+ *       404:
+ *         description: Profile not found
+ */
 profileRouter.get("/:profile_id", auth(true), async (req, res) => {
     try{
         const profile_id = req.params.profile_id
@@ -41,7 +79,23 @@ profileRouter.get("/:profile_id", auth(true), async (req, res) => {
     }
 })
 
-// Mark a profile as viewed by a recuriter
+/**
+ * @swagger
+ * /api/v1/profile/:profile_id/viewed:
+ *   put:
+ *     summary: Mark a profile as viewed
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       401:
+ *         description: Unauthorized, user must log in first
+ *       403:
+ *         description: Forbidden, user is not a recruiter
+ *       404:
+ *         description: Profile not found
+ *       500:
+ *          description: Failed to update profile
+ */
 profileRouter.put("/:profile_id/viewed", auth(true), async(req, res) => {
     try{
         const profile_id = req.params.profile_id
@@ -59,10 +113,24 @@ profileRouter.put("/:profile_id/viewed", auth(true), async(req, res) => {
     }
 })
 
-// Get the profile of the currently authenticated user
+/**
+ * @swagger
+ * /api/v1/profile/me:
+ *   get:
+  *     summary: Get profile of currently authenticated user
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       401:
+ *         description: Unauthorized, user must log in first
+ *       404:
+ *         description: Profile not found
+ *       500:
+ *          description: Failed to retrive user profile
+ */
 profileRouter.get("/me", auth, async (req, res) => {
     try{
-        const profile = await Profile.findOne({ userId: req.user._id })
+        const profile = await Profile.findOne({ userId: req.user._id }).exec()
         if(!profile){
             return res.status(404).send({ error: "Profile not found" })
         }
@@ -72,7 +140,23 @@ profileRouter.get("/me", auth, async (req, res) => {
     }
 })
 
-// Update profile by id
+/**
+ * @swagger
+ * /api/v1/profile/:profile_id/viewed:
+ *   put:
+ *     summary: Update user profile
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       401:
+ *         description: Unauthorized, user must log in first
+ *       403:
+ *         description: Forbidden, user is not a recruiter
+ *       404:
+ *         description: Profile not found
+ *       500:
+ *          description: Failed to retrive profiles
+ */
 profileRouter.put("/:id", auth, async (req, res) => {
     try{
         const profile = await Profile.findOneAndUpdate(
@@ -89,7 +173,21 @@ profileRouter.put("/:id", auth, async (req, res) => {
     }
 })
 
-// Delete profile by id
+/**
+ * @swagger
+ * /api/v1/profile/:profile_id:
+ *   delete:
+ *     summary: delete user profile
+ *     responses:
+ *       204:
+ *         description: Successfully deleted profile
+ *       401:
+ *         description: Unauthorized, user must log in first
+ *       404:
+ *         description: Profile not found
+ *       500:
+ *          description: Failed to retrive profiles
+ */
 profileRouter.delete("/:profile_id", auth, async (req, res) => {
     try{
         const profile = await Profile.findOneAndDelete({
@@ -101,7 +199,7 @@ profileRouter.delete("/:profile_id", auth, async (req, res) => {
         }
         res.status(204).send()
     }catch(err){
-        res.status(400).send({ error: "Failed to delete profile." })
+        res.status(500).send({ error: "Failed to delete profile." })
     }
 })
 

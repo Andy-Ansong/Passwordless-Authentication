@@ -17,13 +17,38 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-// route to get all users
+/**
+ * @swagger
+ * /api/v1/auth:
+ *   get:
+ *     summary: Get all users
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       500:
+ *          description: Failed to retrive users
+ */
 authRouter.get("/", async (req, res) => {
-    const users = await User.find({})
-    res.status(200).send({users})
+    try{
+        const users = await User.find({})
+        res.status(200).send({users})
+    }
+    catch(err){
+        res.status(500).send({ error: "Failed to retrieve users." })
+    }
 })
 
-// route to get currently logged in users
+/**
+ * @swagger
+ * /api/v1/auth/me:
+ *   get:
+ *     summary: Get current user details
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       404:
+ *          description: User not found
+ */
 authRouter.get("/me", auth, async (req, res) => {
     try {
         const user = req.user
@@ -33,7 +58,17 @@ authRouter.get("/me", auth, async (req, res) => {
     }
 })
 
-// route to request one time code
+/**
+ * @swagger
+ * /api/v1/auth/request-code:
+ *   post:
+ *     summary: Request a one-time code for login
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       400:
+ *          description: Invalid email address
+ */
 authRouter.post("/request-code", async (req, res) => {
     try{
         const email = req.body.email
@@ -77,17 +112,29 @@ authRouter.post("/request-code", async (req, res) => {
     }
 })
 
-// route to verify one time code to login user for an hour
+/**
+ * @swagger
+ * /api/v1/auth/verify-code:
+ *   post:
+ *     summary: Verify one-time code for login
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       400:
+ *          description: The one-time code is invalid or expired
+ *       404:
+ *          description: No user with that one-time code
+ */
 authRouter.post("/verify-code", async (req, res) => {
     try{
         const { code } = req.body
         const user = await User.findOne({
-            "otp.code": code,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            "otp.code": code,
             "otp.used": false
         }).exec()
         // const user = await User.findOne({'otp.code': code}).exec()
         if(!user){
-            res.status(404).send({
+            res.status(404).send({ // ask Ernest
                 "status": "error",
                 "message": "The one-time code you entered is invalid or expired"
             })
@@ -111,7 +158,7 @@ authRouter.post("/verify-code", async (req, res) => {
             })
         }
         const token = await user.generateAuthToken()
-        res.send({
+        res.status(200).send({
             status: "success",
             message: "Authentication successful. You are now logged in.",
             token,
@@ -123,13 +170,25 @@ authRouter.post("/verify-code", async (req, res) => {
     }
 })
 
-// route to create a recruiter
+/**
+ * @swagger
+ * /api/v1/auth/recruiter:
+ *   post:
+ *     summary: Create a recruiter
+ *     responses:
+ *       201:
+ *         description: Recruiter created successfully
+ *       409:
+ *          description: User already exists
+ *       500:
+ *          description: Error occured while creating recruiter
+ */
 authRouter.post("/recruiter", async (req, res) => {
     try {
         const { name, email } = req.body
         const existingUser = await User.findOne({ email })
         if(existingUser){
-            return res.status(400).send({
+            return res.status(409).send({
                 status: "error",
                 message: "A user with this email already exists."
             })
@@ -156,12 +215,32 @@ authRouter.post("/recruiter", async (req, res) => {
     }
 })
 
-// Manual logout
-authRouter.post('/logout', async (req, res) => {
-    res.json({
-        status: 'success',
-        message: 'You have been logged out successfully.',
-    })
+/**
+ * @swagger
+ * /api/v1/auth/logout:
+ *   post:
+ *     summary: Logout user
+ *     responses:
+ *       200:
+ *         description: Successfully logged out
+ *       401:
+ *         description: Unauthorized, user must log in first
+ *       500:
+ *          description: Failed to log out user
+ */
+authRouter.post('/logout', auth, async (req, res) => {
+    try{
+        res.status(200).send({
+            status: 'success',
+            message: 'You have been logged out successfully.',
+        })
+    }catch(error){
+        res.status(500).send({
+            status: "error",
+            message: "An error occurred while logging out.",
+            error: error.message
+        })
+    }
 })
 
 module.exports = authRouter
