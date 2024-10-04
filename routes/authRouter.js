@@ -27,20 +27,9 @@ authRouter.get("/", async (req, res) => {
 authRouter.get("/me", auth, async (req, res) => {
     try {
         const user = req.user
-        res.status(200).json({ user });
+        res.status(200).json({ user })
     } catch (err) {
-        res.status(404).json({ error: "User not found" });
-    }
-})
-
-// route to sign up
-authRouter.post("/", async (req, res) => {
-    try{
-        const user = new User(req.body)
-        await user.save()
-        res.redirect(307, "/request-code")
-    }catch(error){
-        res.status(400).send(error)
+        res.status(404).json({ error: "User not found" })
     }
 })
 
@@ -48,7 +37,13 @@ authRouter.post("/", async (req, res) => {
 authRouter.post("/request-code", async (req, res) => {
     try{
         const email = req.body.email
+
         const user = await User.findOne({email}).exec()
+        if (!user) {
+            user = new User({ email })
+            await user.save()
+        }
+
         const otp = await user.generateOtp()
 
         const mailOptions = {
@@ -56,9 +51,19 @@ authRouter.post("/request-code", async (req, res) => {
             to: [user.email],
             replyTo: process.env.REPLY_TO,
             subject: "Passwordless Authentication",
-            text: `This is your one time code\n${otp}\nCode expires in 5 minutes`
-        };
-        const info = await transporter.sendMail(mailOptions);
+            // text: `This is your one-time code:\n${otp}\nCode expires in 5 minutes.`, // Plain text version (optional)
+            html: `
+                <div>
+                    <h1>Passwordless Authentication</h1>
+                    <p>This is your one-time code:</p>
+                    <h2 style="color: #f56607">${otp}</h2>
+                    <p>The code expires in 5 minutes.</p>
+                    <br />
+                    <p>Thank you</p>
+                </div>
+            `
+        }
+        const info = await transporter.sendMail(mailOptions)
 
         res.status(200).send({
             status: "success",
@@ -75,13 +80,16 @@ authRouter.post("/request-code", async (req, res) => {
 // route to verify one time code to login user for an hour
 authRouter.post("/verify-code", async (req, res) => {
     try{
-        const { email, code } = req.body
-        const user = await User.findOne({email}).exec()
+        const { code } = req.body
+        const user = await User.findOne({
+            "otp.code": code,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            "otp.used": false
+        }).exec()
         // const user = await User.findOne({'otp.code': code}).exec()
         if(!user){
             res.status(404).send({
                 "status": "error",
-                "message": "The email address is not a valid email address"
+                "message": "The one-time code you entered is invalid or expired"
             })
         }
         if(user.otp.code != code){
@@ -115,12 +123,45 @@ authRouter.post("/verify-code", async (req, res) => {
     }
 })
 
+// route to create a recruiter
+authRouter.post("/recruiter", async (req, res) => {
+    try {
+        const { name, email } = req.body
+        const existingUser = await User.findOne({ email })
+        if(existingUser){
+            return res.status(400).send({
+                status: "error",
+                message: "A user with this email already exists."
+            })
+        }
+        const recruiter = new User({
+            name,
+            email,
+            isRecruiter: true
+        })
+        await recruiter.save()
+        const token = await recruiter.generateAuthToken()
+        res.status(201).send({
+            status: "success",
+            message: "Recruiter created successfully.",
+            recruiter,
+            token
+        })
+    } catch (error) {
+        res.status(500).send({
+            status: "error",
+            message: "An error occurred while creating the recruiter.",
+            error: error.message
+        })
+    }
+})
+
 // Manual logout
 authRouter.post('/logout', async (req, res) => {
     res.json({
         status: 'success',
         message: 'You have been logged out successfully.',
-    });
-});
+    })
+})
 
 module.exports = authRouter

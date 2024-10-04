@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken")
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
     },
     email: {
         required: true,
@@ -17,9 +16,9 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    role: {
-        type: String,
-        required: true
+    isRecruiter: {
+        type: Boolean,
+        default: false
     },
     otp: {
         expires_at: {

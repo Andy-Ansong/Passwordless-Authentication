@@ -1,0 +1,70 @@
+{
+    "userId": "64bfe99d7f6d8a1e6baf9c84",
+    "gender": "Male",
+    "bio": "A software engineer with a passion for developing innovative programs that expedite the efficiency and effectiveness of organizational success.",
+    "birthDate": "1995-07-14T00:00:00.000Z",
+    "phoneNo": 1234567890,
+    "languages": [
+      { "language": "English" },
+      { "language": "French" }
+    ],
+    "education": [
+      {
+        "location": "University of Example",
+        "duration": "2013-2017",
+        "course": "Bachelor of Computer Science"
+      },
+      {
+        "location": "Example High School",
+        "duration": "2009-2013",
+        "course": "High School Diploma"
+      }
+    ],
+    "workExperience": [
+      {
+        "location": "Tech Corp Ltd",
+        "position": "Software Engineer",
+        "startDate": "2018-03-01",
+        "endDate": "2021-05-31",
+        "description": "Developed full-stack web applications, managed large databases, and collaborated with cross-functional teams."
+      },
+      {
+        "location": "Dev Solutions",
+        "position": "Junior Developer",
+        "startDate": "2017-06-01",
+        "endDate": "2018-02-28",
+        "description": "Assisted in developing and testing mobile applications for clients."
+      }
+    ],
+    "skills": [
+      { "skill": "JavaScript" },
+      { "skill": "React" },
+      { "skill": "Node.js" },
+      { "skill": "MongoDB" }
+    ],
+    "certifications": [
+      {
+        "certificate": {
+          "name": "Certified Web Developer",
+          "dateReceived": "2019-09-12T00:00:00.000Z"
+        }
+      },
+      {
+        "certificate": {
+          "name": "AWS Certified Solutions Architect",
+          "dateReceived": "2020-11-15T00:00:00.000Z"
+        }
+      }
+    ],
+    "currentRole": {
+      "role": "Lead Software Engineer",
+      "startDate": "2021-06-01",
+      "endDate": null,
+      "location": "Innovative Tech Hub"
+    },
+    "interests": [
+      { "interest": "Artificial Intelligence" },
+      { "interest": "Open-source development" }
+    ]
+  }
+  

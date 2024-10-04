@@ -2,11 +2,13 @@ const mongoose = require("mongoose")
 
 const profileSchema = new mongoose.Schema({
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true
     },
     gender: {
         type: String,
+        enum: ['Male', 'Female', 'Other'],
         required: true
     },
     bio: {
@@ -18,23 +20,50 @@ const profileSchema = new mongoose.Schema({
         required: true
     },
     phoneNo: {
-        type: Number,
+        type: String,
         required: true
     },
     languages: [{
         language: String
     }],
     education: [{
-        location: String,
-        duration: String,
-        course: String
+        institution: {
+            type: String,
+            required: true
+        },
+        degreeLevel: {
+            type: String
+        },
+        course: {
+            type: String,
+            required: true
+        },
+        startDate: {
+            type: Date
+        },
+        endDate: {
+            type: Date
+        }
     }],
     workExperience: [{
-        location: String,
-        position: String,
-        startDate: String,
-        endDate: String,
-        description: String,
+        company: {
+            type: String,
+            required: true
+        },
+        position: {
+            type: String,
+            required: true
+        },
+        startDate: {
+            type: Date,
+            required: true
+        },
+        endDate: {
+            type: Date
+        },
+        description: {
+            type: String
+        }
     }],
     skills: [{
         skill: String
@@ -53,7 +82,11 @@ const profileSchema = new mongoose.Schema({
     },
     interests: [{
         interest: String
-    }]
+    }],
+    viewed: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const Profile = mongoose.model("Profile", profileSchema)
