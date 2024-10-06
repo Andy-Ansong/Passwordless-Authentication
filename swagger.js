@@ -10,6 +10,16 @@ const options = {
             version: '1.0.0',
             description: 'A simple Express API with Swagger documentation',
         },
+        components: {
+            securitySchemes: {
+                JWT: {
+                    description: '',
+                    type: 'apiKey',
+                    name: 'Authorization',
+                    in: 'header'
+                }
+            }
+        }
     },
     apis: ['./routes/*.js'], // Path to your API routes
 };

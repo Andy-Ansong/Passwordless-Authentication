@@ -1,42 +1,71 @@
 const express = require('express')
-const Profile = require('../model/Profile')
 const profileRouter = express.Router()
 const auth = require('../middleware/auth')
+const profileController = require('../controllers/profileController')
 
 /**
  * @swagger
  * /api/v1/profile:
  *   post:
  *     summary: Create a profile
+ *     security:
+ *       - BearerAuth: []
  *     tags: [Profile]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the user
+ *               gender:
+ *                 type: string
+ *                 enum: [Male, Female]
+ *                 description: The gender of the user
+ *               bio:
+ *                 type: string
+ *                 description: A short biography of the user
+ *               birthDate:
+ *                 type: string
+ *                 format: date
+ *                 description: The user's birth date
+ *               phoneNumber:
+ *                 type: string
+ *                 description: The user's phone number
+ *               languages:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     language:
+ *                       type: string
+ *             example:
+ *               {
+ *                 "name": "John Doe",
+ *                 "gender": "Male",
+ *                 "bio": "Software Developer",
+ *                 "birthDate": "2004-04-14",
+ *                 "phoneNumber": "+233509895421",
+ *                 "languages": [{"language": "English"}]
+ *               }
  *     responses:
  *       201:
  *         description: A successful response
  *       400:
  *          description: Failed to create due to invalid credentials
  */
-profileRouter.post("/", auth(false), async (req, res) => {
-    try{
-        let profile = await Profile.findOne({userId: req.user._id}).exec()
-        if(profile){
-            return res.status(409).send({ error: "Profile already exists" })
-        }
-        profile = new Profile({
-            ...req.body,
-            userId: req.user._id
-        })
-        await profile.save()
-        res.status(201).send({ message: "Profile saved successfully", profile })
-    }catch(err) {
-        res.status(400).send({ error: "There was a problem saving the profile. Please try again." })
-    }
-})
+profileRouter.post("/", auth(false), profileController.createProfile)
 
 /**
  * @swagger
  * /api/v1/profile:
  *   get:
  *     summary: Get all profiles
+ *     security:
+ *       - BearerAuth: []
  *     tags: [Profile]
  *     responses:
  *       200:
@@ -48,15 +77,7 @@ profileRouter.post("/", auth(false), async (req, res) => {
  *       500:
  *          description: Failed to retrive profiles
  */
-profileRouter.get("/", auth(true), async (req, res) => {
-    try{
-        const profiles = await Profile.find({})
-        res.status(200).send({ profiles })
-    }catch(err){
-        res.status(500).send({ error: "Failed to retrieve profiles." })
-    }
-})
-
+profileRouter.get("/", auth(true), profileController.getAllProfiles)
 
 
 /**
@@ -64,6 +85,8 @@ profileRouter.get("/", auth(true), async (req, res) => {
  * /api/v1/profile/me:
  *   get:
  *     summary: Get current user profile
+ *     security:
+ *       - BearerAuth: []
  *     tags: [Profile]
  *     responses:
  *       200:
@@ -75,23 +98,15 @@ profileRouter.get("/", auth(true), async (req, res) => {
  *       404:
  *         description: Profile not found
  */
-profileRouter.get("/me", auth(false), async (req, res) => {
-    try{
-        const profile = await Profile.findOne({userId: req.user._id}).exec()
-        if(!profile){
-            return res.status(404).send({ error: "Profile not found" })
-        }
-        res.status(200).send({ profile })
-    }catch(err){
-        res.status(404).send({ error: "Profile not found" })
-    }
-})
+profileRouter.get("/me", auth(false), profileController.getCurrentProfile)
 
 /**
  * @swagger
  * /api/v1/profile/{profile_id}:
  *   get:
  *     summary: Get profile by id
+ *     security:
+ *       - BearerAuth: []
  *     tags: [Profile]
  *     parameters:
  *       - in: path
@@ -110,24 +125,15 @@ profileRouter.get("/me", auth(false), async (req, res) => {
  *       404:
  *         description: Profile not found
  */
-profileRouter.get("/:profile_id", auth(true), async (req, res) => {
-    try{
-        const profile_id = req.params.profile_id
-        const profile = await Profile.findById(profile_id)
-        if(!profile){
-            return res.status(404).send({ error: "Profile not found" })
-        }
-        res.status(200).send({ profile })
-    }catch(err){
-        res.status(404).send({ error: "Profile not found" })
-    }
-})
+profileRouter.get("/:profile_id", auth(true), profileController.getProfileById)
 
 /**
  * @swagger
  * /api/v1/profile/{profile_id}/viewed:
- *   put:
+ *   patch:
  *     summary: Mark a profile as viewed
+ *     security:
+ *       - BearerAuth: []
  *     tags: [Profile]
  *     parameters:
  *       - in: path
@@ -148,28 +154,15 @@ profileRouter.get("/:profile_id", auth(true), async (req, res) => {
  *       500:
  *          description: Failed to update profile
  */
-profileRouter.put("/:profile_id/viewed", auth(true), async(req, res) => {
-    try{
-        const profile_id = req.params.profile_id
-        const profile = await Profile.findByIdAndUpdate(
-            profile_id,
-            {viewed: true},
-            {new: true}
-        )
-        if(!profile){
-            return res.status(404).send({ error: "Profile not found" })
-        }
-        res.status(200).send({message: "Profile marked as viewed"})
-    }catch(err){
-        res.status(500).send({error: "Failed to update profile."})
-    }
-})
+profileRouter.patch("/:profile_id/viewed", auth(true), profileController.setProfileAsViewed)
 
 /**
  * @swagger
- * /api/v1/profile/{profile_id}/viewed:
- *   put:
+ * /api/v1/profile/{profile_id}:
+ *   patch:
  *     summary: Update user profile
+ *     security:
+ *       - BearerAuth: []
  *     tags: [Profile]
  *     parameters:
  *       - in: path
@@ -188,29 +181,17 @@ profileRouter.put("/:profile_id/viewed", auth(true), async(req, res) => {
  *       404:
  *         description: Profile not found
  *       500:
- *          description: Failed to retrive profiles
+ *          description: Failed to update profile
  */
-profileRouter.put("/:profile_id", auth, async (req, res) => {
-    try{
-        const profile = await Profile.findOneAndUpdate(
-            { _id: req.params.profile_id, userId: req.user._id },
-            req.body,
-            { new: true, runValidators: true }
-        )
-        if(!profile){
-            return res.status(404).send({ error: "Profile not found" })
-        }
-        res.status(200).send({ message: "Profile updated successfully", profile })
-    }catch(err){
-        res.status(400).send({ error: "Failed to update profile." })
-    }
-})
+profileRouter.patch("/:profile_id", auth, profileController.updateProfile)
 
 /**
  * @swagger
  * /api/v1/profile/{profile_id}:
  *   delete:
  *     summary: delete user profile
+ *     security:
+ *       - BearerAuth: []
  *     tags: [Profile]
  *     parameters:
  *       - in: path
@@ -227,21 +208,8 @@ profileRouter.put("/:profile_id", auth, async (req, res) => {
  *       404:
  *         description: Profile not found
  *       500:
- *          description: Failed to retrive profiles
+ *          description: Failed to delete profile
  */
-profileRouter.delete("/:profile_id", auth, async (req, res) => {
-    try{
-        const profile = await Profile.findOneAndDelete({
-            _id: req.params.profile_id,
-            userId: req.user._id
-        })
-        if(!profile){
-            return res.status(404).send({ error: "Profile not found" })
-        }
-        res.status(204).send()
-    }catch(err){
-        res.status(500).send({ error: "Failed to delete profile." })
-    }
-})
+profileRouter.delete("/:profile_id", auth, profileController.deleteProfile)
 
 module.exports = profileRouter
