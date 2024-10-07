@@ -9,7 +9,7 @@ const profileController = require('../controllers/profileController')
  *   post:
  *     summary: Create a profile
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     tags: [Profile]
  *     requestBody:
  *       required: true
@@ -65,7 +65,7 @@ profileRouter.post("/", auth(false), profileController.createProfile)
  *   get:
  *     summary: Get all profiles
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     tags: [Profile]
  *     responses:
  *       200:
@@ -86,7 +86,7 @@ profileRouter.get("/", auth(true), profileController.getAllProfiles)
  *   get:
  *     summary: Get current user profile
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     tags: [Profile]
  *     responses:
  *       200:
@@ -106,7 +106,7 @@ profileRouter.get("/me", auth(false), profileController.getCurrentProfile)
  *   get:
  *     summary: Get profile by id
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     tags: [Profile]
  *     parameters:
  *       - in: path
@@ -133,7 +133,7 @@ profileRouter.get("/:profile_id", auth(true), profileController.getProfileById)
  *   patch:
  *     summary: Mark a profile as viewed
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     tags: [Profile]
  *     parameters:
  *       - in: path
@@ -162,7 +162,7 @@ profileRouter.patch("/:profile_id/viewed", auth(true), profileController.setProf
  *   patch:
  *     summary: Update user profile
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     tags: [Profile]
  *     parameters:
  *       - in: path
@@ -191,7 +191,7 @@ profileRouter.patch("/:profile_id", auth, profileController.updateProfile)
  *   delete:
  *     summary: delete user profile
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     tags: [Profile]
  *     parameters:
  *       - in: path

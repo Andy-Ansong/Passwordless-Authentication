@@ -103,6 +103,6 @@ authRouter.get("/me", auth(false), authController.getCurrentUser)
  *       500:
  *          description: Failed to log out user
  */
-authRouter.post('/logout', auth, authController.logoutUser)
+authRouter.post('/logout', auth(false), authController.logoutUser)
 
 module.exports = authRouter

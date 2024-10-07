@@ -12,11 +12,10 @@ const options = {
         },
         components: {
             securitySchemes: {
-                JWT: {
-                    description: '',
-                    type: 'apiKey',
-                    name: 'Authorization',
-                    in: 'header'
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
                 }
             }
         }
