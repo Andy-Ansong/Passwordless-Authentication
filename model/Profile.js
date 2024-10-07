@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const validator = require("validator")
 
 const profileSchema = new mongoose.Schema({
     userId: {
@@ -9,24 +10,55 @@ const profileSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: true
+        required: true,
+        validate: value => {
+            if(!value){
+                return new Error("Please enter your name")
+            }
+            if(!validator.isAlphanumeric(value)){
+                return new Error("Name can only include alphabets or numbers.")
+            }
+        }
     },
     gender: {
         type: String,
         enum: ['Male', 'Female'],
-        required: true
+        required: true,
+        validate: value => {
+            if(!value){
+                return new Error("Please enter your gender ( Male / Female )")
+            }
+            if(value != "Male" || value != "Female"){
+                return new Error("Gender can be either Male or Female")
+            }
+        }
     },
     bio: {
         type: String,
-        required: true
+        required: true,
+        validate: value => {
+            if(!value){
+                return new Error("Write a short description about yourself in the bio")
+            }
+        }
     },
     birthDate: {
         type: Date,
-        required: true
+        required: true,
+        validate: value => {
+            if(!value){
+                return new Error("Please enter your date of birth")
+            }
+        }
     },
     phoneNumber: {
         type: String,
-        required: true
+        required: true,
+        validate: value => {
+            if(!value){
+                return new Error("Please enter you phone number")
+            }
+        }
     },
     languages: [{
         language: String

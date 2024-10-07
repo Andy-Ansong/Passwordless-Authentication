@@ -3,8 +3,14 @@ const transporter = require("../services/emailService")
 
 const requestCode = async (req, res) => {
     try{
-        console.log("test code")
         const email = req.body.email
+        if(!email){
+            res.status(400).send({
+                status: "error",
+                message: "Please enter your email address",
+                error
+            })
+        }
 
         const user = await User.findOne({email}).exec()
         if (!user) {
@@ -49,18 +55,27 @@ const requestCode = async (req, res) => {
 const verifyCode = async (req, res) => {
     try{
         const { code } = req.body
+        if(!code){
+            res.status(400).send({
+                status: "error",
+                message: "Please enter your one-time code",
+                error
+            })
+        }
         if(code.length != 6){
             return res.status(400).send({
                 "status": "error",
                 "message": "The one-time code you entered is invalid"
             })
         }
+
+        // what if more that one user has same otp
         const users = await User.find({
             "otp.code": code,
             "otp.used": false
         }).exec()
 
-        const user = users.filter(u => u._id !== u.otp.userId)[0]
+        const user = users.filter(u => u._id !== u.otp.userId)[0] // return later
         if(!user){
             return res.status(404).send({
                 "status": "error",
@@ -112,7 +127,7 @@ const getCurrentUser = async (req, res) => {
     try {
         const user = req.user
         return res.status(200).json({ user })
-    } catch (err) {
+    }catch(err){
         return res.status(404).json({ error: "User not found" })
     }
 }
