@@ -15,12 +15,12 @@ app.use("/api/v1/profile", profileRouter)
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {explorer: true}));
 
-app.get('/api', (req, res) => {
-    res.send('Api is currently running!');
-});
+app.get('/', (req, res) => {
+    res.send(`<a href="http://localhost:${port}/api-docs">Swagger docs</a>`)
+})
 
 app.listen(port, () => {
-    console.log("Running on port ", port)
+    console.log(`Visit http://localhost:${port}/`)
 })
 
 module.exports = app
