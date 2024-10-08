@@ -51,13 +51,12 @@ const verifyCode = async (req, res) => {
             })
         }
 
-        // what if more that one user has same otp
         const users = await User.find({
             "otp.code": code,
             "otp.used": false
         }).exec()
 
-        const user = users.filter(u => u._id !== u.otp.userId)[0] // return later
+        const user = users.filter(u => u._id !== u.otp.userId)[0]
         if(!user){
             return res.status(404).send({
                 "status": "error",
@@ -90,7 +89,6 @@ const verifyCode = async (req, res) => {
             expires_in: 3600
         })
     }catch(err){
-        console.log("An error occured")
         res.status(400).send(err)
     }
 }
