@@ -1,5 +1,5 @@
 const User = require("../model/User")
-const transporter = require("../services/emailService")
+const sendOtpEmailService = require("../services/emailService")
 
 const requestCode = async (req, res) => {
     try{
@@ -19,25 +19,7 @@ const requestCode = async (req, res) => {
         }
 
         const otp = await user.generateOtp()
-
-        const mailOptions = {
-            from: process.env.SENDER_EMAIL,
-            to: [user.email],
-            replyTo: process.env.REPLY_TO,
-            subject: "Passwordless Authentication",
-            text: `This is your one-time code:\n${otp}\nCode expires in 5 minutes.`,
-            html: `
-                <div>
-                    <p>This is your one-time code:</p>
-                    <h2 style="color: #f56607">${otp}</h2>
-                    <p>Please copy and paste to login into you account</p>
-                    <p>The code expires in 5 minutes.</p>
-                    <br />
-                    <p>Thank you</p>
-                </div>
-            `
-        }
-        await transporter.sendMail(mailOptions)
+        await sendOtpEmailService(user.email, otp)
 
         res.status(200).send({
             status: "success",

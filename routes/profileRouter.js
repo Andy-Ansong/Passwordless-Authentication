@@ -1,6 +1,7 @@
 const express = require('express')
 const profileRouter = express.Router()
 const auth = require('../middleware/auth')
+const isAdmin = require('../middleware/isAdmin')
 const profileController = require('../controllers/profileController')
 
 /**
@@ -57,13 +58,13 @@ const profileController = require('../controllers/profileController')
  *       400:
  *          description: Failed to create due to invalid credentials
  */
-profileRouter.post("/", auth(false), profileController.createProfile)
+profileRouter.post("/", auth, profileController.createProfile)
 
 /**
  * @swagger
  * /api/v1/profile:
  *   get:
- *     summary: Get all profiles
+ *     summary: Get all profiles (Admin)
  *     security:
  *       - bearerAuth: []
  *     tags: [Profile]
@@ -77,7 +78,7 @@ profileRouter.post("/", auth(false), profileController.createProfile)
  *       500:
  *          description: Failed to retrive profiles
  */
-profileRouter.get("/", auth(true), profileController.getAllProfiles)
+profileRouter.get("/", auth, isAdmin, profileController.getAllProfiles)
 
 
 /**
@@ -93,18 +94,16 @@ profileRouter.get("/", auth(true), profileController.getAllProfiles)
  *         description: A successful response
  *       401:
  *         description: Unauthorized, user must log in first
- *       403:
- *         description: Forbidden, user is not an admin
  *       404:
  *         description: Profile not found
  */
-profileRouter.get("/me", auth(false), profileController.getCurrentProfile)
+profileRouter.get("/me", auth, profileController.getCurrentProfile)
 
 /**
  * @swagger
  * /api/v1/profile/{profile_id}:
  *   get:
- *     summary: Get profile by id
+ *     summary: Get profile by id (Admin)
  *     security:
  *       - bearerAuth: []
  *     tags: [Profile]
@@ -125,13 +124,13 @@ profileRouter.get("/me", auth(false), profileController.getCurrentProfile)
  *       404:
  *         description: Profile not found
  */
-profileRouter.get("/:profile_id", auth(true), profileController.getProfileById)
+profileRouter.get("/:profile_id", auth, isAdmin, profileController.getProfileById)
 
 /**
  * @swagger
  * /api/v1/profile/{profile_id}/viewed:
  *   patch:
- *     summary: Mark a profile as viewed
+ *     summary: Mark a profile as viewed (Admin)
  *     security:
  *       - bearerAuth: []
  *     tags: [Profile]
@@ -154,7 +153,7 @@ profileRouter.get("/:profile_id", auth(true), profileController.getProfileById)
  *       500:
  *          description: Failed to update profile
  */
-profileRouter.patch("/:profile_id/viewed", auth(true), profileController.setProfileAsViewed)
+profileRouter.patch("/:profile_id/viewed", auth, isAdmin, profileController.setProfileAsViewed)
 
 /**
  * @swagger
@@ -176,8 +175,6 @@ profileRouter.patch("/:profile_id/viewed", auth(true), profileController.setProf
  *         description: A successful response
  *       401:
  *         description: Unauthorized, user must log in first
- *       403:
- *         description: Forbidden, user is not an admin
  *       404:
  *         description: Profile not found
  *       500:

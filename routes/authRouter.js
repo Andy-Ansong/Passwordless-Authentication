@@ -77,7 +77,7 @@ authRouter.get("/", authController.getAllUsers)
  *   get:
  *     summary: Get current user details
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     tags: [Auth]
  *     responses:
  *       200:
@@ -85,7 +85,7 @@ authRouter.get("/", authController.getAllUsers)
  *       404:
  *          description: User not found
  */
-authRouter.get("/me", auth(false), authController.getCurrentUser)
+authRouter.get("/me", auth, authController.getCurrentUser)
 
 /**
  * @swagger
@@ -93,7 +93,7 @@ authRouter.get("/me", auth(false), authController.getCurrentUser)
  *   post:
  *     summary: Logout user
  *     security:
- *       - BearerAuth: []
+ *       -bearerAuth: []
  *     tags: [Auth]
  *     responses:
  *       200:
@@ -103,6 +103,6 @@ authRouter.get("/me", auth(false), authController.getCurrentUser)
  *       500:
  *          description: Failed to log out user
  */
-authRouter.post('/logout', auth(false), authController.logoutUser)
+authRouter.post('/logout', auth, authController.logoutUser)
 
 module.exports = authRouter
