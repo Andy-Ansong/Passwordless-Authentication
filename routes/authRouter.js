@@ -71,6 +71,8 @@ authRouter.post("/verify-code", authController.verifyCode)
  */
 authRouter.get("/", authController.getAllUsers)
 
+authRouter.delete("/me", auth, authController.deleteCurrentUser)
+
 /**
  * @swagger
  * /api/v1/auth/me:

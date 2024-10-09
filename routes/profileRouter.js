@@ -207,6 +207,6 @@ profileRouter.patch("/:profile_id", auth, profileController.updateProfile)
  *       500:
  *          description: Failed to delete profile
  */
-profileRouter.delete("/:profile_id", auth, profileController.deleteProfile)
+profileRouter.delete("/me", auth, profileController.deleteProfile)
 
 module.exports = profileRouter

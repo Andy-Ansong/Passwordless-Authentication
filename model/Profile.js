@@ -22,11 +22,11 @@ const profileSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        enum: ['Male', 'Female'],
+        enum: ['Male', 'male', 'female', 'Female'],
         required: true,
         validate: value => {
             if(!value){
-                return new Error("Please enter your gender ( Male / Female )")
+                return {error: "Please enter your gender ( Male / Female )"}
             }
             if(value != "Male" || value != "Female"){
                 return new Error("Gender can be either Male or Female")

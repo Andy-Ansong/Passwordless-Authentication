@@ -1,17 +1,16 @@
 const User = require("../model/User")
+const Profile = require("../model/Profile")
 const sendOtpEmailService = require("../services/emailService")
 
 const requestCode = async (req, res) => {
+    const email = req.body.email
+    if(!email){
+        res.status(400).send({
+            status: "error",
+            message: "Please enter your email address",
+        })
+    }
     try{
-        const email = req.body.email
-        if(!email){
-            res.status(400).send({
-                status: "error",
-                message: "Please enter your email address",
-                error
-            })
-        }
-
         const user = await User.findOne({email}).exec()
         if (!user) {
             let new_user = new User({email})
@@ -89,7 +88,7 @@ const verifyCode = async (req, res) => {
             expires_in: 3600
         })
     }catch(err){
-        res.status(400).send(err)
+        res.status(400).send({message: err})
     }
 }
 
@@ -99,27 +98,43 @@ const getAllUsers = async (req, res) => {
         res.status(200).send({users})
     }
     catch(err){
-        res.status(500).send({ error: "Failed to retrieve users." })
+        res.status(500).send({ message: "Failed to retrieve users." })
     }
 }
 
 const getCurrentUser = async (req, res) => {
     try {
         const user = req.user
-        return res.status(200).json({ user })
+        return res.status(200).send({user})
     }catch(err){
-        return res.status(404).json({ error: "User not found" })
+        return res.status(404).send({message: "User not found"})
+    }
+}
+
+const deleteCurrentUser = async(req, res) => {
+    try{
+        const userId = req.user._id
+        const deletedUser = await User.findOneAndDelete(userId)
+        if(!deletedUser){
+            return res.status(404).send({message: "User not found"})
+        }
+        await Profile.findOneAndDelete({
+            userId: userId
+        })
+        return res.status(200).send({message: "User deleted successfully"})
+    }catch{
     }
 }
 
 const logoutUser = async (req, res) => {
     try{
-        res.status(200).send({
+        console.log("logging out user")
+        return res.status(200).send({
             status: 'success',
             message: 'You have been logged out successfully.',
         })
     }catch(error){
-        res.status(500).send({
+        return res.status(500).send({
             status: "error",
             message: "An error occurred while logging out.",
             error: error.message
@@ -128,5 +143,6 @@ const logoutUser = async (req, res) => {
 }
 
 module.exports = {
-    requestCode, verifyCode, getAllUsers, getCurrentUser, logoutUser
+    requestCode, verifyCode, getAllUsers, getCurrentUser,
+    logoutUser, deleteCurrentUser
 }
