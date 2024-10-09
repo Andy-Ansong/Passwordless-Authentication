@@ -22,7 +22,7 @@ const getAllProfiles = async (req, res) => {
         const profiles = await Profile.find({})
         res.status(200).send({ profiles })
     }catch(err){
-        res.status(500).send({ message: "Failed to retrieve profiles." })
+        return res.status(500).send({ message: "Failed to retrieve profiles." })
     }
 }
 

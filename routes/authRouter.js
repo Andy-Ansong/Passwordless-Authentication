@@ -1,8 +1,38 @@
 require("dotenv").config()
 const express = require("express")
 const authRouter = express.Router()
+const isAdmin = require('../middleware/isAdmin')
 const authController = require("../controllers/authControllers")
 const auth = require("../middleware/auth")
+
+/**
+ * @swagger
+ * /api/v1/auth/createAdmin:
+ *   post:
+ *     summary: Create an admin
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *           example:
+ *             name: "John Doe"
+ *             email: "user@example.com"
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       400:
+ *          description: Invalid email address
+ */
+authRouter.post("/createAdmin", authController.createAdmin)
 
 /**
  * @swagger
@@ -69,8 +99,26 @@ authRouter.post("/verify-code", authController.verifyCode)
  *       500:
  *          description: Failed to retrive users
  */
-authRouter.get("/", authController.getAllUsers)
+authRouter.get("/", isAdmin, authController.getAllUsers)
 
+/**
+ * @swagger
+ * /api/v1/user/me:
+ *   delete:
+ *     summary: delete current user
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Auth]
+ *     responses:
+ *       204:
+ *         description: Successfully deleted profile
+ *       401:
+ *         description: Unauthorized, user must log in first
+ *       404:
+ *         description: Profile not found
+ *       500:
+ *          description: Failed to delete profile
+ */
 authRouter.delete("/me", auth, authController.deleteCurrentUser)
 
 /**

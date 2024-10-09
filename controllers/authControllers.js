@@ -1,33 +1,64 @@
 const User = require("../model/User")
 const Profile = require("../model/Profile")
 const sendOtpEmailService = require("../services/emailService")
+const asyncErrorHandler = require("../utils/asyncErrorHandler")
 
-const requestCode = async (req, res) => {
-    const email = req.body.email
+const createAdmin = async(req, res) => {
+    const { email, name } = req.body
     if(!email){
-        res.status(400).send({
-            message: "Please enter your email address",
+        return res.status(400).send({
+            message: "Please enter your email address"
+        })
+    }
+    if(!name){
+        return res.status(400).send({
+            message: "Please enter your name"
         })
     }
     try{
         const user = await User.findOne({email}).exec()
-        if (!user) {
-            let new_user = new User({email})
-            await new_user.save()
+        if(user){
+            return res.status(409).send({message: "User already exists"})
         }
+        const new_user = new User({name, email, isAdmin: true})
+        await new_user.save()
 
-        const otp = await user.generateOtp()
-        await sendOtpEmailService(user.email, otp)
+        const otp = await new_user.generateOtp()
+        await sendOtpEmailService(new_user.email, otp)
 
-        res.status(200).send({
+        return res.status(200).send({
             message: "A one-time code has been sent to your email address."
         })
-    }catch(error){
-        res.status(400).send({
-            message: "The email address is not a valid email address",
-        })
+    }catch(err){
+        res.send(500).send({message: "There was an error connecting to the server, please try again"})
     }
 }
+
+const requestCode = asyncErrorHandler(async (req, res) => {
+    const email = req.body.email
+    if(!email){
+        return res.status(400).send({
+            message: "Please enter your email address",
+        })
+    }
+    // try{
+    const user = await User.findOne({email}).exec()
+    if(!user){
+        let new_user = new User({email})
+        await new_user.save()
+    }
+
+    const otp = await user.generateOtp()
+    await sendOtpEmailService(user.email, otp)
+
+    res.status(200).send({
+        message: "A one-time code has been sent to your email address."
+    })
+    // }catch(err){
+    //     const error = new CustomError("The email address is not a valid email address", 400)
+    //     next(error)
+    // }
+})
 
 const verifyCode = async (req, res) => {
     const { code } = req.body
@@ -111,6 +142,7 @@ const deleteCurrentUser = async(req, res) => {
         })
         return res.status(200).send({message: "User deleted successfully"})
     }catch{
+        return res.status(500).send({message: "Failed to delete user"})
     }
 }
 
@@ -118,19 +150,16 @@ const logoutUser = async (req, res) => {
     try{
         console.log("logging out user")
         return res.status(200).send({
-            status: 'success',
             message: 'You have been logged out successfully.',
         })
     }catch(error){
         return res.status(500).send({
-            status: "error",
             message: "An error occurred while logging out.",
-            error: error.message
         })
     }
 }
 
 module.exports = {
     requestCode, verifyCode, getAllUsers, getCurrentUser,
-    logoutUser, deleteCurrentUser
+    logoutUser, deleteCurrentUser, createAdmin
 }
