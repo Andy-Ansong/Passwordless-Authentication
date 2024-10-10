@@ -25,7 +25,6 @@ const getAllProfiles = asyncErrorHandler(async (req, res) => {
     let query = search(Profile, req.query)
     query = sort(query, req.query.sort)
     query = pagination(query, req.query.page, req.query.limit, startIndex, Profile.countDocuments())
-
     const profiles = await query
     return res.status(200).send({page, profiles})
 })

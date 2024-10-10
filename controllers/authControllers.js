@@ -3,6 +3,9 @@ const Profile = require("../model/Profile")
 const sendOtpEmailService = require("../services/emailService")
 const asyncErrorHandler = require("../utils/asyncErrorHandler")
 const CustomError = require("../utils/customError")
+const search = require("../utils/searchModel")
+const pagination = require("../utils/pagination")
+const sort = require("../utils/sortModel")
 
 const createAdmin = async(req, res) => {
     const { email, name } = req.body
@@ -105,8 +108,11 @@ const verifyCode = asyncErrorHandler(async (req, res, next) => {
 })
 
 const getAllUsers = asyncErrorHandler(async (req, res) => {
-    const users = await User.find({})
-    res.status(200).send({users})
+    let query = search(User, req.query)
+    query = sort(query, req.query.sort)
+    query = pagination(query, req.query.page, req.query.limit, startIndex, User.countDocuments())
+    const users = await query
+    return res.status(200).send({users})
 })
 
 const getCurrentUser = asyncErrorHandler(async (req, res, next) => {

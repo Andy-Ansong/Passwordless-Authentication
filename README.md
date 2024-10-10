@@ -10,10 +10,10 @@ An api that allow user to login using a one time code sent to their email accoun
 
 ## Tasks
 
-1. Add search/filter and pagination endpoints, ?sort
-    - Search by name
-    - filter by skills, experience, companies worked in
-    - sort by date created, name order, *viewed
+1. ~~Add search/filter and pagination endpoints, ?sort~~
+    ~~- Search by name~~
+    ~~- filter by skills, experience, companies worked in~~
+    ~~- sort by date created, name order, *viewed~~
 2. Continue working on error handlers, permissions
 3. Find out how to use swagger authentication and continue documentation
 4. ~~Host api on any server~~
