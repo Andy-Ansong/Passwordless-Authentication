@@ -2,6 +2,7 @@ const User = require("../model/User")
 const Profile = require("../model/Profile")
 const sendOtpEmailService = require("../services/emailService")
 const asyncErrorHandler = require("../utils/asyncErrorHandler")
+const CustomError = require("../utils/customError")
 
 const createAdmin = async(req, res) => {
     const { email, name } = req.body
@@ -41,7 +42,6 @@ const requestCode = asyncErrorHandler(async (req, res) => {
             message: "Please enter your email address",
         })
     }
-    // try{
     const user = await User.findOne({email}).exec()
     if(!user){
         let new_user = new User({email})
@@ -54,20 +54,15 @@ const requestCode = asyncErrorHandler(async (req, res) => {
     res.status(200).send({
         message: "A one-time code has been sent to your email address."
     })
-    // }catch(err){
-    //     const error = new CustomError("The email address is not a valid email address", 400)
-    //     next(error)
-    // }
 })
 
-const verifyCode = async (req, res) => {
+const verifyCode = asyncErrorHandler(async (req, res, next) => {
     const { code } = req.body
     if(!code){
         return res.status(400).send({
             message: "Please enter your one-time code",
         })
     }
-    try{
         if(code.length != 6){
             return res.status(400).send({
                 message: "The one-time code you entered is not 6 digits"
@@ -81,9 +76,10 @@ const verifyCode = async (req, res) => {
 
         const user = users.filter(u => u._id !== u.otp.userId)[0]
         if(!user){
-            return res.status(404).send({
-                "message": "The one-time code you entered is invalid or expired"
-            })
+            const error = new CustomError(
+                "The one-time code you entered is expired or invalid.", 404
+            )
+            return next(error)
         }
         if(user.otp.code != code){
             return res.status(400).send({
@@ -106,58 +102,46 @@ const verifyCode = async (req, res) => {
             token,
             expires_in: 3600
         })
-    }catch(err){
-        res.status(400).send({message: "Please enter otp"})
-    }
-}
+})
 
-const getAllUsers = async (req, res) => {
-    try{
-        const users = await User.find({})
-        res.status(200).send({users})
-    }
-    catch(err){
-        res.status(500).send({ message: "Failed to retrieve users." })
-    }
-}
+const getAllUsers = asyncErrorHandler(async (req, res) => {
+    const users = await User.find({})
+    res.status(200).send({users})
+})
 
-const getCurrentUser = async (req, res) => {
-    try {
-        const user = req.user
-        return res.status(200).send({user})
-    }catch(err){
-        return res.status(404).send({message: "User not found"})
+const getCurrentUser = asyncErrorHandler(async (req, res, next) => {
+    const user = req.user
+    if(!user){
+        const error = new CustomError(
+            "User not found",
+            404
+        )
+        return next(error)
     }
-}
+    return res.status(200).send({user})
+})
 
-const deleteCurrentUser = async(req, res) => {
-    try{
-        const userId = req.user._id
-        const deletedUser = await User.findOneAndDelete(userId)
-        if(!deletedUser){
-            return res.status(404).send({message: "User not found"})
-        }
-        await Profile.findOneAndDelete({
-            userId: userId
-        })
-        return res.status(200).send({message: "User deleted successfully"})
-    }catch{
-        return res.status(500).send({message: "Failed to delete user"})
+const deleteCurrentUser = asyncErrorHandler(async(req, res, next) => {
+    const userId = req.user._id
+    const deletedUser = await User.findOneAndDelete(userId)
+    if(!deletedUser){
+        const error = new CustomError(
+            "User not found",
+            404
+        )
+        return next(error)
     }
-}
+    await Profile.findOneAndDelete({
+        userId: userId
+    })
+    return res.status(200).send({message: "User deleted successfully"})
+})
 
-const logoutUser = async (req, res) => {
-    try{
-        console.log("logging out user")
-        return res.status(200).send({
-            message: 'You have been logged out successfully.',
-        })
-    }catch(error){
-        return res.status(500).send({
-            message: "An error occurred while logging out.",
-        })
-    }
-}
+const logoutUser = asyncErrorHandler(async (req, res) => {
+    return res.status(200).send({
+        message: 'You have been logged out successfully.',
+    })
+})
 
 module.exports = {
     requestCode, verifyCode, getAllUsers, getCurrentUser,

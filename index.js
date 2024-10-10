@@ -5,8 +5,10 @@ require('./db/db')
 const { specs, swaggerUi } = require('./swagger')
 const CustomError = require('./utils/customError')
 const globalErrorHandler = require('./controllers/errorController')
+const limiter = require('./middleware/rateLimiter')
 
 const port = process.env.PORT
+app.use("/api", limiter)
 app.use(express.json())
 app.use(require('body-parser').json())
 

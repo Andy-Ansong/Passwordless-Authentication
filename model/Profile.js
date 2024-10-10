@@ -11,6 +11,7 @@ const profileSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        trim: true,
         validate: value => {
             if(!value){
                 return new Error("Please enter your name")
