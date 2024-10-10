@@ -18,7 +18,7 @@ app.use("/api/v1/profile", profileRouter)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {explorer: true}));
 
 app.get('/', (req, res) => {
-    res.send(`<a href="http://localhost:${port}/api-docs">Swagger docs</a>`)
+    res.send(`<a href="${req.protocol + '://' + req.get('host')}/api-docs">Swagger docs</a>`)
 })
 
 app.all('*', (req, res, next) => {

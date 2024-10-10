@@ -18,4 +18,6 @@ const isAdmin = () => {
     }
 }
 
+exports.restrict = (role) => {}
+
 module.exports = isAdmin()
