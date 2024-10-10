@@ -10,6 +10,8 @@ const auth = require("../middleware/auth")
  * /api/v1/auth/createAdmin:
  *   post:
  *     summary: Create an admin
+ *     security:
+ *       - Authorization: []
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -143,7 +145,7 @@ authRouter.get("/me", auth, authController.getCurrentUser)
  *   post:
  *     summary: Logout user
  *     security:
- *       -Authorization: []
+ *       - Authorization: []
  *     tags: [Auth]
  *     responses:
  *       200:

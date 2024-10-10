@@ -18,12 +18,7 @@ const options = {
                     value: 'Bearer <JWT token here>'
                 }
             }
-        },
-        security: [
-            {
-                Authorization: []
-            }
-        ]
+        }
     },
     apis: ['./routes/*.js'],
 };
