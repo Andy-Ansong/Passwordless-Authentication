@@ -2,6 +2,7 @@ const {Seeder} = require("mongoose-data-seed")
 
 class CustomSeeder extends Seeder{
     constructor(Model, data){
+        super()
         this.Model = Model
         this.data = this.data
     }

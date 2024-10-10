@@ -3,7 +3,7 @@ const UserSeeder = require("../seeders/seedUsers")
 const ProfileSeeder = require("../seeders/seedProfiles")
 const AdminSeeder = require("../seeders/seedAdmin")
 
-export const seedersList = {
+const seedersList = {
     UserSeeder, AdminSeeder, ProfileSeeder
 }
 
