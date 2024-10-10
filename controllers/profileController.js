@@ -1,4 +1,8 @@
 const Profile = require('../model/Profile')
+const asyncErrorHandler = require('../utils/asyncErrorHandler')
+const pagination = require('../utils/pagination')
+const search = require('../utils/searchModel')
+const sort = require('../utils/sortModel')
 
 const createProfile = async (req, res) => {
     try{
@@ -17,24 +21,24 @@ const createProfile = async (req, res) => {
     }
 }
 
-const getAllProfiles = async (req, res) => {
-    try{
-        const profiles = await Profile.find({})
-        res.status(200).send({ profiles })
-    }catch(err){
-        return res.status(500).send({ message: "Failed to retrieve profiles." })
-    }
-}
+const getAllProfiles = asyncErrorHandler(async (req, res) => {
+    let query = search(Profile, req.query)
+    query = sort(query, req.query.sort)
+    query = pagination(query, req.query.page, req.query.limit, startIndex, Profile.countDocuments())
+
+    const profiles = await query
+    return res.status(200).send({page, profiles})
+})
 
 const getCurrentProfile = async (req, res) => {
     try{
         const profile = await Profile.findOne({userId: req.user._id}).exec()
         if(!profile){
-            return res.status(404).send({ message: "Profile not found" })
+            return res.status(404).send({message: "Profile not found"})
         }
-        res.status(200).send({ profile })
+        res.status(200).send({profile})
     }catch(err){
-        res.status(404).send({ message: "Profile not found" })
+        res.status(404).send({message: "Profile not found"})
     }
 }
 

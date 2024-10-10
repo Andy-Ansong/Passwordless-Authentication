@@ -1,5 +1,5 @@
 module.exports = prodErrors = (res, error) => {
-    if(error.isOperatinal){
+    if(error.isOperational){
         res.status(error.statusCode).send({
             status: error.statusCode,
             message: error.message,
