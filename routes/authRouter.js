@@ -107,7 +107,7 @@ authRouter.get("/", isAdmin, authController.getAllUsers)
  *   delete:
  *     summary: delete current user
  *     security:
- *       - bearerAuth: []
+ *       - Authorization: []
  *     tags: [Auth]
  *     responses:
  *       204:
@@ -127,7 +127,7 @@ authRouter.delete("/me", auth, authController.deleteCurrentUser)
  *   get:
  *     summary: Get current user details
  *     security:
- *       - bearerAuth: []
+ *       - Authorization: []
  *     tags: [Auth]
  *     responses:
  *       200:
@@ -143,7 +143,7 @@ authRouter.get("/me", auth, authController.getCurrentUser)
  *   post:
  *     summary: Logout user
  *     security:
- *       -bearerAuth: []
+ *       -Authorization: []
  *     tags: [Auth]
  *     responses:
  *       200:

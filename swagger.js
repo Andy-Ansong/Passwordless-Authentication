@@ -1,4 +1,3 @@
-// swagger.js
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -12,15 +11,21 @@ const options = {
         },
         components: {
             securitySchemes: {
-                bearerAuth: {
+                Authorization: {
                     type: 'http',
                     scheme: 'bearer',
                     bearerFormat: 'JWT',
+                    value: 'Bearer <JWT token here>'
                 }
             }
-        }
+        },
+        security: [
+            {
+                Authorization: []
+            }
+        ]
     },
-    apis: ['./routes/*.js'], // Path to your API routes
+    apis: ['./routes/*.js'],
 };
 
 const specs = swaggerJsdoc(options);
