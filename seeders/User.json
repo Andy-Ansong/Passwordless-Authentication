@@ -1,5 +1,11 @@
 [
     {
+        "name": "Andy Ansong",
+        "email": "andy.ansong@amalitechtraining.org",
+        "isAdmin": true,
+        "otp": {}
+    },
+    {
         "name": "Alice Johnson",
         "email": "alice.johnson@example.com",
         "isAdmin": false,

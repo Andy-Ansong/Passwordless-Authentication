@@ -4,7 +4,7 @@ class CustomSeeder extends Seeder{
     constructor(Model, data){
         super()
         this.Model = Model
-        this.data = this.data
+        this.data = data
     }
     async shouldRun(){
         return this.Model.countDocuments()
@@ -12,7 +12,9 @@ class CustomSeeder extends Seeder{
             .then(count => count === 0)
     }
     async run(){
-        return this.Model.create(this.data)
+        if(await this.shouldRun()){
+            return this.Model.create(this.data)
+        }
     }
 }
 
