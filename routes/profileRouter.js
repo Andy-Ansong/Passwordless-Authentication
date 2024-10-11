@@ -163,6 +163,46 @@ profileRouter.patch("/:profile_id/viewed", auth, isAdmin, profileController.setP
  *     security:
  *       - Authorization: []
  *     tags: [Profile]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the user
+ *               gender:
+ *                 type: string
+ *                 enum: [Male, Female]
+ *                 description: The gender of the user
+ *               bio:
+ *                 type: string
+ *                 description: A short biography of the user
+ *               birthDate:
+ *                 type: string
+ *                 format: date
+ *                 description: The user's birth date
+ *               phoneNumber:
+ *                 type: string
+ *                 description: The user's phone number
+ *               languages:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     language:
+ *                       type: string
+ *             example:
+ *               {
+ *                 "name": "John Doe",
+ *                 "gender": "Male",
+ *                 "bio": "Software Developer",
+ *                 "birthDate": "2004-04-14",
+ *                 "phoneNumber": "+233509895421",
+ *                 "languages": [{"language": "English"}]
+ *               }
  *     parameters:
  *       - in: path
  *         name: profile_id
