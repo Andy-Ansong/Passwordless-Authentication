@@ -1,7 +1,6 @@
-const mongoose = require("mongoose")
-const validator = require("validator")
+const {Schema, default: mongoose} = require("mongoose")
 
-const profileSchema = new mongoose.Schema({
+const employeeSchema = new Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -34,6 +33,9 @@ const profileSchema = new mongoose.Schema({
             }
         }
     },
+    image: {
+        type: String
+    },
     bio: {
         type: String,
         required: true,
@@ -52,6 +54,19 @@ const profileSchema = new mongoose.Schema({
             }
         }
     },
+    email: {
+        required: true,
+        unique: true,
+        type: String,
+        validate: value => {
+            if(!value){
+                return new Error("Please enter your email to continue")
+            }
+            if(!validator.isEmail(value)){
+                return new Error("Invalid email")
+            }
+        }
+    },
     phoneNumber: {
         type: String,
         required: true,
@@ -61,70 +76,35 @@ const profileSchema = new mongoose.Schema({
             }
         }
     },
-    languages: [{
-        language: String
-    }],
-    education: [{
-        institution: {
-            type: String,
-            required: true
-        },
-        degree: {
-            type: String
-        },
-        course: {
-            type: String,
-            required: true
-        },
-        startYear: {
-            type: Date
-        },
-        endYear: {
-            type: Date
-        }
-    }],
-    workExperience: [{
-        company: {
-            type: String,
-            required: true
-        },
-        position: {
-            type: String,
-            required: true
-        },
-        startDate: {
-            type: Date,
-            required: true
-        },
-        endDate: {
-            type: Date
-        },
-        description: {
-            type: String
-        }
-    }],
     skills: [{
         skill: String
     }],
-    certifications: [{
-        certificate: {
+    Department: {
+        Role: {
+            position: String,
+            location: String,
+            startDate: {
+                type: Date,
+                default: new Date()
+            }
+        },
+        Team: {
             name: String,
-            dateReceived: Date
+            role: String,
         }
-    }],
-    currentRole: {
-        role: String,
-        startDate: Date,
-        endDate: Date,
-        location: String
     },
-    interests: [{
-        interest: String
-    }],
-    viewed: {
-        type: Boolean,
-        default: false
+    WorkSchedule: {
+        Days : {
+            day: {
+                type: String,
+                enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+            },
+            type: {
+                type: String,
+                enum: ['On-site', 'Remote']
+            }
+        }
     }
 })
 
-module.exports = mongoose.model("Profile", profileSchema)
+module.exports = mongoose.model("Employee", employeeSchema)

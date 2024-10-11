@@ -1,6 +1,6 @@
-# Passwordless-Authentication
+# Internal Employee Portal
 
-An api that allow user to login using a one time code sent to their email accounts.
+An api to ensure private and secure communication and interactions within a company.
 
 ## Setup
 
