@@ -1,19 +1,17 @@
 const mongoose = require("mongoose")
 const validator = require("validator")
 const jwt = require("jsonwebtoken")
+const CustomError = require("../utils/customError")
 
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
     },
     email: {
-        required: true,
+        required: [true, "Please enter your email to continue."],
         unique: true,
         type: String,
         validate: value => {
-            if(!value){
-                return new Error("Please enter your email to continue")
-            }
             if(!validator.isEmail(value)){
                 return new Error("Invalid email")
             }
@@ -35,7 +33,8 @@ const userSchema = new mongoose.Schema({
             default: false
         },
         userId: {
-            type: String
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
         }
     }
 })
@@ -47,7 +46,6 @@ userSchema.methods.generateAuthToken = async function(){
     }
     const token = jwt.sign({_id: user._id}, process.env.JWT_KEY, options)
     user.otp.used = true;
-    user.otp.userId = user._id;
     await user.save()
     return token
 }
@@ -64,7 +62,7 @@ userSchema.methods.generateOtp = async function(){
         await user.save()
         return otpCode
     }catch(error){
-        return error
+        return new CustomError("Unable to generate OTP", 500)
     }
 }
 

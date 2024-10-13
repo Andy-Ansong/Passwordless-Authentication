@@ -34,7 +34,7 @@ const auth = require("../middleware/auth")
  *       400:
  *          description: Invalid email address
  */
-authRouter.post("/createAdmin", authController.createAdmin)
+authRouter.post("/createAdmin", auth, isAdmin, authController.createAdmin)
 
 /**
  * @swagger
@@ -85,7 +85,7 @@ authRouter.post("/request-code", authController.requestCode)
  *       400:
  *          description: The one-time code is invalid or expired
  *       404:
- *          description: No user with that one-time code
+ *          description: No with that one-time code
  */
 authRouter.post("/verify-code", authController.verifyCode)
 
@@ -101,11 +101,11 @@ authRouter.post("/verify-code", authController.verifyCode)
  *       500:
  *          description: Failed to retrive users
  */
-authRouter.get("/", isAdmin, authController.getAllUsers)
+authRouter.get("/", auth, isAdmin, authController.getAllUsers)
 
 /**
  * @swagger
- * /api/v1/user/me:
+ * /api/v1/auth/me:
  *   delete:
  *     summary: delete current user
  *     security:

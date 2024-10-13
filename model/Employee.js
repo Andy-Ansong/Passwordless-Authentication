@@ -9,26 +9,19 @@ const employeeSchema = new Schema({
     },
     name: {
         type: String,
-        required: true,
+        required: [true, "Please enter your name"],
         trim: true,
-        validate: value => {
-            if(!value){
-                return new Error("Please enter your name")
-            }
-            if(!validator.isAlphanumeric(value)){
-                return new Error("Name can only include alphabets or numbers.")
-            }
+        validate: {
+            validator: (value) => /^[a-zA-Z\s]+$/.test(value),
+            message: "Name should only contain alphabets and spaces."
         }
     },
     gender: {
         type: String,
-        enum: ['Male', 'male', 'female', 'Female'],
-        required: true,
+        enum: ['Male', 'female'],
+        required: [true, "Please enter your gender ( Male / Female )"],
         validate: value => {
-            if(!value){
-                return {error: "Please enter your gender ( Male / Female )"}
-            }
-            if(value != "Male" || value != "Female"){
+            if(["Male", "Female"].incluesd(value)){
                 return new Error("Gender can be either Male or Female")
             }
         }
@@ -38,30 +31,17 @@ const employeeSchema = new Schema({
     },
     bio: {
         type: String,
-        required: true,
-        validate: value => {
-            if(!value){
-                return new Error("Write a short description about yourself in the bio")
-            }
-        }
+        required: [true, "Write a short description about yourself in the bio"],
     },
     birthDate: {
         type: Date,
-        required: true,
-        validate: value => {
-            if(!value){
-                return new Error("Please enter your date of birth")
-            }
-        }
+        required: [true, "Please enter your date of birth"],
     },
     email: {
-        required: true,
+        required: [true, "Please enter your email to continue"],
         unique: true,
         type: String,
         validate: value => {
-            if(!value){
-                return new Error("Please enter your email to continue")
-            }
             if(!validator.isEmail(value)){
                 return new Error("Invalid email")
             }
@@ -69,11 +49,10 @@ const employeeSchema = new Schema({
     },
     phoneNumber: {
         type: String,
-        required: true,
-        validate: value => {
-            if(!value){
-                return new Error("Please enter you phone number")
-            }
+        required: [true, "Please enter you phone number"],
+        validate: {
+            validator: (value) => /^[0-9]{10}$/.test(value),
+            message: "Phone number must be 10 digits."
         }
     },
     skills: [{
@@ -81,29 +60,43 @@ const employeeSchema = new Schema({
     }],
     Department: {
         Role: {
-            position: String,
-            location: String,
+            position: {
+                type: String,
+                required: true
+            },
+            location: {
+                type: String,
+                required: true
+            },
             startDate: {
                 type: Date,
-                default: new Date()
+                default: Date.now
             }
         },
         Team: {
-            name: String,
-            role: String,
+            name: {
+                type: String,
+                required: true
+            },
+            role: {
+                type: String,
+                required: true
+            }
         }
     },
     WorkSchedule: {
-        Days : {
+        Days: [{
             day: {
                 type: String,
-                enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+                enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                required: true
             },
             type: {
                 type: String,
-                enum: ['On-site', 'Remote']
+                enum: ['On-site', 'Remote'],
+                required: true
             }
-        }
+        }]
     }
 })
 

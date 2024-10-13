@@ -7,7 +7,7 @@ const auth = () => {
             const token = req.header("Authorization").replace("Bearer ", "")
             const data = jwt.verify(token, process.env.JWT_KEY)
             const user = await User.findById(data._id).exec()
-            if(!user){
+            if(!user){ 
                 return res.status(401).send({
                     "status": "error",
                     "message": "Unauthorized. Please log in to continue."

@@ -17,6 +17,8 @@ const authRouter = require("./routes/authRouter")
 app.use("/api/v1/auth", authRouter)
 const profileRouter = require("./routes/profileRouter")
 app.use("/api/v1/profile", profileRouter)
+const employeeRouter = require("./routes/employeeRouter")
+app.use("/api/v1/profile", employeeRouter)
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {explorer: true}));
 
