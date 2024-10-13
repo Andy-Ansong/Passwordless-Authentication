@@ -1,9 +1,9 @@
 const sort = (modelQuery, sortQuery) => {
     let sortBy = 'name'
     if(sortQuery){
-        sortBy = modelQuery.split(',').join(' ')
+        sortBy = sortQuery.split(',').join(' ')
     }
-    return model.sort(sortBy)
+    return modelQuery.sort(sortBy)
 }
 
 module.exports = sort

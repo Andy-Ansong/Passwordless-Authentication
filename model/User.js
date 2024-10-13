@@ -20,22 +20,6 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    },
-    otp: {
-        expires_at: {
-            type: Date,
-        },
-        code: {
-            type: String,
-        },
-        used: {
-            type: Boolean,
-            default: false
-        },
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }
     }
 })
 
@@ -54,12 +38,6 @@ userSchema.methods.generateOtp = async function(){
     try{
         const user = this
         const otpCode = Math.floor(100000 + Math.random() * 900000)
-        user.otp = {
-            code: otpCode,
-            expires_at: new Date(new Date().getTime() + ( 5 * 60 * 1000 )),
-            used: false
-        }
-        await user.save()
         return otpCode
     }catch(error){
         return new CustomError("Unable to generate OTP", 500)

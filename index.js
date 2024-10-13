@@ -7,11 +7,18 @@ const { specs, swaggerUi } = require('./swagger')
 const CustomError = require('./utils/customError')
 const globalErrorHandler = require('./controllers/errorController')
 const limiter = require('./middleware/rateLimiter')
+const session = require('express-session')
 
 const port = process.env.PORT
 app.use("/api", limiter)
 app.use(express.json())
 app.use(require('body-parser').json())
+app.use(session({
+    secret: 'amalitech',
+    resave: false,
+    saveUnitialized: true,
+    cookie: {secure: false}
+}))
 
 const authRouter = require("./routes/authRouter")
 app.use("/api/v1/auth", authRouter)

@@ -52,6 +52,9 @@ const requestCode = asyncErrorHandler(async (req, res) => {
     }
 
     const otp = await user.generateOtp()
+    req.session.otp = otp
+    req.session.otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000 )
+    req.session.userId = user._id
     await sendOtpEmailService(user.email, otp)
 
     res.status(200).send({
@@ -61,50 +64,45 @@ const requestCode = asyncErrorHandler(async (req, res) => {
 
 const verifyCode = asyncErrorHandler(async (req, res, next) => {
     const { code } = req.body
+
     if(!code){
         return res.status(400).send({
             message: "Please enter your one-time code",
         })
     }
-        if(code.length != 6){
-            return res.status(400).send({
-                message: "The one-time code you entered is not 6 digits"
-            })
-        }
-
-        const users = await User.find({
-            "otp.code": code,
-            "otp.used": false
-        }).exec()
-
-        const user = users.filter(u => u._id !== u.otp.userId)[0]
-        if(!user){
-            const error = new CustomError(
-                "The one-time code you entered is expired or invalid.", 404
-            )
-            return next(error)
-        }
-        if(user.otp.code != code){
-            return res.status(400).send({
-                message: "The one-time code you entered is invalid."
-            })
-        }
-        if(user.otp.expires_at < new Date()){
-            return res.status(400).send({
-                message: "The one-time code has expired. Please request a new code.",
-            })
-        }
-        if(user.otp.used){
-            return res.status(400).send({
-                message: "The one-time code has expired. Please request a new code.",
-            })
-        }
-        const token = await user.generateAuthToken()
-        res.status(200).send({
-            message: "Authentication successful. You are now logged in.",
-            token,
-            expires_in: 3600
+    if(code.length !== 6){
+        return res.status(400).send({
+            message: "The one-time code you entered is not 6 digits"
         })
+    }
+
+    if (req.session !== code) {
+        return res.status(400).send({
+            message: "The one-time code you entered is invalid."
+        })
+    }
+    if(req.session.otpExpiresAt < new Date()){
+        return res.status(400).send({
+            message: "The one-time code has expired. Please request a new code.",
+        })
+    }
+    const user = await User.findById(req.session.userId).exec()
+    if (!user) {
+        return res.status(404).send({
+            message: "User not found. Please request a new OTP."
+        })
+    }
+    const token = await user.generateAuthToken()
+
+    delete req.session.otp
+    delete req.session.otpExpiresAt
+    delete req.session.userId
+
+    res.status(200).send({
+        message: "Authentication successful. You are now logged in.",
+        token,
+        expires_in: 3600
+    })
 })
 
 const getAllUsers = asyncErrorHandler(async (req, res) => {
