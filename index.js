@@ -23,13 +23,13 @@ app.use(session({
 const authRouter = require("./routes/authRouter")
 app.use("/api/v1/auth", authRouter)
 const profileRouter = require("./routes/profileRouter")
-app.use("/api/v1/profile", profileRouter)
+app.use("/api/v1/profiles", profileRouter)
 const adminRouter = require("./routes/adminRouter")
 app.use("/api/v1/admin", adminRouter)
 const employeeRouter = require("./routes/employeeRouter")
-app.use("/api/v1/employee", employeeRouter)
+app.use("/api/v1/employees", employeeRouter)
 const userRouter = require("./routes/userRouter")
-app.use("/api/v1/user", userRouter)
+app.use("/api/v1/users", userRouter)
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {explorer: true}));
 

@@ -94,7 +94,7 @@ const updateCurrentEmployee = asyncErrorHandler(async(req, res) => {
 // for hr to update employee profile
 const updateEmployeeById = asyncErrorHandler(async(req, res) => {
     const employee = await Employee.findByIdAndUpdate(
-        req.params.id,
+        req.params.employee_id,
         {...req.body},
         {new: true, runValidators: true}
     )
@@ -111,7 +111,7 @@ const updateEmployeeById = asyncErrorHandler(async(req, res) => {
 })
 
 const deleteEmployeeById = asyncErrorHandler(async(req, res) => {
-    const employeeId = req.user._id
+    const employeeId = req.params.employee_id
     const employee = await Employee.findByIdAndDelete(employeeId).exec()
     if(!employee){
         return res.status(404).send({
@@ -125,12 +125,9 @@ const deleteEmployeeById = asyncErrorHandler(async(req, res) => {
     })
 })
 
-
 // others
 const bookALeave = asyncErrorHandler(async(req, res) => {})
-
 const approveLeave = asyncErrorHandler(async(req, res) => {})
-
 const rejectLeave = asyncErrorHandler(async(req, res) => {})
 
 module.exports = {
