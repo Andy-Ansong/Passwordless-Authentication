@@ -37,16 +37,6 @@ const employeeSchema = new Schema({
         type: Date,
         required: [true, "Please enter your date of birth"],
     },
-    email: {
-        required: [true, "Please enter your email to continue"],
-        unique: true,
-        type: String,
-        validate: value => {
-            if(!validator.isEmail(value)){
-                return new Error("Invalid email")
-            }
-        }
-    },
     phoneNumber: {
         type: String,
         required: [true, "Please enter you phone number"],

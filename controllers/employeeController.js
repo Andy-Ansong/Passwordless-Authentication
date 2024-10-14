@@ -27,7 +27,7 @@ const createEmployee = asyncErrorHandler(async(req, res) => {
 })
 
 const getEmployeeById = asyncErrorHandler(async(req, res) => {
-    const employeeId = req.params.id
+    const employeeId = req.params.employee_id
     const employee = await Employee.findById(employeeId).exec()
     if(!employee){
         return res.status(404).send({
@@ -136,5 +136,5 @@ const rejectLeave = asyncErrorHandler(async(req, res) => {})
 module.exports = {
     createEmployee, getEmployeeById, getAllEmployees, getCurrentEmployee,
     updateCurrentEmployee, updateEmployeeById, deleteEmployeeById,
-    bookALeave, approveLeave, rejectLeave, sendMessages
+    bookALeave, approveLeave, rejectLeave
 }

@@ -8,7 +8,6 @@ const role = (roles = []) => {
                 })
             }
             next()
-
         }catch(error){
             return res.status(403).send({
                 status: "error",
@@ -18,4 +17,4 @@ const role = (roles = []) => {
     }
 }
 
-module.exports = role()
+module.exports = role

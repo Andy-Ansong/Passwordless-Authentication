@@ -1,45 +1,7 @@
 const User = require("../model/User")
-const Profile = require("../model/Profile")
 const sendOtpEmailService = require("../services/emailService")
 const asyncErrorHandler = require("../utils/asyncErrorHandler")
-const CustomError = require("../utils/customError")
-const search = require("../utils/searchModel")
-const pagination = require("../utils/pagination")
-const sort = require("../utils/sortModel")
 
-const createAdmin = async(req, res) => {
-    const { email, name } = req.body
-    if(!email){
-        return res.status(400).send({
-            status: "error",
-            message: "Please enter your email address"
-        })
-    }
-    if(!name){
-        return res.status(400).send({
-            status: "error",
-            message: "Please enter your name"
-        })
-    }
-    try{
-        const user = await User.findOne({email}).exec()
-        if(user){
-            return res.status(409).send({status: "error", message: "User already exists"})
-        }
-        const new_user = new User({name, email, role: "admin"})
-        await new_user.save()
-
-        const otp = await new_user.generateOtp()
-        await sendOtpEmailService(new_user.email, otp)
-
-        return res.status(200).send({
-            status: "success",
-            message: "A one-time code has been sent to your email address."
-        })
-    }catch(err){
-        res.send(500).send({message: "There was an error connecting to the server, please try again"})
-    }
-}
 
 const requestCode = asyncErrorHandler(async (req, res) => {
     const email = req.body.email
@@ -116,45 +78,6 @@ const verifyCode = asyncErrorHandler(async (req, res, next) => {
     })
 })
 
-const getAllUsers = asyncErrorHandler(async (req, res) => {
-    let query = search(User, req.query)
-    query = sort(query, req.query.sort)
-    query = pagination(query, req.query.page, req.query.limit, startIndex, User.countDocuments())
-    const users = await query
-    return res.status(200).send({status: "success", users})
-})
-
-const getCurrentUser = asyncErrorHandler(async (req, res, next) => {
-    const user = req.user
-    if(!user){
-        const error = new CustomError(
-            "User not found",
-            404
-        )
-        return next(error)
-    }
-    return res.status(200).send({
-        status: "success",
-        user
-    })
-})
-
-const deleteCurrentUser = asyncErrorHandler(async(req, res, next) => {
-    const userId = req.user._id
-    const deletedUser = await User.findOneAndDelete(userId)
-    if(!deletedUser){
-        const error = new CustomError(
-            "User not found",
-            404
-        )
-        return next(error)
-    }
-    await Profile.findOneAndDelete({
-        userId: userId
-    })
-    return res.status(200).send({message: "User deleted successfully"})
-})
-
 const logoutUser = asyncErrorHandler(async (req, res) => {
     return res.status(200).send({
         status: "success",
@@ -163,6 +86,5 @@ const logoutUser = asyncErrorHandler(async (req, res) => {
 })
 
 module.exports = {
-    requestCode, verifyCode, getAllUsers, getCurrentUser,
-    logoutUser, deleteCurrentUser, createAdmin
+    requestCode, verifyCode, logoutUser
 }
