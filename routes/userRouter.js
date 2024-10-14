@@ -1,13 +1,12 @@
-const express = require("express")
-const auth = require("../middleware/auth")
-const userRouter = express.Router()
-const role = require('../middleware/role')
-const userController = require("../controllers/userController")
+import { Router } from "express"
+import auth from "../middleware/auth.js"
+const userRouter = Router()
+import role from '../middleware/role.js'
+import userController from "../controllers/userController.js"
 
 userRouter.get("/", auth, role(["admin"]), userController.getAllUsers)
 
 userRouter.delete("/me", auth, userController.deleteCurrentUser)
-
 userRouter.get("/me", auth, userController.getCurrentUser)
 
-module.exports = userRouter
+export default userRouter

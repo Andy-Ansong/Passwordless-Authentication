@@ -1,6 +1,6 @@
-const nodemailer = require("nodemailer")
+import { createTransport } from "nodemailer"
 
-const transporter = nodemailer.createTransport({
+const transporter = createTransport({
     service: "gmail",
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
@@ -11,4 +11,4 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-module.exports = transporter
+export default transporter

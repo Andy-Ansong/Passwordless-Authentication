@@ -1,8 +1,8 @@
-const express = require('express')
-const profileRouter = express.Router()
-const auth = require('../middleware/auth')
-const role = require('../middleware/role')
-const profileController = require('../controllers/profileController')
+import { Router } from 'express'
+const profileRouter = Router()
+import auth from '../middleware/auth.js'
+import role from '../middleware/role.js'
+import profileController from '../controllers/profileController.js'
 
 profileRouter.post("/", auth, profileController.createProfile)
 profileRouter.get("/", auth, role(["admin"]), profileController.getAllProfiles)
@@ -14,4 +14,4 @@ profileRouter.get("/:profile_id", auth, role(["admin"]), profileController.getPr
 profileRouter.patch("/:profile_id/viewed", auth, role(["admin"]), profileController.setProfileAsViewed)
 profileRouter.patch("/:profile_id", auth, profileController.updateProfile)
 
-module.exports = profileRouter
+export default profileRouter

@@ -1,4 +1,4 @@
-const {Schema, default: mongoose} = require("mongoose")
+import { Schema, default as mongoose } from "mongoose"
 
 const employeeSchema = new Schema({
     userId: {
@@ -74,20 +74,18 @@ const employeeSchema = new Schema({
             }
         }
     },
-    WorkSchedule: {
-        Days: [{
-            day: {
-                type: String,
-                enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                required: true
-            },
-            type: {
-                type: String,
-                enum: ['On-site', 'Remote'],
-                required: true
-            }
-        }]
-    }
+    WorkSchedule: [{
+        day: {
+            type: String,
+            enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            required: true
+        },
+        type: {
+            type: String,
+            enum: ['On-site', 'Remote'],
+            required: true
+        }
+    }]
 })
 
-module.exports = mongoose.model("Employee", employeeSchema)
+export default mongoose.model("Employee", employeeSchema)

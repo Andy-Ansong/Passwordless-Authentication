@@ -1,6 +1,6 @@
-const User = require("../model/User")
-const sendOtpEmailService = require("../services/emailService")
-const asyncErrorHandler = require("../utils/asyncErrorHandler")
+import User from "../model/User.js"
+import sendOtpEmailService from "../services/emailService.js"
+import asyncErrorHandler from "../utils/asyncErrorHandler.js"
 
 
 const requestCode = asyncErrorHandler(async (req, res) => {
@@ -85,6 +85,6 @@ const logoutUser = asyncErrorHandler(async (req, res) => {
     })
 })
 
-module.exports = {
+export default {
     requestCode, verifyCode, logoutUser
 }

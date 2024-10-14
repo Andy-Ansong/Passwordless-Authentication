@@ -1,9 +1,10 @@
-const mongoose = require("mongoose")
-const validator = require("validator")
+import { Schema, model } from "mongoose"
+import validator from "validator"
+const { sign } = validator
 
-const profileSchema = new mongoose.Schema({
+const profileSchema = new Schema({
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
         unique: true
@@ -16,7 +17,7 @@ const profileSchema = new mongoose.Schema({
             if(!value){
                 return new Error("Please enter your name")
             }
-            if(!validator.isAlphanumeric(value)){
+            if(!isAlphanumeric(value)){
                 return new Error("Name can only include alphabets or numbers.")
             }
         }
@@ -127,4 +128,4 @@ const profileSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("Profile", profileSchema)
+export default model("Profile", profileSchema)

@@ -1,4 +1,4 @@
-[
+export const profiles = [
     {
         "userId": "60d1e4f7a0f0a4b2f8c5a1c0",
         "name": "Alice Johnson",

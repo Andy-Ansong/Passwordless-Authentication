@@ -1,5 +1,5 @@
-const UserSeeder = require("../seeders/seedUsers")
-const ProfileSeeder = require("../seeders/seedProfiles")
+import UserSeeder from "../seeders/seedUsers.js"
+import ProfileSeeder from "../seeders/seedProfiles.js"
 
 const seedersList = [
     UserSeeder, ProfileSeeder
@@ -9,4 +9,4 @@ const seedDatabaseService = seedersList.forEach(seeder => {
     seeder.run()
 })
 
-module.exports = seedDatabaseService
+export default seedDatabaseService

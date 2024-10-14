@@ -1,13 +1,15 @@
-const jwt = require("jsonwebtoken")
-const User = require("../model/User")
+import jwt from "jsonwebtoken"
+import User from "../model/User.js"
+
+const { verify } = jwt
 
 const auth = () => {
     return async (req, res, next) => {
         try{
             const token = req.header("Authorization").replace("Bearer ", "")
-            const data = jwt.verify(token, process.env.JWT_KEY)
+            const data = verify(token, process.env.JWT_KEY)
             const user = await User.findById(data._id).exec()
-            if(!user){ 
+            if(!user){
                 return res.status(401).send({
                     "status": "error",
                     "message": "Unauthorized. Please log in to continue."
@@ -26,4 +28,4 @@ const auth = () => {
     }
 }
 
-module.exports = auth()
+export default auth()

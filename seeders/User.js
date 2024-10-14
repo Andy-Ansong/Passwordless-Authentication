@@ -1,4 +1,4 @@
-[
+export const users = [
     {
         "name": "Andy Ansong",
         "email": "andy.ansong@amalitechtraining.org",

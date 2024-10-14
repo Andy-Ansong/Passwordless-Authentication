@@ -1,6 +1,6 @@
-const CustomError = require("../utils/customError")
-const devErrors = require("../utils/devErrors")
-const prodErrors = require("../utils/prodErrors")
+import CustomError from "../utils/customError.js"
+import {devErrors} from "../utils/devErrors.js"
+import {prodErrors} from "../utils/prodErrors.js"
 
 const castErrorHandler = (err) => {
     const msg = `Invalid value for ${err.path}: ${err.value}`
@@ -13,7 +13,7 @@ const duplicateKeyErrorHandler = (err) => {
     return new CustomError(msg, 409)
 }
 
-module.exports = (error, req, res, next) => {
+export default (error, req, res, next) => {
     error.statusCode = error.statusCode || 500
     error.status = error.status || "There was an error connecting to server"
 

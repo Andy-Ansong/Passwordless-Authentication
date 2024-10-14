@@ -1,9 +1,9 @@
-const Employee = require("../model/Employee")
-const User = require("../model/User")
-const asyncErrorHandler = require("../utils/asyncErrorHandler")
-const pagination = require('../utils/pagination')
-const search = require('../utils/searchModel')
-const sort = require('../utils/sortModel')
+import Employee from "../model/Employee.js"
+import User from "../model/User.js"
+import asyncErrorHandler from "../utils/asyncErrorHandler.js"
+import pagination from '../utils/pagination.js'
+import search from '../utils/searchModel.js'
+import sort from '../utils/sortModel.js'
 
 const createEmployee = asyncErrorHandler(async(req, res) => {
     const employee = await Employee.findOne({email: req.body.email}).exec()
@@ -130,7 +130,7 @@ const bookALeave = asyncErrorHandler(async(req, res) => {})
 const approveLeave = asyncErrorHandler(async(req, res) => {})
 const rejectLeave = asyncErrorHandler(async(req, res) => {})
 
-module.exports = {
+export default {
     createEmployee, getEmployeeById, getAllEmployees, getCurrentEmployee,
     updateCurrentEmployee, updateEmployeeById, deleteEmployeeById,
     bookALeave, approveLeave, rejectLeave

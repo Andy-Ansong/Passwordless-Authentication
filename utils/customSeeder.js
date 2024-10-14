@@ -1,4 +1,4 @@
-const {Seeder} = require("mongoose-data-seed")
+import { Seeder } from "mongoose-data-seed"
 
 class CustomSeeder extends Seeder{
     constructor(Model, data){
@@ -18,4 +18,4 @@ class CustomSeeder extends Seeder{
     }
 }
 
-module.exports = CustomSeeder
+export default CustomSeeder

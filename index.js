@@ -1,18 +1,20 @@
-require("dotenv").config()
-const express = require("express")
+import {config} from "dotenv"
+config()
+import express, { json } from "express"
 const app = express()
-require('./db/db')
-require("./services/seedDatabaseService")
-const { specs, swaggerUi } = require('./swagger')
-const CustomError = require('./utils/customError')
-const globalErrorHandler = require('./controllers/errorController')
-const limiter = require('./middleware/rateLimiter')
-const session = require('express-session')
+import db from './db/db.js'
+import seedDatabaseService from "./services/seedDatabaseService.js"
+import swagger from './swagger.js'
+import CustomError from './utils/customError.js'
+import globalErrorHandler from './controllers/errorController.js'
+import limiter from './middleware/rateLimiter.js'
+import session from 'express-session'
+import bodyParser from "body-parser"
 
 const port = process.env.PORT
 app.use("/api", limiter)
-app.use(express.json())
-app.use(require('body-parser').json())
+app.use(json())
+app.use(bodyParser.json())
 app.use(session({
     secret: 'amalitech',
     resave: false,
@@ -20,18 +22,18 @@ app.use(session({
     cookie: {secure: false}
 }))
 
-const authRouter = require("./routes/authRouter")
+import authRouter from "./routes/authRouter.js"
 app.use("/api/v1/auth", authRouter)
-const profileRouter = require("./routes/profileRouter")
+import profileRouter from "./routes/profileRouter.js"
 app.use("/api/v1/profiles", profileRouter)
-const adminRouter = require("./routes/adminRouter")
+import adminRouter from "./routes/adminRouter.js"
 app.use("/api/v1/admin", adminRouter)
-const employeeRouter = require("./routes/employeeRouter")
+import employeeRouter from "./routes/employeeRouter.js"
 app.use("/api/v1/employees", employeeRouter)
-const userRouter = require("./routes/userRouter")
+import userRouter from "./routes/userRouter.js"
 app.use("/api/v1/users", userRouter)
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {explorer: true}));
+app.use('/api-docs', swagger.swaggerUi.serve, swagger.swaggerUi.setup(swagger.specs, {explorer: true}));
 
 app.get('/', (req, res) => {
     res.send(`<a href="${req.protocol + '://' + req.get('host')}/api-docs">Swagger docs</a>`)
@@ -48,4 +50,4 @@ app.listen(port, () => {
     console.log(`Visit http://localhost:${port}/`)
 })
 
-module.exports = app
+export default app

@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const {sendMessages} = require('../controllers/messageController');
-const auth = require('../middleware/auth');
+import { Router } from 'express';
+const router = Router();
+import { sendMessages } from '../controllers/messageController';
+import auth from '../middleware/auth';
 
 router.post('/send', auth, sendMessages);
 
-module.exports = router;
+export default router;

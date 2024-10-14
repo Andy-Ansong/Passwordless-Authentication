@@ -1,7 +1,7 @@
-const User = require("../model/User")
-const data = require("./User.json")
-const CustomSeeder = require("../utils/customSeeder")
+import User from "../model/User.js"
+import {users} from "./User.js"
+import CustomSeeder from "../utils/customSeeder.js"
 
-const UserSeeder = new CustomSeeder(User, data)
+const UserSeeder = new CustomSeeder(User, users)
 
-module.exports = UserSeeder
+export default UserSeeder

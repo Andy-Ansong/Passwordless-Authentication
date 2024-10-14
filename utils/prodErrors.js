@@ -1,4 +1,4 @@
-module.exports = prodErrors = (res, error) => {
+export const prodErrors = (res, error) => {
     if(error.isOperational){
         res.status(error.statusCode).send({
             status: error.statusCode,

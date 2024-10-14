@@ -1,5 +1,5 @@
-const User = require("../model/User")
-const asyncErrorHandler = require("../utils/asyncErrorHandler")
+import User from "../model/User.js"
+import asyncErrorHandler from "../utils/asyncErrorHandler.js"
 
 const createAdmin = asyncErrorHandler(async(req, res) => {
     const { email, name } = req.body
@@ -31,6 +31,6 @@ const createAdmin = asyncErrorHandler(async(req, res) => {
     })
 })
 
-module.exports = {
+export default {
     createAdmin
 }

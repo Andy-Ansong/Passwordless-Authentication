@@ -1,8 +1,8 @@
-const Profile = require('../model/Profile')
-const asyncErrorHandler = require('../utils/asyncErrorHandler')
-const pagination = require('../utils/pagination')
-const search = require('../utils/searchModel')
-const sort = require('../utils/sortModel')
+import Profile from '../model/Profile.js'
+import asyncErrorHandler from '../utils/asyncErrorHandler.js'
+import pagination from '../utils/pagination.js'
+import search from '../utils/searchModel.js'
+import sort from '../utils/sortModel.js'
 
 const createProfile = asyncErrorHandler(async (req, res) => {
     let profile = await Profile.findOne({userId: req.user._id}).exec()
@@ -113,7 +113,7 @@ const deleteProfile = asyncErrorHandler(async (req, res) => {
     })
 })
 
-module.exports = {
+export default {
     createProfile, getAllProfiles, getCurrentProfile, getProfileById,
     setProfileAsViewed, updateProfile, deleteProfile
 }

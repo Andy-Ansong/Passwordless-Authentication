@@ -1,7 +1,7 @@
-const Profile = require("../model/Profile")
-const CustomSeeder = require("../utils/customSeeder")
-const data = require("./Profile.json")
+import Profile from "../model/Profile.js"
+import CustomSeeder from "../utils/customSeeder.js"
+import {profiles} from "./Profile.js"
 
-const ProfileSeeder = new CustomSeeder(Profile, data)
+const ProfileSeeder = new CustomSeeder(Profile, profiles)
 
-module.exports = ProfileSeeder
+export default ProfileSeeder

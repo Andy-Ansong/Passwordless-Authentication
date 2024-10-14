@@ -14,4 +14,4 @@ const pagination = (modelQuery, page = 1, limit = 20, total) => {
     return modelQuery.skip(startIndex).limit(limit)
 }
 
-module.exports = pagination
+export default pagination

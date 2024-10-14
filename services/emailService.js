@@ -1,4 +1,4 @@
-const transporter = require("../utils/emailUtil")
+import transporter from "../utils/emailUtil.js"
 
 const sendOtpEmailService = async (receiverEmail, otp) => {
     const mailOptions = {
@@ -21,4 +21,4 @@ const sendOtpEmailService = async (receiverEmail, otp) => {
     await transporter.sendMail(mailOptions)
 }
 
-module.exports = sendOtpEmailService
+export default sendOtpEmailService

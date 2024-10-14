@@ -1,10 +1,9 @@
-const User = require("../model/User")
-const CustomError = require("../utils/customError")
-const Profile = require("../model/Profile")
-const search = require("../utils/searchModel")
-const pagination = require("../utils/pagination")
-const sort = require("../utils/sortModel")
-const asyncErrorHandler = require("../utils/asyncErrorHandler")
+import User from "../model/User.js"
+import CustomError from "../utils/customError.js"
+import search from "../utils/searchModel.js"
+import pagination from "../utils/pagination.js"
+import sort from "../utils/sortModel.js"
+import asyncErrorHandler from "../utils/asyncErrorHandler.js"
 
 const getAllUsers = asyncErrorHandler(async (req, res) => {
     let query = search(User, req.query)
@@ -39,12 +38,9 @@ const deleteCurrentUser = asyncErrorHandler(async(req, res, next) => {
         )
         return next(error)
     }
-    await Profile.findOneAndDelete({
-        userId: userId
-    })
     return res.status(200).send({message: "User deleted successfully"})
 })
 
-module.exports = {
+export default {
     getAllUsers, getCurrentUser, deleteCurrentUser
 }

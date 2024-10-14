@@ -1,8 +1,8 @@
-const express = require('express')
-const employeeRouter = express.Router()
-const employeeController = require('../controllers/employeeController')
-const auth = require('../middleware/auth')
-const role = require('../middleware/role')
+import { Router } from 'express'
+const employeeRouter = Router()
+import employeeController from '../controllers/employeeController.js'
+import auth from '../middleware/auth.js'
+import role from '../middleware/role.js'
 
 employeeRouter.post('/', auth, role(['employee', 'hr', 'admin']), employeeController.createEmployee)
 employeeRouter.get('/', auth, role(['employee', 'hr', 'admin']), employeeController.getAllEmployees)
@@ -14,8 +14,8 @@ employeeRouter.get('/:employee_id', auth, role(['employee', 'hr', 'admin']), emp
 employeeRouter.patch('/:employee_id', auth, role(['hr', 'admin']), employeeController.updateEmployeeById)
 employeeRouter.delete('/:employee_id', auth, role(['employee', 'hr', 'admin']), employeeController.deleteEmployeeById)
 
-employeeRouter.post('/leave/book', auth, role(['employee', 'hr', 'admin']), employeeController.bookALeave)
-employeeRouter.post('/leave/approve/:id', auth, role(['employee', 'hr', 'admin']), employeeController.approveLeave)
-employeeRouter.post('/leave/reject/:id', auth, role(['employee', 'hr', 'admin']), employeeController.rejectLeave)
+// employeeRouter.post('/leave/book', auth, role(['employee', 'hr', 'admin']), employeeController.bookALeave)
+// employeeRouter.post('/leave/approve/:id', auth, role(['employee', 'hr', 'admin']), employeeController.approveLeave)
+// employeeRouter.post('/leave/reject/:id', auth, role(['employee', 'hr', 'admin']), employeeController.rejectLeave)
 
-module.exports = employeeRouter
+export default employeeRouter

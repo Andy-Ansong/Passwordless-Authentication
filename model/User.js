@@ -1,9 +1,12 @@
-const mongoose = require("mongoose")
-const validator = require("validator")
-const jwt = require("jsonwebtoken")
-const CustomError = require("../utils/customError")
+import { Schema, model } from "mongoose"
+import validator from "validator"
+import jwt from "jsonwebtoken"
+import CustomError from "../utils/customError.js"
 
-const userSchema = new mongoose.Schema({
+const {isEmail} = validator
+const {sign} = jwt
+
+const userSchema = new Schema({
     name: {
         type: String,
     },
@@ -12,7 +15,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
         type: String,
         validate: value => {
-            if(!validator.isEmail(value)){
+            if(!isEmail(value)){
                 return new Error("Invalid email")
             }
         }
@@ -28,7 +31,7 @@ userSchema.methods.generateAuthToken = async function(){
     const options = {
         expiresIn: '1h'
     }
-    const token = jwt.sign({_id: user._id}, process.env.JWT_KEY, options)
+    const token = sign({_id: user._id}, process.env.JWT_KEY, options)
     await user.save()
     return token
 }
@@ -43,5 +46,5 @@ userSchema.methods.generateOtp = async function(){
     }
 }
 
-const User = mongoose.model("User", userSchema)
-module.exports = User
+const User = model("User", userSchema)
+export default User

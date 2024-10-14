@@ -1,9 +1,9 @@
-const express = require("express")
-const role = require('../middleware/role')
-const auth = require("../middleware/auth")
-const adminRouter = express.Router()
-const adminController = require("../controllers/adminController")
+import { Router } from "express"
+import role from '../middleware/role.js'
+import auth from "../middleware/auth.js"
+const adminRouter = Router()
+import adminController from "../controllers/adminController.js"
 
 adminRouter.post("/createAdmin", auth, role(["admin"]), adminController.createAdmin)
 
-module.exports = adminRouter
+export default adminRouter

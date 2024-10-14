@@ -6,4 +6,4 @@ const sort = (modelQuery, sortQuery) => {
     return modelQuery.sort(sortBy)
 }
 
-module.exports = sort
+export default sort
