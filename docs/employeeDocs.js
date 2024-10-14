@@ -61,7 +61,47 @@
 
 /**
  * @swagger
- * /api/v1/Employees/{employee_id}:
+ * /api/v1/employees/me:
+ *   get:
+ *     summary: Get current user employee
+ *     security:
+ *       - Authorization: []
+ *     tags: [Employee]
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       401:
+ *         description: Unauthorized, user must log in first
+*       403:
+*         description: Forbidden, user is not an employee, hr or admin
+ *       404:
+ *         description: Employee not found
+ */
+
+/**
+ * @swagger
+ * /api/v1/employees/me:
+ *   patch:
+ *     summary: Update current employee profile
+ *     security:
+ *       - Authorization: []
+ *     tags: [Employee]
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       401:
+ *         description: Unauthorized, user must log in first
+ *       403:
+ *         description: Forbidden, user is not an employee, hr or admin
+ *       404:
+ *         description: Employee not found
+ *       500:
+ *          description: Failed to update employee
+ */
+
+/**
+ * @swagger
+ * /api/v1/employees/{employee_id}:
  *   get:
  *     summary: Get employee by id
  *     security:
@@ -87,47 +127,7 @@
 
 /**
  * @swagger
- * /api/v1/employees/me:
- *   get:
- *     summary: Get current user employee
- *     security:
- *       - Authorization: []
- *     tags: [Employee]
- *     responses:
- *       200:
- *         description: A successful response
- *       401:
- *         description: Unauthorized, user must log in first
-*       403:
-*         description: Forbidden, user is not an employee, hr or admin
- *       404:
- *         description: Employee not found
- */
-
-/**
- * @swagger
- * /api/v1/employees/{employee_id}/me:
- *   patch:
- *     summary: Update current employee profile
- *     security:
- *       - Authorization: []
- *     tags: [Employee]
- *     responses:
- *       200:
- *         description: A successful response
- *       401:
- *         description: Unauthorized, user must log in first
- *       403:
- *         description: Forbidden, user is not an employee, hr or admin
- *       404:
- *         description: Employee not found
- *       500:
- *          description: Failed to update employee
- */
-
-/**
- * @swagger
- * /api/v1/employees/{employee_id}/me:
+ * /api/v1/employees/{employee_id}:
  *   patch:
  *     summary: Update employee profile by id
  *     security:
@@ -155,7 +155,7 @@
 
 /**
  * @swagger
- * /api/v1/employees/{employee_id}/me:
+ * /api/v1/employees/{employee_id}:
  *   delete:
  *     summary: Delete employee profile by id
  *     security:

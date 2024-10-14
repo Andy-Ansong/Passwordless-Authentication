@@ -23,6 +23,7 @@
     "mongoose": "^8.7.0",
     "mongoose-data-seed": "^2.1.6",
     "nodemailer": "^6.9.15",
+    "nodemon": "^3.1.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "validator": "^13.12.0"
