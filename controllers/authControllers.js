@@ -31,6 +31,7 @@ const createAdmin = async(req, res) => {
         await sendOtpEmailService(new_user.email, otp)
 
         return res.status(200).send({
+            status: "success",
             message: "A one-time code has been sent to your email address."
         })
     }catch(err){
@@ -58,6 +59,7 @@ const requestCode = asyncErrorHandler(async (req, res) => {
     await sendOtpEmailService(user.email, otp)
 
     res.status(200).send({
+        status: "success",
         message: "A one-time code has been sent to your email address."
     })
 })
@@ -99,6 +101,7 @@ const verifyCode = asyncErrorHandler(async (req, res, next) => {
     delete req.session.userId
 
     res.status(200).send({
+        status: "success",
         message: "Authentication successful. You are now logged in.",
         token,
         expires_in: 3600
@@ -122,7 +125,10 @@ const getCurrentUser = asyncErrorHandler(async (req, res, next) => {
         )
         return next(error)
     }
-    return res.status(200).send({user})
+    return res.status(200).send({
+        status: "success",
+        user
+    })
 })
 
 const deleteCurrentUser = asyncErrorHandler(async(req, res, next) => {
@@ -143,6 +149,7 @@ const deleteCurrentUser = asyncErrorHandler(async(req, res, next) => {
 
 const logoutUser = asyncErrorHandler(async (req, res) => {
     return res.status(200).send({
+        status: "success",
         message: 'You have been logged out successfully.',
     })
 })

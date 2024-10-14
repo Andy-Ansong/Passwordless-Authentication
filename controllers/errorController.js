@@ -9,7 +9,7 @@ const castErrorHandler = (err) => {
 
 const duplicateKeyErrorHandler = (err) => {
     const name = err.keyValue.name
-    const msg = `There is already a movie with name ${name}. Please use another name!`
+    const msg = `There is already a user with email ${name}`
     return new CustomError(msg, 409)
 }
 
