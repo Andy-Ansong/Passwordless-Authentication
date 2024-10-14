@@ -5,9 +5,9 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'CV API',
+            title: 'Internal Employee Portal API',
             version: '1.0.0',
-            description: 'A simple Express API with Swagger documentation',
+            description: 'An express API for an internal employee portal',
         },
         components: {
             securitySchemes: {
