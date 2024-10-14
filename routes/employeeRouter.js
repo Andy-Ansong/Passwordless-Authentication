@@ -12,7 +12,7 @@ employeeRouter.patch('/me', auth, role(['employee', 'hr', 'admin']), employeeCon
 
 employeeRouter.get('/:employee_id', auth, role(['employee', 'hr', 'admin']), employeeController.getEmployeeById)
 employeeRouter.patch('/:employee_id', auth, role(['hr', 'admin']), employeeController.updateEmployeeById)
-employeeRouter.delete('/:employee_id', auth, role(['employee', 'hr', 'admin']), employeeController.deleteEmployeeById)
+employeeRouter.delete('/:employee_id', auth, role(['hr', 'admin']), employeeController.deleteEmployeeById)
 
 // employeeRouter.post('/leave/book', auth, role(['employee', 'hr', 'admin']), employeeController.bookALeave)
 // employeeRouter.post('/leave/approve/:id', auth, role(['employee', 'hr', 'admin']), employeeController.approveLeave)

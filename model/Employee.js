@@ -21,7 +21,7 @@ const employeeSchema = new Schema({
         enum: ['Male', 'female'],
         required: [true, "Please enter your gender ( Male / Female )"],
         validate: value => {
-            if(["Male", "Female"].incluesd(value)){
+            if(["Male", "Female"].includes(value)){
                 return new Error("Gender can be either Male or Female")
             }
         }
@@ -40,10 +40,10 @@ const employeeSchema = new Schema({
     phoneNumber: {
         type: String,
         required: [true, "Please enter you phone number"],
-        validate: {
-            validator: (value) => /^[0-9]{10}$/.test(value),
-            message: "Phone number must be 10 digits."
-        }
+        // validate: {
+        //     validator: (value) => /^[0-9]$/.test(value),
+        //     message: "Phone number must be 10 digits."
+        // }
     },
     skills: [{
         skill: String
@@ -51,12 +51,10 @@ const employeeSchema = new Schema({
     Department: {
         Role: {
             position: {
-                type: String,
-                required: true
+                type: String
             },
             location: {
-                type: String,
-                required: true
+                type: String
             },
             startDate: {
                 type: Date,
@@ -65,12 +63,10 @@ const employeeSchema = new Schema({
         },
         Team: {
             name: {
-                type: String,
-                required: true
+                type: String
             },
             role: {
-                type: String,
-                required: true
+                type: String
             }
         }
     },

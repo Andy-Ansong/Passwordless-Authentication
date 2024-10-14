@@ -4,6 +4,7 @@ const userRouter = Router()
 import role from '../middleware/role.js'
 import userController from "../controllers/userController.js"
 
+userRouter.post("/createAdmin", auth, role(["admin", "hr"]), userController.createUser)
 userRouter.get("/", auth, role(["admin"]), userController.getAllUsers)
 
 userRouter.delete("/me", auth, userController.deleteCurrentUser)

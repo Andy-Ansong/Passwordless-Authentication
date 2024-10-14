@@ -1,4 +1,4 @@
-export const users = [
+export const employees = [
     {
         "name": "Andy Ansong",
         "email": "andy.ansong@amalitechtraining.org",
@@ -44,13 +44,13 @@ export const users = [
     {
         "name": "George Washington",
         "email": "george.washington@example.com",
-        "role": "user",
+        "role": "employee",
         "otp": {}
     },
     {
         "name": "Hannah Montana",
         "email": "hannah.montana@example.com",
-        "role": "user",
+        "role": "employee",
         "otp": {}
     },
     {

@@ -17,7 +17,7 @@ app.use(json())
 app.use(bodyParser.json())
 app.use(session({
     secret: 'amalitech',
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     cookie: {secure: false}
 }))
@@ -26,8 +26,8 @@ import authRouter from "./routes/authRouter.js"
 app.use("/api/v1/auth", authRouter)
 import profileRouter from "./routes/profileRouter.js"
 app.use("/api/v1/profiles", profileRouter)
-import adminRouter from "./routes/adminRouter.js"
-app.use("/api/v1/admin", adminRouter)
+// import adminRouter from "./routes/adminRouter.js"
+// app.use("/api/v1/admin", adminRouter)
 import employeeRouter from "./routes/employeeRouter.js"
 app.use("/api/v1/employees", employeeRouter)
 import userRouter from "./routes/userRouter.js"

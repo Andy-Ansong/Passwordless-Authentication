@@ -3,9 +3,6 @@ import validator from "validator"
 import jwt from "jsonwebtoken"
 import CustomError from "../utils/customError.js"
 
-const {isEmail} = validator
-const {sign} = jwt
-
 const userSchema = new Schema({
     name: {
         type: String,
@@ -15,14 +12,14 @@ const userSchema = new Schema({
         unique: true,
         type: String,
         validate: value => {
-            if(!isEmail(value)){
+            if(!validator.isEmail(value)){
                 return new Error("Invalid email")
             }
         }
     },
     role: {
         type: String,
-        enum: ['employee', 'admin', 'hr'],
+        enum: ['employee', 'hr', 'admin'],
     }
 })
 
@@ -31,7 +28,8 @@ userSchema.methods.generateAuthToken = async function(){
     const options = {
         expiresIn: '1h'
     }
-    const token = sign({_id: user._id}, process.env.JWT_KEY, options)
+    console.log("JWT KEY: ", process.env.JWT_KEY)
+    const token = jwt.sign({_id: user._id}, process.env.JWT_KEY, options)
     await user.save()
     return token
 }

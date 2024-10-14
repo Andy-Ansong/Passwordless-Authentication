@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose"
 import validator from "validator"
-const { sign } = validator
 
 const profileSchema = new Schema({
     userId: {
@@ -17,7 +16,7 @@ const profileSchema = new Schema({
             if(!value){
                 return new Error("Please enter your name")
             }
-            if(!isAlphanumeric(value)){
+            if(!validator.isAlphanumeric(value)){
                 return new Error("Name can only include alphabets or numbers.")
             }
         }
