@@ -78,7 +78,7 @@ profileRouter.post("/", auth, profileController.createProfile)
  *       500:
  *          description: Failed to retrive profiles
  */
-profileRouter.get("/", auth, role("admin"), profileController.getAllProfiles)
+profileRouter.get("/", auth, role(["admin"]), profileController.getAllProfiles)
 
 
 /**
@@ -124,7 +124,7 @@ profileRouter.get("/me", auth, profileController.getCurrentProfile)
  *       404:
  *         description: Profile not found
  */
-profileRouter.get("/:profile_id", auth, role("admin"), profileController.getProfileById)
+profileRouter.get("/:profile_id", auth, role(["admin"]), profileController.getProfileById)
 
 /**
  * @swagger
@@ -153,7 +153,7 @@ profileRouter.get("/:profile_id", auth, role("admin"), profileController.getProf
  *       500:
  *          description: Failed to update profile
  */
-profileRouter.patch("/:profile_id/viewed", auth, role("admin"), profileController.setProfileAsViewed)
+profileRouter.patch("/:profile_id/viewed", auth, role(["admin"]), profileController.setProfileAsViewed)
 
 /**
  * @swagger

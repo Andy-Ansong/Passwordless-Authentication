@@ -34,7 +34,7 @@ const auth = require("../middleware/auth")
  *       400:
  *          description: Invalid email address
  */
-authRouter.post("/createAdmin", auth, role('admin'), authController.createAdmin)
+authRouter.post("/createAdmin", auth, role(["admin"]), authController.createAdmin)
 
 /**
  * @swagger
@@ -101,7 +101,7 @@ authRouter.post("/verify-code", authController.verifyCode)
  *       500:
  *          description: Failed to retrive users
  */
-authRouter.get("/", auth, role("admin"), authController.getAllUsers)
+authRouter.get("/", auth, role(["admin"]), authController.getAllUsers)
 
 /**
  * @swagger

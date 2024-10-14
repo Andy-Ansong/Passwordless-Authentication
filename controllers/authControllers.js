@@ -11,18 +11,20 @@ const createAdmin = async(req, res) => {
     const { email, name } = req.body
     if(!email){
         return res.status(400).send({
+            status: "error",
             message: "Please enter your email address"
         })
     }
     if(!name){
         return res.status(400).send({
+            status: "error",
             message: "Please enter your name"
         })
     }
     try{
         const user = await User.findOne({email}).exec()
         if(user){
-            return res.status(409).send({message: "User already exists"})
+            return res.status(409).send({status: "error", message: "User already exists"})
         }
         const new_user = new User({name, email, role: "admin"})
         await new_user.save()
@@ -43,6 +45,7 @@ const requestCode = asyncErrorHandler(async (req, res) => {
     const email = req.body.email
     if(!email){
         return res.status(400).send({
+            status: "error",
             message: "Please enter your email address",
         })
     }
@@ -69,28 +72,33 @@ const verifyCode = asyncErrorHandler(async (req, res, next) => {
 
     if(!code){
         return res.status(400).send({
+            status: "error",
             message: "Please enter your one-time code",
         })
     }
     if(code.length !== 6){
         return res.status(400).send({
+            status: "error",
             message: "The one-time code you entered is not 6 digits"
         })
     }
 
     if (req.session !== code) {
         return res.status(400).send({
+            status: "error",
             message: "The one-time code you entered is invalid."
         })
     }
     if(req.session.otpExpiresAt < new Date()){
         return res.status(400).send({
+            status: "error",
             message: "The one-time code has expired. Please request a new code.",
         })
     }
     const user = await User.findById(req.session.userId).exec()
     if (!user) {
         return res.status(404).send({
+            status: "error",
             message: "User not found. Please request a new OTP."
         })
     }
@@ -113,7 +121,7 @@ const getAllUsers = asyncErrorHandler(async (req, res) => {
     query = sort(query, req.query.sort)
     query = pagination(query, req.query.page, req.query.limit, startIndex, User.countDocuments())
     const users = await query
-    return res.status(200).send({users})
+    return res.status(200).send({status: "success", users})
 })
 
 const getCurrentUser = asyncErrorHandler(async (req, res, next) => {
