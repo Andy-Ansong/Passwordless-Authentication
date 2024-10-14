@@ -1,7 +1,7 @@
 const express = require('express')
 const profileRouter = express.Router()
 const auth = require('../middleware/auth')
-const isAdmin = require('../middleware/isAdmin')
+const role = require('../middleware/role')
 const profileController = require('../controllers/profileController')
 
 /**
@@ -78,7 +78,7 @@ profileRouter.post("/", auth, profileController.createProfile)
  *       500:
  *          description: Failed to retrive profiles
  */
-profileRouter.get("/", auth, isAdmin, profileController.getAllProfiles)
+profileRouter.get("/", auth, role("admin"), profileController.getAllProfiles)
 
 
 /**
@@ -124,7 +124,7 @@ profileRouter.get("/me", auth, profileController.getCurrentProfile)
  *       404:
  *         description: Profile not found
  */
-profileRouter.get("/:profile_id", auth, isAdmin, profileController.getProfileById)
+profileRouter.get("/:profile_id", auth, role("admin"), profileController.getProfileById)
 
 /**
  * @swagger
@@ -153,7 +153,7 @@ profileRouter.get("/:profile_id", auth, isAdmin, profileController.getProfileByI
  *       500:
  *          description: Failed to update profile
  */
-profileRouter.patch("/:profile_id/viewed", auth, isAdmin, profileController.setProfileAsViewed)
+profileRouter.patch("/:profile_id/viewed", auth, role("admin"), profileController.setProfileAsViewed)
 
 /**
  * @swagger

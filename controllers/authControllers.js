@@ -24,7 +24,7 @@ const createAdmin = async(req, res) => {
         if(user){
             return res.status(409).send({message: "User already exists"})
         }
-        const new_user = new User({name, email, isAdmin: true})
+        const new_user = new User({name, email, role: "admin"})
         await new_user.save()
 
         const otp = await new_user.generateOtp()

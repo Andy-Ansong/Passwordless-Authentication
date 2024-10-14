@@ -1,7 +1,7 @@
-const isAdmin = () => {
+const role = (roles = []) => {
     return async (req, res, next) => {
         try{
-            if(!req.user.isAdmin){
+            if(!roles.includes(req.user.role)){
                 return res.status(403).send({
                     status: "error",
                     message: "Forbidden. You do not have access to this resource."
@@ -18,6 +18,4 @@ const isAdmin = () => {
     }
 }
 
-exports.restrict = (role) => {}
-
-module.exports = isAdmin()
+module.exports = role()

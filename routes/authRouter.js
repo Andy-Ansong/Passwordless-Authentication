@@ -1,7 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const authRouter = express.Router()
-const isAdmin = require('../middleware/isAdmin')
+const role = require('../middleware/role')
 const authController = require("../controllers/authControllers")
 const auth = require("../middleware/auth")
 
@@ -34,7 +34,7 @@ const auth = require("../middleware/auth")
  *       400:
  *          description: Invalid email address
  */
-authRouter.post("/createAdmin", auth, isAdmin, authController.createAdmin)
+authRouter.post("/createAdmin", auth, role('admin'), authController.createAdmin)
 
 /**
  * @swagger
@@ -101,7 +101,7 @@ authRouter.post("/verify-code", authController.verifyCode)
  *       500:
  *          description: Failed to retrive users
  */
-authRouter.get("/", auth, isAdmin, authController.getAllUsers)
+authRouter.get("/", auth, role("admin"), authController.getAllUsers)
 
 /**
  * @swagger

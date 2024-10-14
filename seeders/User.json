@@ -2,67 +2,67 @@
     {
         "name": "Andy Ansong",
         "email": "andy.ansong@amalitechtraining.org",
-        "isAdmin": true,
+        "role": "admin",
         "otp": {}
     },
     {
         "name": "Alice Johnson",
         "email": "alice.johnson@example.com",
-        "isAdmin": false,
+        "role": "employee",
         "otp": {}
     },
     {
         "name": "Bob Smith",
         "email": "bob.smith@example.com",
-        "isAdmin": false,
+        "role": "employee",
         "otp": {}
     },
     {
         "name": "Charlie Brown",
         "email": "charlie.brown@example.com",
-        "isAdmin": true,
+        "role": "admin",
         "otp": {}
     },
     {
         "name": "Diana Prince",
         "email": "diana.prince@example.com",
-        "isAdmin": false,
+        "role": "employee",
         "otp": {}
     },
     {
         "name": "Edward Elric",
         "email": "edward.elric@example.com",
-        "isAdmin": false,
+        "role": "employee",
         "otp": {}
     },
     {
         "name": "Fiona Apple",
         "email": "fiona.apple@example.com",
-        "isAdmin": true,
+        "role": "hr",
         "otp": {}
     },
     {
         "name": "George Washington",
         "email": "george.washington@example.com",
-        "isAdmin": false,
+        "role": "user",
         "otp": {}
     },
     {
         "name": "Hannah Montana",
         "email": "hannah.montana@example.com",
-        "isAdmin": false,
+        "role": "user",
         "otp": {}
     },
     {
         "name": "Isaac Newton",
         "email": "isaac.newton@example.com",
-        "isAdmin": true,
+        "role": "hr",
         "otp": {}
     },
     {
         "name": "Jessica Jones",
         "email": "jessica.jones@example.com",
-        "isAdmin": false,
+        "role": "employee",
         "otp": {}
     }
 ]

@@ -17,9 +17,9 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    isAdmin: {
-        type: Boolean,
-        default: false
+    role: {
+        type: String,
+        enum: ['employee', 'admin', 'hr'],
     }
 })
 
@@ -29,7 +29,6 @@ userSchema.methods.generateAuthToken = async function(){
         expiresIn: '1h'
     }
     const token = jwt.sign({_id: user._id}, process.env.JWT_KEY, options)
-    user.otp.used = true;
     await user.save()
     return token
 }
