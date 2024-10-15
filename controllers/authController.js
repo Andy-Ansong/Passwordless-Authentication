@@ -13,7 +13,7 @@ const requestCode = errorHandler(async (req, res) => {
     const user = await User.findOne({email}).exec()
     if(!user){
         // return res.status(404).send({status: "error", message: `Account not found`})
-        let new_user = new User({email, role: "user"})
+        let new_user = new User({email, role: "employee"})
         await new_user.save()
     }
 
