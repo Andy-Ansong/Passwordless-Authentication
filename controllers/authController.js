@@ -50,7 +50,6 @@ const verifyCode = errorHandler(async (req, res, next) => {
             message: "The one-time code you entered is invalid."
         })
     }
-    console.log("session otp: ", req.session.otp)
     if(req.session.otpExpiresAt < new Date()){
         return res.status(400).send({
             status: "error",

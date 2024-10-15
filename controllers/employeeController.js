@@ -48,7 +48,10 @@ const getEmployeeById = errorHandler(async(req, res) => {
 })
 
 const getAllEmployees = errorHandler(async(req, res) => {
-    let query = search(Employee, req.query)
+    const searchQuery = req.query.name
+    let query = Employee.find({})
+    if(searchQuery)
+        query = search(Employee, {name:searchQuery})
     query = sort(query, req.query.sort)
     const total = await Employee.countDocuments()
     const page = req.query.page
@@ -148,8 +151,6 @@ const deleteEmployeeById = errorHandler(async(req, res) => {
     const roles = ['employee', 'hr', 'admin']
     const currentRole = roles.findIndex(req.user.role)
     const deletingRole = roles.findIndex(deletingUser.role)
-    console.log("current role: ", currentRole)
-    console.log("deleting role: ", deletingRole)
 
     if(currentRole < deletingRole || currentRole == 0){
         return res.status(403).send({

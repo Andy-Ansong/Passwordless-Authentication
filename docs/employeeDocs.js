@@ -18,6 +18,8 @@
  *                gender:
  *                  type: string
  *                  enum: [Male, Female]
+ *                email:
+ *                  type: string
  *                image:
  *                  type: string
  *                birthData:
@@ -31,6 +33,7 @@
  *              {
  *                "name": "John Doe",
  *                "gender": "Male",
+ *                "email": "johnDoe@gmail.como",
  *                "image": "https://i.pinimg.com/236x/a5/67/94/a567940c61eb580455d8f886f55d21b1.jpg",
  *                "birthDate": "2004-04-14",
  *                "phoneNumber": "+233509895421",
@@ -112,6 +115,29 @@
  *     security:
  *       - Authorization: []
  *     tags: [Employee]
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                image:
+ *                  type: string
+ *                birthData:
+ *                  type: string
+ *                  format: date
+ *                phoneNumber:
+ *                  type: string
+ *                bio:
+ *                  type: string
+ *            example:
+ *              {
+ *                "image": "https://i.pinimg.com/236x/a5/67/94/a567940c61eb580455d8f886f55d21b1.jpg",
+ *                "birthDate": "2004-04-14",
+ *                "phoneNumber": "+233509895421",
+ *                "bio": "Software Developer"
+ *              }
  *     responses:
  *       200:
  *         description: A successful response
@@ -159,6 +185,25 @@
  *     security:
  *       - Authorization: []
  *     tags: [Employee]
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                name:
+ *                  type: string
+ *                email:
+ *                  type: string
+ *                image:
+ *                  type: string
+ *            example:
+ *              {
+ *                "name": "John Doe",
+ *                "email": "johnDoe@gmail.como",
+ *                "image": "https://i.pinimg.com/236x/a5/67/94/a567940c61eb580455d8f886f55d21b1.jpg"
+ *              }
  *     parameters:
  *       - in: path
  *         name: employee_id
