@@ -109,7 +109,7 @@ const updateEmployeeById = errorHandler(async(req, res) => {
     const employee = await Employee.findByIdAndUpdate(
         req.params.employee_id,
         {
-            name: req.body.employeeName,
+            name: req.body.name,
             Department: {
                 Role: {
                     position: req.body.position,
@@ -149,8 +149,8 @@ const deleteEmployeeById = errorHandler(async(req, res) => {
 
     const deletingUser = await User.findById(employee.userId).exec()
     const roles = ['employee', 'hr', 'admin']
-    const currentRole = roles.findIndex(req.user.role)
-    const deletingRole = roles.findIndex(deletingUser.role)
+    const currentRole = roles.findIndex(role => role == req.user.role)
+    const deletingRole = roles.findIndex(role => role == deletingUser.role)
 
     if(currentRole < deletingRole || currentRole == 0){
         return res.status(403).send({

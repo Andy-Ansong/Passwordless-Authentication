@@ -33,7 +33,7 @@
  *              {
  *                "name": "John Doe",
  *                "gender": "Male",
- *                "email": "johnDoe@gmail.como",
+ *                "email": "johnDoe@gmail.com",
  *                "image": "https://i.pinimg.com/236x/a5/67/94/a567940c61eb580455d8f886f55d21b1.jpg",
  *                "birthDate": "2004-04-14",
  *                "phoneNumber": "+233509895421",
@@ -201,7 +201,7 @@
  *            example:
  *              {
  *                "name": "John Doe",
- *                "email": "johnDoe@gmail.como",
+ *                "email": "johnDoe@gmail.com",
  *                "image": "https://i.pinimg.com/236x/a5/67/94/a567940c61eb580455d8f886f55d21b1.jpg"
  *              }
  *     parameters:
