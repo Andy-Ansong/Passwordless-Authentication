@@ -7,7 +7,7 @@ import userController from "../controllers/userController.js"
 userRouter.post("/", auth, role(["admin", "hr"]), userController.createUser)
 userRouter.get("/", auth, role(["admin"]), userController.getAllUsers)
 
-userRouter.delete("/me", auth, userController.deleteCurrentUser)
-userRouter.get("/me", auth, userController.getCurrentUser)
+userRouter.delete("/current", auth, userController.deleteCurrentUser)
+userRouter.get("/current", auth, userController.getCurrentUser)
 
 export default userRouter
