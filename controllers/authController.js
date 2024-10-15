@@ -1,6 +1,5 @@
 import User from "../model/User.js"
 import sendOtpEmailService from "../services/emailService.js"
-import CustomError from "../utils/customError.js"
 import errorHandler from "../utils/errorHandler.js"
 
 const requestCode = errorHandler(async (req, res) => {
@@ -13,15 +12,13 @@ const requestCode = errorHandler(async (req, res) => {
     }
     const user = await User.findOne({email}).exec()
     if(!user){
-        const error = new CustomError(`Account not found`, 404)
-        return next(error)
-        // let new_user = new User({email, role: "user"})
-        // await new_user.save()
+        // return res.status(404).send({status: "error", message: `Account not found`})
+        let new_user = new User({email, role: "user"})
+        await new_user.save()
     }
 
     const otp = await user.generateOtp()
     req.session.otp = otp
-    console.log("generated otp: ", req.session.otp)
     req.session.otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000 )
     req.session.userId = user._id
     await sendOtpEmailService(user.email, otp)
