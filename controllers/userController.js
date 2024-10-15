@@ -38,10 +38,10 @@ const createUser = errorHandler(async(req, res) => {
 const getAllUsers = errorHandler(async (req, res) => {
     let query = search(User, req.query)
     query = sort(query, req.query.sort)
-    const total = User.countDocuments()
+    const total = await User.countDocuments()
     const page = req.query.page
-    query = pagination(query, page, req.query.limit, startIndex, total)
-    const users = await query
+    const limit = req.query.limit
+    const users = await pagination(query, page, limit, startIndex, total)
     return res.status(200).send({page, total, status: "success", users})
 })
 
@@ -59,12 +59,9 @@ const getCurrentUser = errorHandler(async (req, res, next) => {
 
 const deleteCurrentUser = errorHandler(async(req, res, next) => {
     const userId = req.user._id
-    const deletedUser = await User.findOneAndDelete(userId)
+    const deletedUser = await User.findOneAndDelete({_id: userId})
     if(!deletedUser){
-        const error = new CustomError(
-            "User not found",
-            404
-        )
+        const error = new CustomError("User not found", 404)
         return next(error)
     }
     return res.status(200).send({message: "User deleted successfully"})

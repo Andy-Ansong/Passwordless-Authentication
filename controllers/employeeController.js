@@ -47,15 +47,13 @@ const getEmployeeById = errorHandler(async(req, res) => {
     })
 })
 
-const getAllEmployees = async(req, res) => {
-// const getAllEmployees = errorHandler(async(req, res) => {
-    console.log(req.query)
+const getAllEmployees = errorHandler(async(req, res) => {
     let query = search(Employee, req.query)
     query = sort(query, req.query.sort)
-    const total = Employee.countDocuments()
+    const total = await Employee.countDocuments()
     const page = req.query.page
-    query = pagination(query, page, req.query.limit, total)
-    const employees = await query
+    const limit = req.query.limit
+    const employees = await pagination(query, page, limit, total)
 
     return res.status(200).send({
         page,
@@ -63,8 +61,7 @@ const getAllEmployees = async(req, res) => {
         status: "success",
         employees
     })
-}
-// })
+})
 
 const getCurrentEmployee = errorHandler(async(req, res) => {
     const userId = req.user._id
