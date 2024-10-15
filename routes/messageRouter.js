@@ -3,6 +3,6 @@ const router = Router();
 import { sendMessages } from '../controllers/messageController';
 import auth from '../middleware/auth';
 
-router.post('/send', auth, sendMessages);
+router.post('/message', auth, sendMessages);
 
 export default router;

@@ -118,7 +118,7 @@
 
 // /**
 //  * @swagger
-//  * /api/v1/profiles/{profile_id}/viewed:
+//  * /api/v1/profiles/{profile_id}/view:
 //  *   patch:
 //  *     summary: Mark a profile as viewed (Admin)
 //  *     security:

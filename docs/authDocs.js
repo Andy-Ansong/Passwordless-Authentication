@@ -1,7 +1,7 @@
 
 /**
  * @swagger
- * /api/v1/auth/request-code:
+ * /api/v1/auth/request:
  *   post:
  *     summary: Request a one-time code for login
  *     tags: [Auth]
@@ -26,7 +26,7 @@
 
 /**
  * @swagger
- * /api/v1/auth/verify-code:
+ * /api/v1/auth/login:
  *   post:
  *     summary: Verify one-time code for login
  *     tags: [Auth]
