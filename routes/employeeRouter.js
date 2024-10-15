@@ -4,7 +4,7 @@ import employeeController from '../controllers/employeeController.js'
 import auth from '../middleware/auth.js'
 import role from '../middleware/role.js'
 
-employeeRouter.post('/', auth, role(['employee', 'hr', 'admin']), employeeController.createEmployee)
+employeeRouter.post('/', auth, role(['hr', 'admin']), employeeController.createEmployee)
 employeeRouter.get('/', auth, role(['employee', 'hr', 'admin']), employeeController.getAllEmployees)
 
 employeeRouter.get('/me', auth, role(['employee', 'hr', 'admin']), employeeController.getCurrentEmployee)

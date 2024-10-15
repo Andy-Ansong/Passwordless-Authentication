@@ -12,9 +12,9 @@ const requestCode = errorHandler(async (req, res) => {
     }
     const user = await User.findOne({email}).exec()
     if(!user){
-        // return res.status(404).send({status: "error", message: `Account not found`})
-        let new_user = new User({email, role: "employee"})
-        await new_user.save()
+        return res.status(404).send({status: "error", message: `Account not found`})
+        // let new_user = new User({email, role: "employee"})
+        // await new_user.save()
     }
 
     const otp = await user.generateOtp()
@@ -29,7 +29,7 @@ const requestCode = errorHandler(async (req, res) => {
     })
 })
 
-const verifyCode = errorHandler(async (req, res, next) => {
+const login = errorHandler(async (req, res, next) => {
     const { code } = req.body
     if(!code){
         return res.status(400).send({
@@ -77,7 +77,7 @@ const verifyCode = errorHandler(async (req, res, next) => {
     })
 })
 
-const logoutUser = errorHandler(async (req, res) => {
+const logout = errorHandler(async (req, res) => {
     return res.status(200).send({
         status: "success",
         message: 'You have been logged out successfully.',
@@ -85,5 +85,5 @@ const logoutUser = errorHandler(async (req, res) => {
 })
 
 export default {
-    requestCode, verifyCode, logoutUser
+    requestCode, login, logout
 }

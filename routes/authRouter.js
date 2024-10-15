@@ -4,7 +4,7 @@ const authRouter = Router()
 import authController from "../controllers/authController.js"
 
 authRouter.post("/request", authController.requestCode)
-authRouter.post("/login", authController.verifyCode)
-authRouter.post('/logout', auth, authController.logoutUser)
+authRouter.post("/login", authController.login)
+authRouter.post('/logout', auth, authController.logout)
 
 export default authRouter
