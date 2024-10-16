@@ -14,7 +14,7 @@
  *             image:
  *               type: string
  *               format: binary
- *     response:
+ *     responses:
  *       200:
  *         description: Image uploaded successfully
  *       401:
