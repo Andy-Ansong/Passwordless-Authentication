@@ -36,12 +36,16 @@ const createUser = errorHandler(async(req, res) => {
 })
 
 const getAllUsers = errorHandler(async (req, res) => {
-    let query = search(User, req.query)
+    const searchQuery = req.query.name
+    let query = User.find({})
+    if(searchQuery)
+        query = search(User, {name:searchQuery})
     query = sort(query, req.query.sort)
     const total = await User.countDocuments()
     const page = req.query.page
     const limit = req.query.limit
-    const users = await pagination(query, page, limit, startIndex, total)
+    const users = await pagination(query, page, limit, total)
+
     return res.status(200).send({page, total, status: "success", users})
 })
 

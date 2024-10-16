@@ -1,4 +1,3 @@
-import role from "../middleware/role.js"
 import Employee from "../model/Employee.js"
 import User from "../model/User.js"
 import errorHandler from "../utils/errorHandler.js"
@@ -33,7 +32,7 @@ const createEmployee = errorHandler(async(req, res) => {
 })
 
 const getEmployeeById = errorHandler(async(req, res) => {
-    const employeeId = req.params.employee_id
+    const employeeId = req.params.id
     const employee = await Employee.findById(employeeId).exec()
     if(!employee){
         return res.status(404).send({
@@ -107,7 +106,7 @@ const updateCurrentEmployee = errorHandler(async(req, res) => {
 // for hr to update employee profile
 const updateEmployeeById = errorHandler(async(req, res) => {
     const employee = await Employee.findByIdAndUpdate(
-        req.params.employee_id,
+        req.params.id,
         {
             name: req.body.name,
             Department: {
@@ -138,7 +137,7 @@ const updateEmployeeById = errorHandler(async(req, res) => {
 })
 
 const deleteEmployeeById = errorHandler(async(req, res) => {
-    const employeeId = req.params.employee_id
+    const employeeId = req.params.id
     const employee = await Employee.findById(employeeId).exec()
     if(!employee){
         return res.status(404).send({

@@ -48,7 +48,7 @@ const getCurrentProfile = errorHandler(async (req, res) => {
 })
 
 const getProfileById = errorHandler(async (req, res) => {
-    const profile_id = req.params.profile_id
+    const profile_id = req.params.id
     const profile = await Profile.findById(profile_id)
     if(!profile){
         return res.status(404).send({status: "error", message: "Profile not found" })
@@ -60,7 +60,7 @@ const getProfileById = errorHandler(async (req, res) => {
 })
 
 const setProfileAsViewed = errorHandler(async(req, res) => {
-    const profile_id = req.params.profile_id
+    const profile_id = req.params.id
     const profile = await Profile.findById(profile_id)
     if(!profile){
         return res.status(404).send({status: "error", message: "Profile not found" })
@@ -83,7 +83,7 @@ const setProfileAsViewed = errorHandler(async(req, res) => {
 const updateProfile = errorHandler(async(req, res) => {
     const profile = await Profile.findOneAndUpdate(
         {
-            _id: req.params.profile_id,
+            _id: req.params.id,
             userId: req.user._id
         },
         {...req.body, ...req.body.name},
@@ -104,7 +104,7 @@ const updateProfile = errorHandler(async(req, res) => {
 
 const deleteProfile = errorHandler(async (req, res) => {
     const profile = await Profile.findOneAndDelete({
-        _id: req.params.profile_id,
+        _id: req.params.id,
         userId: req.user._id
     })
     if(!profile){

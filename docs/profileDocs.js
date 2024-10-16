@@ -66,7 +66,7 @@
 //  *       200:
 //  *         description: A successful response
 //  *       401:
-//  *         description: Unauthorized, user must log in first
+//  *         description: Unauthorized, user must log in
 //  *       403:
 //  *         description: Forbidden, user is not an admin
 //  *       500:
@@ -75,7 +75,7 @@
 
 // /**
 //  * @swagger
-//  * /api/v1/profiles/me:
+//  * /api/v1/profiles/current:
 //  *   get:
 //  *     summary: Get current user profile
 //  *     security:
@@ -85,14 +85,14 @@
 //  *       200:
 //  *         description: A successful response
 //  *       401:
-//  *         description: Unauthorized, user must log in first
+//  *         description: Unauthorized, user must log in
 //  *       404:
 //  *         description: Profile not found
 //  */
 
 // /**
 //  * @swagger
-//  * /api/v1/profiles/{profile_id}:
+//  * /api/v1/profiles/{id}:
 //  *   get:
 //  *     summary: Get profile by id (Admin)
 //  *     security:
@@ -100,7 +100,7 @@
 //  *     tags: [Profile]
 //  *     parameters:
 //  *       - in: path
-//  *         name: profile_id
+//  *         name: id
 //  *         schema:
 //  *           type: string
 //  *         required: true
@@ -109,7 +109,7 @@
 //  *       200:
 //  *         description: A successful response
 //  *       401:
-//  *         description: Unauthorized, user must log in first
+//  *         description: Unauthorized, user must log in
 //  *       403:
 //  *         description: Forbidden, user is not an admin
 //  *       404:
@@ -118,7 +118,7 @@
 
 // /**
 //  * @swagger
-//  * /api/v1/profiles/{profile_id}/view:
+//  * /api/v1/profiles/{id}/view:
 //  *   patch:
 //  *     summary: Mark a profile as viewed (Admin)
 //  *     security:
@@ -126,7 +126,7 @@
 //  *     tags: [Profile]
 //  *     parameters:
 //  *       - in: path
-//  *         name: profile_id
+//  *         name: id
 //  *         schema:
 //  *           type: string
 //  *         required: true
@@ -135,7 +135,7 @@
 //  *       200:
 //  *         description: A successful response
 //  *       401:
-//  *         description: Unauthorized, user must log in first
+//  *         description: Unauthorized, user must log in
 //  *       403:
 //  *         description: Forbidden, user is not an admin
 //  *       404:
@@ -146,7 +146,7 @@
 
 // /**
 //  * @swagger
-//  * /api/v1/profiles/{profile_id}:
+//  * /api/v1/profiles/{id}:
 //  *   patch:
 //  *     summary: Update user profile
 //  *     security:
@@ -194,7 +194,7 @@
 //  *               }
 //  *     parameters:
 //  *       - in: path
-//  *         name: profile_id
+//  *         name: id
 //  *         schema:
 //  *           type: string
 //  *         required: true
@@ -203,7 +203,7 @@
 //  *       200:
 //  *         description: A successful response
 //  *       401:
-//  *         description: Unauthorized, user must log in first
+//  *         description: Unauthorized, user must log in
 //  *       404:
 //  *         description: Profile not found
 //  *       500:
@@ -212,7 +212,7 @@
 
 // /**
 //  * @swagger
-//  * /api/v1/profiles/{profile_id}:
+//  * /api/v1/profiles/{id}:
 //  *   delete:
 //  *     summary: delete user profile
 //  *     security:
@@ -220,7 +220,7 @@
 //  *     tags: [Profile]
 //  *     parameters:
 //  *       - in: path
-//  *         name: profile_id
+//  *         name: id
 //  *         schema:
 //  *           type: string
 //  *         required: true
@@ -229,7 +229,7 @@
 //  *       204:
 //  *         description: Successfully deleted profile
 //  *       401:
-//  *         description: Unauthorized, user must log in first
+//  *         description: Unauthorized, user must log in
 //  *       404:
 //  *         description: Profile not found
 //  *       500:

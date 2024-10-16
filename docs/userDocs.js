@@ -44,7 +44,7 @@
 
 // /**
 //  * @swagger
-//  * /api/v1/users/me:
+//  * /api/v1/users/current:
 //  *   delete:
 //  *     summary: delete current user
 //  *     security:
@@ -63,7 +63,7 @@
 
 // /**
 //  * @swagger
-//  * /api/v1/users/me:
+//  * /api/v1/users/current:
 //  *   get:
 //  *     summary: Get current user details
 //  *     security:

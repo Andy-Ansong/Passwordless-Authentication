@@ -7,11 +7,11 @@ import profileController from '../controllers/profileController.js'
 profileRouter.post("/", auth, profileController.createProfile)
 profileRouter.get("/", auth, role(["admin"]), profileController.getAllProfiles)
 
-profileRouter.get("/me", auth, profileController.getCurrentProfile)
-profileRouter.delete("/me", auth, profileController.deleteProfile)
+profileRouter.get("/current", auth, profileController.getCurrentProfile)
+profileRouter.delete("/current", auth, profileController.deleteProfile)
 
-profileRouter.get("/:profile_id", auth, role(["admin"]), profileController.getProfileById)
-profileRouter.patch("/:profile_id/view", auth, role(["admin"]), profileController.setProfileAsViewed)
-profileRouter.patch("/:profile_id", auth, profileController.updateProfile)
+profileRouter.get("/:id", auth, role(["admin"]), profileController.getProfileById)
+profileRouter.patch("/:id/view", auth, role(["admin"]), profileController.setProfileAsViewed)
+profileRouter.patch("/:id", auth, profileController.updateProfile)
 
 export default profileRouter

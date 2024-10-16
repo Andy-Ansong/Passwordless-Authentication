@@ -24,6 +24,6 @@ export default (error, req, res, next) => {
             error = castErrorHandler(error)
         if(error.code === 11000)
             error => duplicateKeyErrorHandler(error)
-        prodErrors(res, err)
+        prodErrors(res, error)
     }
 }

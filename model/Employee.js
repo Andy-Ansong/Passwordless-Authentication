@@ -1,4 +1,4 @@
-import { Schema, default as mongoose } from "mongoose"
+import mongoose, { Schema, model } from "mongoose"
 
 const employeeSchema = new Schema({
     userId: {
@@ -84,4 +84,4 @@ const employeeSchema = new Schema({
     }]
 })
 
-export default mongoose.model("Employee", employeeSchema)
+export default model("Employee", employeeSchema)

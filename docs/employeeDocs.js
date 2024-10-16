@@ -62,21 +62,25 @@
  *       - in: query
  *         name: page
  *         schema:
- *           type: string
+ *           type: number
  *           default: 1
- *         description: Page to display
+ *         description: Page to fetch
  *       - in: query
  *         name: sort
  *         schema:
  *           type: string
- *           default: ""
- *         description: How to sort query
+ *         description: How to sort employees
  *       - in: query
  *         name: name
  *         schema:
  *           type: string
- *           default: ""
- *         description: Search by employee name
+ *         description: Name of employee to search for
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: number
+ *           default: 5
+ *         description: Number of employees to fetch
  *     responses:
  *       200:
  *         description: A successful response
@@ -90,7 +94,7 @@
 
 /**
  * @swagger
- * /api/v1/employees/me:
+ * /api/v1/employees/current:
  *   get:
  *     summary: Get current user employee
  *     security:
@@ -109,7 +113,7 @@
 
 /**
  * @swagger
- * /api/v1/employees/me:
+ * /api/v1/employees/current:
  *   patch:
  *     summary: Update current employee profile
  *     security:
@@ -153,7 +157,7 @@
 
 /**
  * @swagger
- * /api/v1/employees/{employee_id}:
+ * /api/v1/employees/{id}:
  *   get:
  *     summary: Get employee by id
  *     security:
@@ -161,7 +165,7 @@
  *     tags: [Employee]
  *     parameters:
  *       - in: path
- *         name: employee_id
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
@@ -179,7 +183,7 @@
 
 /**
  * @swagger
- * /api/v1/employees/{employee_id}:
+ * /api/v1/employees/{id}:
  *   patch:
  *     summary: Update employee profile by id
  *     security:
@@ -206,7 +210,7 @@
  *              }
  *     parameters:
  *       - in: path
- *         name: employee_id
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
@@ -226,7 +230,7 @@
 
 /**
  * @swagger
- * /api/v1/employees/{employee_id}:
+ * /api/v1/employees/{id}:
  *   delete:
  *     summary: Delete employee profile by id
  *     security:
@@ -234,7 +238,7 @@
  *     tags: [Employee]
  *     parameters:
  *       - in: path
- *         name: employee_id
+ *         name: id
  *         schema:
  *           type: string
  *         required: true

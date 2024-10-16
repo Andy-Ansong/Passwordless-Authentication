@@ -26,8 +26,8 @@ import authRouter from "./routes/authRouter.js"
 app.use("/api/v1/auth", authRouter)
 import profileRouter from "./routes/profileRouter.js"
 app.use("/api/v1/profiles", profileRouter)
-// import adminRouter from "./routes/adminRouter.js"
-// app.use("/api/v1/admin", adminRouter)
+import eventRouter from "./routes/eventRouter.js"
+app.use("/api/v1/events", eventRouter)
 import employeeRouter from "./routes/employeeRouter.js"
 app.use("/api/v1/employees", employeeRouter)
 import userRouter from "./routes/userRouter.js"
