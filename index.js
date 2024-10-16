@@ -30,6 +30,8 @@ import employeeRouter from "./routes/employeeRouter.js"
 app.use("/api/v1/employees", employeeRouter)
 import userRouter from "./routes/userRouter.js"
 app.use("/api/v1/users", userRouter)
+import imageRouter from "./routes/imageRouter.js"
+app.use("/images", imageRouter)
 
 app.use('/api-docs', swagger.swaggerUi.serve, swagger.swaggerUi.setup(swagger.specs, {explorer: true}));
 

@@ -24,13 +24,18 @@
  *                 type: boolean
  *               isPrivate:
  *                 type: boolean
+ *               receivers:
+ *                 type: array
+ *                 items:
+ *                   type: String
  *           example:
  *             {
  *               "name": "Farmer's Day",
  *               "date": "2024-12-06",
  *               "description": "Annual celebration of farmers and fishermen",
  *               "isPublicHoliday": false,
- *               "isPrivate": false
+ *               "isPrivate": false,
+ *               "receivers": ["andyansong@gmail.com"]
  *             }
  *     responses:
  *       201:

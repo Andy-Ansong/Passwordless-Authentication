@@ -32,7 +32,10 @@ const eventSchema = new Schema({
     isPrivate: {
         type: Boolean,
         default: false
-    }
+    },
+    receivers:[{
+        type: String,
+    }]
 })
 
 const Event = model('Event', eventSchema)
