@@ -20,9 +20,13 @@ const createEmployee = errorHandler(async(req, res) => {
             message: `${req.body.name}'s profile already exists.`
         })
     }
+    const image = req.body.gender.toLowerCase() == "male"
+    ? `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwwjGPKEe7tevCCZHFzbzIopd-Ar4nyIfjVQ&s`
+    : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTB-jxWCPZVYhac_ggXn6WtXv1_L5DSU9svQ&s`
     const new_employee = new Employee({
         ...req.body,
         userId: user._id,
+        image: image
     })
     await new_employee.save()
     return res.status(201).send({

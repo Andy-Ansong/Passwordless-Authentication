@@ -34,11 +34,6 @@
  *     responses:
  *       200:
  *         description: Image retrieved successfully
- *         content:
- *           image/*:
- *             schema:
- *               type: string
- *               format: binary
  *       401:
  *         description: Unauthorized, user must log in
  *       500:

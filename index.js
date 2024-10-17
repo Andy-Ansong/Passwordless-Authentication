@@ -1,7 +1,8 @@
 import {config} from "dotenv"
 config()
-import express, { json } from "express"
+import express from "express"
 const app = express()
+import cors from 'cors'
 import db from './db/db.js'
 import seedDatabaseService from "./services/seedDatabaseService.js"
 import swagger from './swagger.js'
@@ -13,7 +14,8 @@ import bodyParser from "body-parser"
 
 const port = process.env.PORT
 app.use("/api", limiter)
-app.use(json())
+app.use(express.json())
+app.use(cors())
 app.use(bodyParser.json())
 app.use(session({
     secret: 'amalitech',
