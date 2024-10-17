@@ -2,7 +2,7 @@ import errorHandler from "../utils/errorHandler.js";
 import cloudinary from "../utils/cloudinary.js";
 import Employee from "../model/Employee.js";
 
-const uploadImage = errorHandler(async (req, res) => {
+export const uploadImage = errorHandler(async (req, res) => {
     if(!req.file){
         return res.status(400).send({
             status: "error",
@@ -25,4 +25,11 @@ const uploadImage = errorHandler(async (req, res) => {
     })
 })
 
-export default uploadImage
+export const fetchImage = errorHandler(async (req, res) => {
+    const user = req.user
+    const employee = await Employee.findOne({userId: user._id}).exec()
+    return res.status(200).send({
+        status: "success",
+        image: employee.image
+    })
+})

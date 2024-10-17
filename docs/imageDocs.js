@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /images:
+ * /image:
  *   post:
  *     summary: Upload an image
  *     security:
@@ -21,4 +21,26 @@
  *         description: Unauthorized, user must log in
  *       500:
  *         description: There was an error uploading the image
+ */
+
+/**
+ * @swagger
+ * /image:
+ *   get:
+ *     summary: Get the profile image of the current user
+ *     security:
+ *       - Authorization: []
+ *     tags: [Image]
+ *     responses:
+ *       200:
+ *         description: Image retrieved successfully
+ *         content:
+ *           image/*:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       401:
+ *         description: Unauthorized, user must log in
+ *       500:
+ *         description: There was an error retrieving the image
  */
