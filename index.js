@@ -15,13 +15,19 @@ import bodyParser from "body-parser"
 const port = process.env.PORT
 app.use("/api", limiter)
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}))
 app.use(bodyParser.json())
 app.use(session({
     secret: 'amalitech',
     resave: true,
     saveUninitialized: true,
-    cookie: {secure: false}
+    cookie: {
+        maxAge: 5 * 60 * 1000,
+        secure: false,
+    }
 }))
 
 import authRouter from "./routes/authRouter.js"

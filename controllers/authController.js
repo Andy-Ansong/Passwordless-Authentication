@@ -25,6 +25,7 @@ const requestCode = errorHandler(async (req, res) => {
 
     res.status(200).send({
         status: "success",
+        otp,
         message: "A one-time code has been sent to your email address."
     })
 })
