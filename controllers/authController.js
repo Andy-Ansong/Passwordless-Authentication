@@ -41,20 +41,20 @@ const login = errorHandler(async (req, res, next) => {
     if(code.length != 6){
         return res.status(400).send({
             status: "error",
-            message: "The one-time code you entered is not 6 digits"
+            message: "The code you entered is not 6 digits"
         })
     }
 
     if (req.session.otp != code) {
         return res.status(400).send({
             status: "error",
-            message: "The one-time code you entered is invalid."
+            message: "The code you entered is invalid."
         })
     }
     if(req.session.otpExpiresAt < new Date()){
         return res.status(400).send({
             status: "error",
-            message: "The one-time code has expired. Please request a new code.",
+            message: "Code has expired. Request a new code.",
         })
     }
     const user = await User.findById(req.session.userId).exec()

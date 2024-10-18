@@ -46,15 +46,17 @@ const employeeSchema = new Schema({
         // }
     },
     skills: [{
-        skill: String
+        skill: String,
     }],
     Department: {
         Role: {
             position: {
-                type: String
+                type: String,
+                default: "Not assigned"
             },
             location: {
-                type: String
+                type: String,
+                default: "Not assigned"
             },
             startDate: {
                 type: Date,
@@ -63,25 +65,40 @@ const employeeSchema = new Schema({
         },
         Team: {
             name: {
-                type: String
+                type: String,
+                default: "Not assigned"
             },
             role: {
-                type: String
+                type: String,
+                default: "Not assigned"
+            },
+            isLeader: {
+                type: Boolean,
+                default: false
             }
         }
     },
-    WorkSchedule: [{
-        day: {
-            type: String,
-            enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-            required: true
-        },
-        type: {
-            type: String,
-            enum: ['On-site', 'Remote'],
-            required: true
-        }
-    }]
+    WorkSchedule: {
+        type: [{
+            day: {
+                type: String,
+                enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                required: true
+            },
+            type: {
+                type: String,
+                enum: ['On-site', 'Remote'],
+                required: true
+            }
+        }],
+        default: [
+            { day: 'Monday', type: 'On-site' },
+            { day: 'Tuesday', type: 'On-site' },
+            { day: 'Wednesday', type: 'On-site' },
+            { day: 'Thursday', type: 'On-site' },
+            { day: 'Friday', type: 'Remote' }
+        ]
+    }
 })
 
 export default model("Employee", employeeSchema)
