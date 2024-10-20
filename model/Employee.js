@@ -18,7 +18,7 @@ const employeeSchema = new Schema({
     },
     gender: {
         type: String,
-        enum: ['Male', 'female'],
+        enum: ['Male', 'Female'],
         required: [true, "Please enter your gender ( Male / Female )"],
         validate: value => {
             if(["Male", "Female"].includes(value)){
@@ -29,9 +29,11 @@ const employeeSchema = new Schema({
     image: {
         type: String
     },
+    email: {
+        type: String
+    },
     bio: {
-        type: String,
-        required: [true, "Write a short description about yourself in the bio"],
+        type: String
     },
     birthDate: {
         type: Date,
@@ -45,9 +47,9 @@ const employeeSchema = new Schema({
         //     message: "Phone number must be 10 digits."
         // }
     },
-    skills: [{
-        skill: String,
-    }],
+    skills: {
+        type: [String]
+    },
     Department: {
         Role: {
             position: {

@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
 
 const eventSchema = new Schema({
-    name: {
+    title: {
         type: String,
         required: [true, "Please enter a name for the event."],
         trim: true,
@@ -24,7 +24,7 @@ const eventSchema = new Schema({
             ref: 'User',
             required: true
         },
-        name: {
+        email: {
             type: String,
             required: true
         }
@@ -33,8 +33,9 @@ const eventSchema = new Schema({
         type: Boolean,
         default: false
     },
-    receivers:[{
-        type: String,
+    receivers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     }]
 })
 

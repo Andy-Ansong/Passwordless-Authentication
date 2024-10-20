@@ -6,33 +6,65 @@ import search from '../utils/searchModel.js'
 import sort from '../utils/sortModel.js'
 
 const createEmployee = errorHandler(async(req, res) => {
-    const user = await User.findOne({email: req.body.email}).exec()
-    if(!user){
-        return res.status(404).send({
+    let user = await User.findOne({email: req.body.email}).exec()
+    if(!req.body.email){
+        return res.status(400).send({
             status: "error",
-            message: `User does not exist.`
+            message: "Please enter email address"
         })
     }
-    const employee = await Employee.findOne({email: req.body.email}).exec()
+    console.log("done")
+    if(!user){
+        try{
+            user = new User({
+                email: req.body.email,
+                name: req.body.name,
+                role: req.user.role || "employee"
+            })
+            await user.save()
+        }catch(err){
+            return res.status(400).send({
+                status: "error",
+                err,
+                message: "There was an error saving the data, please try again"
+            })
+        }
+    }
+    console.log("done")
+    const employee = await Employee.findOne({email: user.email}).exec()
     if(employee){
         return res.status(409).send({
             status: "error",
             message: `${req.body.name}'s profile already exists.`
         })
     }
+    console.log("done")
     const image = req.body.gender.toLowerCase() == "male"
     ? `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwwjGPKEe7tevCCZHFzbzIopd-Ar4nyIfjVQ&s`
     : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTB-jxWCPZVYhac_ggXn6WtXv1_L5DSU9svQ&s`
-    const new_employee = new Employee({
-        ...req.body,
-        userId: user._id,
-        image: image
-    })
-    await new_employee.save()
-    return res.status(201).send({
-        status: "success",
-        message: `${new_employee.name}'s profile created successfully.`,
-    })
+    try{
+        console.log("done")
+        console.log(req.body)
+        const new_employee = new Employee({
+            ...req.body,
+            userId: user._id,
+            image: image
+        })
+        console.log(user._id)
+        console.log("saving now")
+        new_employee.save()
+        console.log("saved")
+        return res.status(201).send({
+            status: "success",
+            message: `${new_employee.name}'s profile created successfully.`,
+        })
+    }catch(err){
+        return res.status(400).send({
+            status: "error",
+            err,
+            message: "There was an error saving the data, please try again"
+        })
+    }
 })
 
 const getEmployeeById = errorHandler(async(req, res) => {

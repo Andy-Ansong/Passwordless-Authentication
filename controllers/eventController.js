@@ -3,23 +3,32 @@ import pagination from '../utils/pagination.js'
 import search from '../utils/searchModel.js'
 import sort from '../utils/sortModel.js'
 import Event from '../model/Event.js'
+import User from '../model/User.js'
 
-const createEvent = errorHandler(async(req, res) => {
+const createEvent = async(req, res) => {
     if(req.user.role == "employee"){
         req.body.isPrivate = true
         req.body.isPublicHoliday = false
     }
+    const user = await User.findById(req.user._id).exec()
+    console.log(req.user)
     req.body.createdBy = {
-        email : req.user.email,
-        userId : req.user._id
+        email : user.email,
+        userId : user._id
+    }
+    if(req.body.receivers){
+        const receiverEmails = req.body.receivers
+        const users = await User.find({email: {$in: receiverEmails}})
+        req.body.receivers = users.map(user => user._id)
     }
     const event = new Event(req.body)
     await event.save()
     res.status(201).send({
         status: "success",
+        event,
         message: "Event has been created successfully"
     })
-})
+}
 
 const getAllEvents = errorHandler(async(req, res) => {
     const nameSearch = req.query.name
@@ -54,7 +63,12 @@ const getEvent = errorHandler(async(req, res) => {
 })
 
 const updateEvent = errorHandler(async(req, res) => {
-    const event = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    const event = await Event.findByIdAndUpdate(req.params.id, {
+        title: req.body.title,
+        description: req.body.description,
+        isPublicHoliday: req.body.isPublicHoliday,
+        isPrivate: req.body.isPrivate,
+    }, { new: true, runValidators: true })
     if(!event){
         return res.status(404).send({
             status: "error",

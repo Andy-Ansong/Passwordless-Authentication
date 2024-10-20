@@ -18,12 +18,12 @@ export default (error, req, res, next) => {
     error.status = error.status || "There was an error connecting to server"
 
     if(process.env.NODE_ENV === 'development'){
-        devErrors(res, error)
+        return devErrors(res, error)
     }else if(process.env.NODE_ENV === 'production'){
         if(error.name === 'CastError')
             error = castErrorHandler(error)
         if(error.code === 11000)
             error => duplicateKeyErrorHandler(error)
-        prodErrors(res, error)
+        return prodErrors(res, error)
     }
 }
