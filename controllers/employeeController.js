@@ -13,7 +13,6 @@ const createEmployee = errorHandler(async(req, res) => {
             message: "Please enter email address"
         })
     }
-    console.log("done")
     if(!user){
         try{
             user = new User({
@@ -30,7 +29,6 @@ const createEmployee = errorHandler(async(req, res) => {
             })
         }
     }
-    console.log("done")
     const employee = await Employee.findOne({email: user.email}).exec()
     if(employee){
         return res.status(409).send({
@@ -38,22 +36,16 @@ const createEmployee = errorHandler(async(req, res) => {
             message: `${req.body.name}'s profile already exists.`
         })
     }
-    console.log("done")
     const image = req.body.gender.toLowerCase() == "male"
     ? `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwwjGPKEe7tevCCZHFzbzIopd-Ar4nyIfjVQ&s`
     : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTB-jxWCPZVYhac_ggXn6WtXv1_L5DSU9svQ&s`
     try{
-        console.log("done")
-        console.log(req.body)
         const new_employee = new Employee({
             ...req.body,
             userId: user._id,
             image: image
         })
-        console.log(user._id)
-        console.log("saving now")
         new_employee.save()
-        console.log("saved")
         return res.status(201).send({
             status: "success",
             message: `${new_employee.name}'s profile created successfully.`,
@@ -96,6 +88,7 @@ const getAllEmployees = errorHandler(async(req, res) => {
     return res.status(200).send({
         page,
         total,
+        user: req.user,
         status: "success",
         employees
     })
@@ -118,7 +111,7 @@ const getCurrentEmployee = errorHandler(async(req, res) => {
 
 // for employees to update their personal profile
 const updateCurrentEmployee = errorHandler(async(req, res) => {
-    const allowedUpdates = ['name', 'image', 'phoneNumber', 'birthDate', 'bio']
+    const allowedUpdates = ['name', 'image', 'phoneNumber', 'bio']
     const updates = Object.keys(req.body).filter(key => allowedUpdates.includes(key))
     const updateData = {}
     updates.forEach(update => updateData[update] = req.body[update])
