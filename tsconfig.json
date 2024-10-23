@@ -1,13 +1,14 @@
+
 {
     "compilerOptions": {
       "sourceMap": true,
-      "target": "es2017",
+      "moduleResolution": "node",
+      "target": "ES2023",
       "outDir": "./dist",
       "baseUrl": "./src"
     },
     "include": [
-      "./*.tsc",
-      "./**/*.tsc",
+      "src/**/*.ts"
     ],
     "exclude": [
       "node_modules"
