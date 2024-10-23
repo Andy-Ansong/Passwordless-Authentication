@@ -64,7 +64,15 @@ const login = errorHandler(async (req, res, next) => {
             message: "User not found. Please request a new OTP."
         })
     }
-    const token = await user.generateAuthToken()
+    const refreshToken = await user.generateRefreshToken()
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        // secure: process.env.NODE_ENV === 'production',
+        // sameSite: 'Strict',
+        maxAge: 24 * 60 * 60 * 1000
+    })
+    console.log("request: ", req.cookies)
+    const accessToken = await user.generateAccessToken()
 
     delete req.session.otp
     delete req.session.otpExpiresAt
@@ -73,12 +81,40 @@ const login = errorHandler(async (req, res, next) => {
     res.status(200).send({
         status: "success",
         message: "Authentication successful. You are now logged in.",
-        token,
-        expires_in: 3600
+        accessToken,
+        refreshToken,
+        expires_in: 120
+    })
+})
+
+const refreshToken = errorHandler(async (req, res) => {
+    console.log(req.cookies)
+    const refreshToken = req.cookies.refreshToken
+    console.log(refreshToken)
+    if(!refreshToken){
+        return res.status(401).send({
+            status: "error",
+            message: "Unauthorized. Please log in to continue.",
+        })
+    }
+    const data = verify(refreshToken, process.env.JWT_KEY)
+    const user = await User.findById(data._id).exec()
+    if(!user){
+        return res.status(401).send({
+            "status": "error",
+            "message": "Unauthorized. Please log in to continue."
+        })
+    }
+    const accessToken = await user.generateAccessToken()
+    return res.status(200).send({
+        status: "success",
+        message: "Authentication successful. You are now logged in.",
+        accessToken
     })
 })
 
 const logout = errorHandler(async (req, res) => {
+    res.clearCookie('refreshToken')
     return res.status(200).send({
         status: "success",
         message: 'You have been logged out successfully.',
@@ -86,5 +122,5 @@ const logout = errorHandler(async (req, res) => {
 })
 
 export default {
-    requestCode, login, logout
+    requestCode, login, refreshToken, logout
 }

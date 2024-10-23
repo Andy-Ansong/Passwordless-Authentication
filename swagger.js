@@ -16,6 +16,11 @@ const options = {
                     scheme: 'bearer',
                     bearerFormat: 'JWT',
                     value: 'Bearer <JWT token here>'
+                },
+                cookieAuth: {
+                    type: 'apiKey',
+                    in: 'cookie',
+                    name: 'refreshToken'
                 }
             }
         }

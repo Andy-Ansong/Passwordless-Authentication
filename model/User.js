@@ -23,10 +23,19 @@ const userSchema = new Schema({
     }
 })
 
-userSchema.methods.generateAuthToken = async function(){
+userSchema.methods.generateRefreshToken = async function(){
     const user = this
     const options = {
-        expiresIn: '1h'
+        expiresIn: '1d'
+    }
+    const token = jwt.sign({_id: user._id}, process.env.JWT_KEY, options)
+    return token
+}
+
+userSchema.methods.generateAccessToken = async function(){
+    const user = this
+    const options = {
+        expiresIn: '2m'
     }
     const token = jwt.sign({_id: user._id}, process.env.JWT_KEY, options)
     await user.save()

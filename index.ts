@@ -11,6 +11,7 @@ import globalErrorHandler from './controllers/errorController.js'
 import limiter from './middleware/rateLimiter.js'
 import session from 'express-session'
 import bodyParser from "body-parser"
+import cookieParser from "cookie-parser"
 
 const port = process.env.PORT
 app.use("/api", limiter)
@@ -20,12 +21,13 @@ app.use(cors({
     credentials: true
 }))
 app.use(bodyParser.json())
+app.use(cookieParser())
 app.use(session({
     secret: 'amalitech',
     resave: true,
     saveUninitialized: true,
     cookie: {
-        maxAge: 5 * 60 * 1000,
+        maxAge: 60 * 60 * 1000,
         secure: false,
     }
 }))
