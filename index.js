@@ -12,7 +12,6 @@ import limiter from './middleware/rateLimiter.js'
 import session from 'express-session'
 import bodyParser from "body-parser"
 import cookieParser from "cookie-parser"
-
 const port = process.env.PORT
 app.use("/api", limiter)
 app.use(express.json())
