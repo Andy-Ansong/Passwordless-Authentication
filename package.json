@@ -4,7 +4,9 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon index"
+    "start": "nodemon ./src/index",
+    "dev": "ts-node ./src/index.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

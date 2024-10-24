@@ -1,15 +1,15 @@
 {
-    "compilerOptions": {
-      "sourceMap": true,
-      "moduleResolution": "node",
-      "target": "ES2023",
-      "outDir": "./dist",
-      "baseUrl": "./src"
-    },
-    "include": [
-      "src/**/*.ts"
-    ],
-    "exclude": [
-      "node_modules"
-    ]
-  }
+  "compilerOptions": {
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "target": "ES2023",
+    "outDir": "./dist",
+    "baseUrl": "./src"
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
