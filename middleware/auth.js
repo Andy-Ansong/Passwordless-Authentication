@@ -49,6 +49,7 @@ const auth = async (req, res, next) => {
                         maxAge: 24 * 60 * 60 * 1000
                     })
                     req.user = user
+                    console.log("user")
                     req.accessToken = newAccessToken
                     next()
                 } catch (err) {

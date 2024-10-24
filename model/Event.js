@@ -10,13 +10,13 @@ const eventSchema = new Schema({
         type: Date,
         required: [true, "Please enter the date for the event"],
     },
+    time:{
+        type: String,
+        required: [true, "Please enter the time for the event"]
+    },
     description: {
         type: String,
         trim: true
-    },
-    isPublicHoliday: {
-        type: Boolean,
-        default: false
     },
     createdBy: {
         userId: {
@@ -29,9 +29,10 @@ const eventSchema = new Schema({
             required: true
         }
     },
-    isPrivate: {
-        type: Boolean,
-        default: false
+    eventType: {
+        type: String,
+        enum: ['Public', 'Private', 'Holiday'],
+        default: 'Private'
     },
     receivers: [{
         type: Schema.Types.ObjectId,

@@ -79,7 +79,7 @@ const login = errorHandler(async (req, res, next) => {
         status: "success",
         message: "Authentication successful. You are now logged in.",
         accessToken,
-        expires_in: 120
+        expires_in: 60 * 60 * 1000
     })
 })
 

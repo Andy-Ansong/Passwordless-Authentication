@@ -7,11 +7,9 @@ import User from '../model/User.js'
 
 const createEvent = async(req, res) => {
     if(req.user.role == "employee"){
-        req.body.isPrivate = true
-        req.body.isPublicHoliday = false
+        req.body.eventType = "Private"
     }
     const user = await User.findById(req.user._id).exec()
-    console.log(req.user)
     req.body.createdBy = {
         email : user.email,
         userId : user._id
@@ -20,6 +18,20 @@ const createEvent = async(req, res) => {
         const receiverEmails = req.body.receivers
         const users = await User.find({email: {$in: receiverEmails}})
         req.body.receivers = users.map(user => user._id)
+    }
+    const date = req.body.date
+    const time = req.body.time
+    if(new Date(date) < new Date()){
+        return res.status(400).send({
+            status: "error",
+            message: "Date cannot be in the past"
+        })
+    }
+    if(new Date(`${date} ${time}`) < new Date()){
+        return res.status(400).send({
+            status: "error",
+            message: "Time cannot be in the past"
+        })
     }
     const event = new Event(req.body)
     await event.save()
