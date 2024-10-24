@@ -13,8 +13,6 @@ const requestCode = errorHandler(async (req, res) => {
     const user = await User.findOne({email}).exec()
     if(!user){
         return res.status(404).send({status: "error", message: `Account not found`})
-        // let new_user = new User({email, role: "employee"})
-        // await new_user.save()
     }
 
     const otp = await user.generateOtp()
@@ -64,14 +62,13 @@ const login = errorHandler(async (req, res, next) => {
             message: "User not found. Please request a new OTP."
         })
     }
-    const refreshToken = await user.generateRefreshToken()
-    res.cookie('refreshToken', refreshToken, {
+    const newRefreshToken = await user.generateRefreshToken()
+    res.cookie('refreshToken', newRefreshToken, {
         httpOnly: true,
-        // secure: process.env.NODE_ENV === 'production',
-        // sameSite: 'Strict',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Lax',
         maxAge: 24 * 60 * 60 * 1000
     })
-    console.log("request: ", req.cookies)
     const accessToken = await user.generateAccessToken()
 
     delete req.session.otp
@@ -82,34 +79,7 @@ const login = errorHandler(async (req, res, next) => {
         status: "success",
         message: "Authentication successful. You are now logged in.",
         accessToken,
-        refreshToken,
         expires_in: 120
-    })
-})
-
-const refreshToken = errorHandler(async (req, res) => {
-    console.log(req.cookies)
-    const refreshToken = req.cookies.refreshToken
-    console.log(refreshToken)
-    if(!refreshToken){
-        return res.status(401).send({
-            status: "error",
-            message: "Unauthorized. Please log in to continue.",
-        })
-    }
-    const data = verify(refreshToken, process.env.JWT_KEY)
-    const user = await User.findById(data._id).exec()
-    if(!user){
-        return res.status(401).send({
-            "status": "error",
-            "message": "Unauthorized. Please log in to continue."
-        })
-    }
-    const accessToken = await user.generateAccessToken()
-    return res.status(200).send({
-        status: "success",
-        message: "Authentication successful. You are now logged in.",
-        accessToken
     })
 })
 
@@ -122,5 +92,5 @@ const logout = errorHandler(async (req, res) => {
 })
 
 export default {
-    requestCode, login, refreshToken, logout
+    requestCode, login, logout
 }

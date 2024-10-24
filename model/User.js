@@ -28,7 +28,7 @@ userSchema.methods.generateRefreshToken = async function(){
     const options = {
         expiresIn: '1d'
     }
-    const token = jwt.sign({_id: user._id}, process.env.JWT_KEY, options)
+    const token = jwt.sign({_id: user._id}, process.env.REFRESH_KEY, options)
     return token
 }
 
