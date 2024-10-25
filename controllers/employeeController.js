@@ -200,6 +200,16 @@ const deleteEmployeeById = errorHandler(async(req, res) => {
     })
 })
 
+const getAllEmployeesInTeam = errorHandler(async(req, res) => {
+    const currentEmployee = await Employee.findOne({ userId: req.user._id }).exec()
+    const team = currentEmployee.Department.Team.name
+    const employees = await Employee.find({ "Department.Team.name": team }).exec()
+    return res.status(200).send({
+        status: "success",
+        employees
+    })
+})
+
 // others
 const bookALeave = errorHandler(async(req, res) => {})
 const approveLeave = errorHandler(async(req, res) => {})
@@ -208,5 +218,5 @@ const rejectLeave = errorHandler(async(req, res) => {})
 export default {
     createEmployee, getEmployeeById, getAllEmployees, getCurrentEmployee,
     updateCurrentEmployee, updateEmployeeById, deleteEmployeeById,
-    bookALeave, approveLeave, rejectLeave
+    getAllEmployeesInTeam, bookALeave, approveLeave, rejectLeave
 }
