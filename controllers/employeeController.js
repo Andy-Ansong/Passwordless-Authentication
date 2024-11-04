@@ -13,13 +13,14 @@ const createEmployee = errorHandler(async(req, res) => {
             message: "Please enter email address"
         })
     }
-    if(!user){
+    if(user == null){
         try{
-            user = new User({
+            const data = {
                 email: req.body.email,
                 name: req.body.name,
-                role: req.user.role || "employee"
-            })
+                role: req.body.role ?? "employee"
+            }
+            user = new User(data)
             await user.save()
         }catch(err){
             return res.status(400).send({
@@ -29,7 +30,7 @@ const createEmployee = errorHandler(async(req, res) => {
             })
         }
     }
-    const employee = await Employee.findOne({email: user.email}).exec()
+    const employee = await Employee.findOne({email: req.body.email}).exec()
     if(employee){
         return res.status(409).send({
             status: "error",
@@ -45,6 +46,7 @@ const createEmployee = errorHandler(async(req, res) => {
             userId: user._id,
             image: image
         })
+        console.log("saving new employee")
         new_employee.save()
         return res.status(201).send({
             status: "success",
@@ -134,22 +136,25 @@ const updateCurrentEmployee = errorHandler(async(req, res) => {
 
 // for hr to update employee profile
 const updateEmployeeById = errorHandler(async(req, res) => {
+    const role = req.body.Department.Role
+    const team = req.body.Department.Team
     const employee = await Employee.findByIdAndUpdate(
         req.params.id,
         {
             name: req.body.name,
             Department: {
                 Role: {
-                    position: req.body.position,
-                    location: req.body.location,
-                    startDate: req.body.startDate
+                    position: role.position,
+                    location: role.location,
+                    startDate: role.startDate
                 },
                 Team: {
-                    name: req.body.teamName,
-                    role: req.body.role
+                    name: team.teamName,
+                    role: team.role,
+                    isLeader: team.isLeader
                 }
             },
-            WorkSchedule: req.body.workSchedule
+            WorkSchedule: req.body.WorkSchedule
         },
         {new: true, runValidators: true}
     )
@@ -177,20 +182,20 @@ const deleteEmployeeById = errorHandler(async(req, res) => {
 
     const deletingUser = await User.findById(employee.userId).exec()
     const roles = ['employee', 'hr', 'admin']
-    const currentRole = roles.findIndex(role => role == req.user.role)
+    const currentRole = roles.findIndex(role => role == req.user?.role)
     const deletingRole = roles.findIndex(role => role == deletingUser.role)
 
-    if(currentRole < deletingRole || currentRole == 0){
-        return res.status(403).send({
-            status: "error",
-            message: "Forbidden. You do not have access to this resource."
-        })
-    }else if(currentRole == 1){
-        return res.status(403).send({
-            status: "error",
-            message: "Forbidden. Only Admins can delete HR accounts."
-        })
-    }
+    // if(currentRole < deletingRole || currentRole == 0){
+    //     return res.status(403).send({
+    //         status: "error",
+    //         message: "Forbidden. You do not have access to this resource."
+    //     })
+    // }else if(currentRole == 1){
+    //     return res.status(403).send({
+    //         status: "error",
+    //         message: "Forbidden. Only Admins can delete HR accounts."
+    //     })
+    // }
 
     await Employee.findByIdAndDelete(employee.id).exec()
     await User.findByIdAndDelete(deletingUser.id).exec()

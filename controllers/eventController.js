@@ -6,33 +6,35 @@ import Event from '../model/Event.js'
 import User from '../model/User.js'
 
 const createEvent = async(req, res) => {
-    if(req.user.role == "employee"){
-        req.body.eventType = "Private"
-    }
-    const user = await User.findById(req.user._id).exec()
+    // if(req.user.role == "employee"){
+    //     req.body.eventType = "Private"
+    // }
+    const user = {email: "andy@gmail.com", _id: "671541521bc9fe23dc8a3d79"}
     req.body.createdBy = {
         email : user.email,
         userId : user._id
     }
+    // const user = await User.findById(req.user._id).exec()
     if(req.body.receivers){
         const receiverEmails = req.body.receivers
         const users = await User.find({email: {$in: receiverEmails}})
-        req.body.receivers = users.map(user => user._id)
+        req.body.receivers = users.map(user => user.email)
     }
-    const date = req.body.date
-    const time = req.body.time
-    if(new Date(date) < new Date()){
+    
+    const { start, end } = req.body;
+    if(new Date(start) < new Date()){
         return res.status(400).send({
             status: "error",
-            message: "Date cannot be in the past"
+            message: "Start date cannot be in the past"
         })
     }
-    if(new Date(`${date} ${time}`) < new Date()){
+    if(new Date(end) <= new Date(start)){
         return res.status(400).send({
             status: "error",
-            message: "Time cannot be in the past"
+            message: "End date must be after the start date"
         })
     }
+    
     const event = new Event(req.body)
     await event.save()
     res.status(201).send({
@@ -74,24 +76,36 @@ const getEvent = errorHandler(async(req, res) => {
     })
 })
 
-const updateEvent = errorHandler(async(req, res) => {
+
+// const updateEvent = errorHandler(async(req, res) => {
+    const updateEvent = async(req, res) => {
+    const { title, description, eventType, start, end } = req.body;
+    if(req.body.receivers){
+        const receiverEmails = req.body.receivers
+        const users = await User.find({email: {$in: receiverEmails}})
+        req.body.receivers = users.map(user => user._id)
+    }
     const event = await Event.findByIdAndUpdate(req.params.id, {
-        title: req.body.title,
-        description: req.body.description,
-        isPublicHoliday: req.body.isPublicHoliday,
-        isPrivate: req.body.isPrivate,
+        title,
+        description,
+        eventType,
+        start,
+        end,
+        receivers: req.body.receivers ?? []
     }, { new: true, runValidators: true })
+    
     if(!event){
         return res.status(404).send({
             status: "error",
             message: "Event not found"
         })
     }
+    
     res.status(200).send({
         status: "success",
         event
     })
-})
+}
 
 const deleteEvent = errorHandler(async(req, res) => {
     const event = await Event.findByIdAndDelete(req.params.id)

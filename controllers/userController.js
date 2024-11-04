@@ -39,7 +39,7 @@ const getAllUsers = errorHandler(async (req, res) => {
     const searchQuery = req.query.name
     let query = User.find({})
     if(searchQuery)
-        query = search(User, {name:searchQuery})
+        query = search(User, {name:{ $regex: searchQuery, $options: 'i' }})
     query = sort(query, req.query.sort)
     const total = await User.countDocuments()
     const page = req.query.page

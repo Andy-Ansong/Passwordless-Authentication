@@ -6,13 +6,13 @@ const eventSchema = new Schema({
         required: [true, "Please enter a name for the event."],
         trim: true,
     },
-    date: {
+    start: {
         type: Date,
-        required: [true, "Please enter the date for the event"],
+        required: [true, "Please enter the start date and time for the event"],
     },
-    time:{
-        type: String,
-        required: [true, "Please enter the time for the event"]
+    end: {
+        type: Date,
+        required: [true, "Please enter the end date and time for the event"],
     },
     description: {
         type: String,
