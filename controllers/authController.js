@@ -17,6 +17,7 @@ const requestCode = errorHandler(async (req, res) => {
 
     const otp = await user.generateOtp()
     req.session.otp = otp
+    console.log(req.session.otp)
     req.session.otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000 )
     req.session.userId = user._id
     await sendOtpEmailService(user.email, otp)
@@ -39,9 +40,11 @@ const login = errorHandler(async (req, res, next) => {
     if(code.length != 6){
         return res.status(400).send({
             status: "error",
-            message: "The code you entered is not 6 digits"
+            message: "The code must contain not 6 digits"
         })
     }
+    console.log("request session: ", req.session)
+    console.log(req.cookies)
 
     if (req.session.otp != code) {
         return res.status(400).send({
