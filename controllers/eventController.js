@@ -28,7 +28,6 @@ const createEvent = async(req, res) => {
             message: "End date must be after the start date"
         })
     }
-    console.log(req.body)
     
     const event = new Event(req.body)
     await event.save()
@@ -49,7 +48,19 @@ const getAllEvents = errorHandler(async(req, res) => {
     const page = req.query.page
     const limit = req.query.limit
     query = query.populate('receivers', 'email _id')
-    const events = await pagination(query, page, limit, total)
+    let events = await pagination(query, page, limit, total)
+    events = events.filter(event => {
+        if(event.eventType == "Private"){
+            if(event.createdBy.userId == req.user._id){
+                return event
+            }
+            else if(event.receivers.includes(req.user._id)){
+                return event
+            }
+        }else{
+            return event
+        }
+    })
     res.status(200).send({
         page,
         total,
@@ -58,25 +69,8 @@ const getAllEvents = errorHandler(async(req, res) => {
     })
 })
 
-const getEvent = errorHandler(async(req, res) => {
-    const event = await Event.findById(req.params.id)
-    if(!event){
-        return res.status(404).send({
-            status: "error",
-            message: "Event not found"
-        })
-    }
-    res.status(200).send({
-        status: "success",
-        event
-    })
-})
-
-
-// const updateEvent = errorHandler(async(req, res) => {
-    const updateEvent = async(req, res) => {
+const updateEvent = errorHandler(async(req, res) => {
     const { title, description, eventType, start, end } = req.body;
-    console.log(req.body)
     const event = await Event.findByIdAndUpdate(req.params.id, {
         title,
         description,
@@ -97,7 +91,7 @@ const getEvent = errorHandler(async(req, res) => {
         status: "success",
         event
     })
-}
+})
 
 const deleteEvent = errorHandler(async(req, res) => {
     const event = await Event.findByIdAndDelete(req.params.id)
@@ -114,5 +108,5 @@ const deleteEvent = errorHandler(async(req, res) => {
 })
 
 export default {
-    createEvent, getAllEvents, getEvent, updateEvent, deleteEvent
+    createEvent, getAllEvents, updateEvent, deleteEvent
 }

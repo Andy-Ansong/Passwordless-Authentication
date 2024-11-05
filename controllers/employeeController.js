@@ -90,7 +90,6 @@ const getAllEmployees = errorHandler(async(req, res) => {
     return res.status(200).send({
         page,
         total,
-        user: req.user,
         status: "success",
         employees
     })
@@ -113,7 +112,7 @@ const getCurrentEmployee = errorHandler(async(req, res) => {
 
 // for employees to update their personal profile
 const updateCurrentEmployee = errorHandler(async(req, res) => {
-    const allowedUpdates = ['name', 'image', 'phoneNumber', 'bio']
+    const allowedUpdates = ['image', 'phoneNumber', 'bio']
     const updates = Object.keys(req.body).filter(key => allowedUpdates.includes(key))
     const updateData = {}
     updates.forEach(update => updateData[update] = req.body[update])
@@ -185,17 +184,17 @@ const deleteEmployeeById = errorHandler(async(req, res) => {
     const currentRole = roles.findIndex(role => role == req.user?.role)
     const deletingRole = roles.findIndex(role => role == deletingUser.role)
 
-    // if(currentRole < deletingRole || currentRole == 0){
-    //     return res.status(403).send({
-    //         status: "error",
-    //         message: "Forbidden. You do not have access to this resource."
-    //     })
-    // }else if(currentRole == 1){
-    //     return res.status(403).send({
-    //         status: "error",
-    //         message: "Forbidden. Only Admins can delete HR accounts."
-    //     })
-    // }
+    if(currentRole < deletingRole || currentRole == 0){
+        return res.status(403).send({
+            status: "error",
+            message: "Forbidden. You do not have access to this resource."
+        })
+    }else if(currentRole == 1){
+        return res.status(403).send({
+            status: "error",
+            message: "Forbidden. Only Admins can delete HR accounts."
+        })
+    }
 
     await Employee.findByIdAndDelete(employee.id).exec()
     await User.findByIdAndDelete(deletingUser.id).exec()

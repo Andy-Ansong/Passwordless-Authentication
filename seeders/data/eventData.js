@@ -1,9 +1,10 @@
 export const publicHolidays = [
     {
         "title": "New Year's Day",
-        "date": "2025-01-01",
+        "start": "2025-01-01",
+        "end": "2025-01-02",
         "description": "Celebration of the New Year.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -11,9 +12,10 @@ export const publicHolidays = [
     },
     {
         "title": "Constitution Day",
-        "date": "2025-01-07",
+        "start": "2025-01-07",
+        "end": "2025-01-08",
         "description": "Commemoration of the adoption of the 1992 Constitution.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -21,9 +23,10 @@ export const publicHolidays = [
     },
     {
         "title": "Independence Day",
-        "date": "2025-03-06",
+        "start": "2025-03-06",
+        "end": "2025-03-07",
         "description": "Celebration of Ghana's independence from colonial rule.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -31,9 +34,10 @@ export const publicHolidays = [
     },
     {
         "title": "Good Friday",
-        "date": "2025-03-29",
+        "start": "2025-03-27",
+        "end": "2025-03-28",
         "description": "Christian observance commemorating the crucifixion of Jesus.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -41,9 +45,10 @@ export const publicHolidays = [
     },
     {
         "title": "Easter Monday",
-        "date": "2025-04-01",
+        "start": "2025-04-01",
+        "end": "2025-04-02",
         "description": "Celebration of the resurrection of Jesus.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -51,9 +56,10 @@ export const publicHolidays = [
     },
     {
         "title": "Eid al-Fitr",
-        "date": "2025-04-11",
+        "start": "2025-04-11",
+        "end": "2025-04-12",
         "description": "Celebration marking the end of Ramadan.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -61,9 +67,10 @@ export const publicHolidays = [
     },
     {
         "title": "Labour Day",
-        "date": "2025-05-01",
+        "start": "2025-05-01",
+        "end": "2025-05-02",
         "description": "Celebration of workers and their contributions.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -71,9 +78,10 @@ export const publicHolidays = [
     },
     {
         "title": "Eid al-Adha",
-        "date": "2025-06-17",
+        "start": "2025-06-17",
+        "end": "2025-06-18",
         "description": "Celebration of sacrifice in remembrance of Ibrahim.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -81,9 +89,10 @@ export const publicHolidays = [
     },
     {
         "title": "Founders' Day",
-        "date": "2025-08-04",
+        "start": "2025-08-04",
+        "end": "2025-08-05",
         "description": "Honoring the founders of Ghana.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -91,9 +100,10 @@ export const publicHolidays = [
     },
     {
         "title": "Kwame Nkrumah Memorial Day",
-        "date": "2025-09-21",
+        "start": "2025-09-21",
+        "end": "2025-09-22",
         "description": "Commemoration of the first President of Ghana.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -101,9 +111,10 @@ export const publicHolidays = [
     },
     {
         "title": "Farmers' Day",
-        "date": "2025-12-06",
+        "start": "2025-12-06",
+        "end": "2025-12-07",
         "description": "Celebrating the contributions of farmers to the economy.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -111,9 +122,10 @@ export const publicHolidays = [
     },
     {
         "title": "Christmas Day",
-        "date": "2025-12-25",
+        "start": "2025-12-25",
+        "end": "2025-12-26",
         "description": "Celebration of the birth of Jesus Christ.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"
@@ -121,9 +133,10 @@ export const publicHolidays = [
     },
     {
         "title": "Boxing Day",
-        "date": "2025-12-26",
+        "start": "2025-12-26",
+        "end": "2025-12-27",
         "description": "Day after Christmas, often marked by gift-giving.",
-        "isPublicHoliday": true,
+        "eventType": "Holiday",
         "createdBy": {
             "userId": "5a9427648b0beebeb69579f5",
             "email": "Default"

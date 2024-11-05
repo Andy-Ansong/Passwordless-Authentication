@@ -89,32 +89,6 @@
 /**
  * @swagger
  * /api/v1/events/{id}:
- *   get:
- *     summary: Get event by id
- *     security:
- *       - Authorization: []
- *     tags: [Event]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: The event id
- *     responses:
- *       200:
- *         description: A successful response
- *       401:
- *         description: Unauthorized, user must log in
- *       404:
- *         description: Event not found
- *       500:
- *         description: There was a problem retrieving the event
- */
-
-/**
- * @swagger
- * /api/v1/events/{id}:
  *   patch:
  *     summary: Update an event
  *     security:
