@@ -46,7 +46,6 @@ const createEmployee = errorHandler(async(req, res) => {
             userId: user._id,
             image: image
         })
-        console.log("saving new employee")
         new_employee.save()
         return res.status(201).send({
             status: "success",

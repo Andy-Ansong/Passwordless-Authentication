@@ -17,7 +17,6 @@ const requestCode = errorHandler(async (req, res) => {
 
     const otp = await user.generateOtp()
     req.session.otp = otp
-    console.log(req.session.otp)
     req.session.otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000 )
     req.session.userId = user._id
     await sendOtpEmailService(user.email, otp)
