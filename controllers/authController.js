@@ -29,7 +29,8 @@ const requestCode = errorHandler(async (req, res) => {
     })
 })
 
-const login = errorHandler(async (req, res, next) => {
+// const login = errorHandler(async (req, res, next) => {
+    const login = async (req, res, next) => {
     const { code } = req.body
     if(!code){
         return res.status(400).send({
@@ -43,8 +44,6 @@ const login = errorHandler(async (req, res, next) => {
             message: "The code must contain not 6 digits"
         })
     }
-    console.log("request session: ", req.session)
-    console.log(req.cookies)
 
     if (req.session.otp != code) {
         return res.status(400).send({
@@ -84,7 +83,7 @@ const login = errorHandler(async (req, res, next) => {
         accessToken,
         expires_in: 60 * 60 * 1000
     })
-})
+}
 
 const logout = errorHandler(async (req, res) => {
     res.clearCookie('refreshToken')

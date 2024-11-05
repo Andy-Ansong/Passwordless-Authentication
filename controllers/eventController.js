@@ -6,19 +6,13 @@ import Event from '../model/Event.js'
 import User from '../model/User.js'
 
 const createEvent = async(req, res) => {
-    // if(req.user.role == "employee"){
-    //     req.body.eventType = "Private"
-    // }
-    const user = {email: "andy@gmail.com", _id: "671541521bc9fe23dc8a3d79"}
+    if(req.user.role == "employee"){
+        req.body.eventType = "Private"
+    }
+    const user = await User.findById(req.user._id).exec()
     req.body.createdBy = {
         email : user.email,
         userId : user._id
-    }
-    // const user = await User.findById(req.user._id).exec()
-    if(req.body.receivers){
-        const receiverEmails = req.body.receivers
-        const users = await User.find({email: {$in: receiverEmails}})
-        req.body.receivers = users.map(user => user.email)
     }
     
     const { start, end } = req.body;
@@ -34,6 +28,7 @@ const createEvent = async(req, res) => {
             message: "End date must be after the start date"
         })
     }
+    console.log(req.body)
     
     const event = new Event(req.body)
     await event.save()
@@ -53,6 +48,7 @@ const getAllEvents = errorHandler(async(req, res) => {
     const total = await Event.countDocuments()
     const page = req.query.page
     const limit = req.query.limit
+    query = query.populate('receivers', 'email _id')
     const events = await pagination(query, page, limit, total)
     res.status(200).send({
         page,
@@ -80,11 +76,7 @@ const getEvent = errorHandler(async(req, res) => {
 // const updateEvent = errorHandler(async(req, res) => {
     const updateEvent = async(req, res) => {
     const { title, description, eventType, start, end } = req.body;
-    if(req.body.receivers){
-        const receiverEmails = req.body.receivers
-        const users = await User.find({email: {$in: receiverEmails}})
-        req.body.receivers = users.map(user => user._id)
-    }
+    console.log(req.body)
     const event = await Event.findByIdAndUpdate(req.params.id, {
         title,
         description,
