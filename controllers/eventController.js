@@ -6,9 +6,11 @@ import Event from '../model/Event.js'
 import User from '../model/User.js'
 
 const createEvent = async(req, res) => {
+    console.log(req.user)
     if(req.user.role == "employee"){
         req.body.eventType = "Private"
     }
+    console.log(req.body.eventType)
     const user = await User.findById(req.user._id).exec()
     req.body.createdBy = {
         email : user.email,
@@ -31,6 +33,7 @@ const createEvent = async(req, res) => {
     
     const event = new Event(req.body)
     await event.save()
+    console.log("added event")
     res.status(201).send({
         status: "success",
         event,
@@ -50,6 +53,7 @@ const getAllEvents = errorHandler(async(req, res) => {
     query = query.populate('receivers', 'email _id')
     let events = await pagination(query, page, limit, total)
     events = events.filter(event => {
+        console.log(event.eventType)
         if(event.eventType == "Private"){
             if(event.createdBy.userId == req.user._id){
                 return event

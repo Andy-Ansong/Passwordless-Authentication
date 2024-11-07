@@ -1,7 +1,6 @@
 import errorHandler from "../utils/errorHandler.js";
 import cloudinary from "../utils/cloudinary.js";
 import Employee from "../model/Employee.js";
-import axios from 'axios';
 
 export const uploadImage = errorHandler(async (req, res) => {
     if(!req.files){

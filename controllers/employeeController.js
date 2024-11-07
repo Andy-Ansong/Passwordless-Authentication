@@ -79,11 +79,11 @@ const getAllEmployees = errorHandler(async(req, res) => {
     const searchQuery = req.query.name
     let query = Employee.find({})
     if(searchQuery)
-        query = search(Employee, {name:searchQuery})
+        query = search(Employee, {name: {$regex: searchQuery, $options: "i"}})
     query = sort(query, req.query.sort)
-    const total = await Employee.countDocuments()
     const page = req.query.page
     const limit = req.query.limit
+    const total = await Employee.countDocuments(query)
     const employees = await pagination(query, page, limit, total)
 
     return res.status(200).send({
