@@ -2,7 +2,7 @@ export const employees = [
     {
         "_id": "64f0b25f4f9b1c002bbd4621",
         "name": "Andy Ansong",
-        "email": "andy.ansong@amalitechtraining.org",
+        "email": "andyansong82@gmail.com",
         "role": "admin",
         "otp": {}
     },
