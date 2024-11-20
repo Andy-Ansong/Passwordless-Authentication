@@ -2,7 +2,7 @@ import User from "../model/User.js"
 import sendOtpEmailService from "../services/emailService.js"
 import errorHandler from "../utils/errorHandler.js"
 
-const requestCode = errorHandler(async (req, res) => {
+const requestCode = async (req, res) => {
     const email = req.body.email
     if(!email){
         return res.status(400).send({
@@ -26,7 +26,7 @@ const requestCode = errorHandler(async (req, res) => {
         otp,
         message: "A one-time code has been sent to your email address."
     })
-})
+}
 
 const login = errorHandler(async (req, res, next) => {
     const { code } = req.body

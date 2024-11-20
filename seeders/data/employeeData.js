@@ -20,7 +20,7 @@ export const employees = [
                 "startDate": "2010-09-01"
             },
             "Team": {
-                "name": "Management Team",
+                "name": "Management",
                 "role": "Lead",
                 "isLeader": true
             }
@@ -47,7 +47,7 @@ export const employees = [
                 "startDate": "2015-04-12"
             },
             "Team": {
-                "name": "Finance Team",
+                "name": "Finance",
                 "role": "Member",
                 "isLeader": false
             }
@@ -74,7 +74,7 @@ export const employees = [
                 "startDate": "2018-07-01"
             },
             "Team": {
-                "name": "Creative Team",
+                "name": "Creative",
                 "role": "Member",
                 "isLeader": false
             }
@@ -101,7 +101,7 @@ export const employees = [
                 "startDate": "2012-11-22"
             },
             "Team": {
-                "name": "Consulting Team",
+                "name": "Consulting",
                 "role": "Lead",
                 "isLeader": true
             }
@@ -128,7 +128,7 @@ export const employees = [
                 "startDate": "2020-02-05"
             },
             "Team": {
-                "name": "Operations Team",
+                "name": "Operations",
                 "role": "Member",
                 "isLeader": false
             }
@@ -155,7 +155,7 @@ export const employees = [
                 "startDate": "2021-05-11"
             },
             "Team": {
-                "name": "Development Team",
+                "name": "Development",
                 "role": "Member",
                 "isLeader": false
             }
@@ -182,7 +182,7 @@ export const employees = [
                 "startDate": "2013-03-15"
             },
             "Team": {
-                "name": "HR Team",
+                "name": "HR",
                 "role": "Lead",
                 "isLeader": true
             }
@@ -209,7 +209,7 @@ export const employees = [
                 "startDate": "2019-06-01"
             },
             "Team": {
-                "name": "Support Team",
+                "name": "Support",
                 "role": "Member",
                 "isLeader": false
             }
@@ -236,7 +236,7 @@ export const employees = [
                 "startDate": "2022-01-18"
             },
             "Team": {
-                "name": "Marketing Team",
+                "name": "Marketing",
                 "role": "Member",
                 "isLeader": false
             }
@@ -263,7 +263,7 @@ export const employees = [
                 "startDate": "2017-08-10"
             },
             "Team": {
-                "name": "HR Team",
+                "name": "HR",
                 "role": "Member",
                 "isLeader": false
             }
